@@ -14,14 +14,13 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="min-h-screen bg-gray-100">
-    <div class="relative flex flex-col w-full max-w-md mx-auto bg-white border-gray-200 border-x md:my-4 md:min-h-0 md:rounded-xl md:max-h-[800px]" id="app">
+    <div class="relative flex flex-col w-full max-w-md min-h-screen mx-auto bg-white border-gray-200 border-x" id="app">
         <main class="flex-grow p-4">
             <div class="w-full max-w-md mx-auto">
                 @include('includes.validation-errors')
