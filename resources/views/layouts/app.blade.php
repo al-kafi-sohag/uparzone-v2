@@ -7,7 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        @yield('title', 'UPARZONE') -
+        {{ config('app.name', 'UPARZONE') }} -
+        {{ __('A social earning network system') }}
+    </title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -18,6 +22,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    @stack('styles')
 </head>
 <body class="min-h-screen bg-gray-100">
     <div class="relative flex flex-col w-full max-w-md min-h-screen mx-auto bg-white border-gray-200 border-x" id="app">
@@ -28,5 +33,8 @@
             </div>
         </main>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    @stack('scripts')
 </body>
 </html>
