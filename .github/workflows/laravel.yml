@@ -12,10 +12,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-      with:
-        php-version: '8.3'
-    - uses: actions/checkout@v4
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: uparzone.com
+          username: uparzone
+          key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            7lbNZw9w==
+            -----END OPENSSH PRIVATE KEY-----
+          port: 22
+          passphrase: uparzone-v2
+          script: |
+            cd new.uparzone.com
+            git fetch --all
+            git reset --hard origin/main
+            git pull
 
