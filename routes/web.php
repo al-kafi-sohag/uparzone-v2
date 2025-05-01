@@ -9,6 +9,7 @@ use App\Http\Controllers\User\OnboardingController as UserOnboardingController;
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\GenderController as AdminGenderController;
+use App\Http\Controllers\Admin\MoodController as AdminMoodController;
 
 Route::get('/', function () {
     return view('comming-soon');
@@ -42,6 +43,17 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
         Route::prefix('gender')->name('gender.')->group(function () {
             Route::controller(AdminGenderController::class)->group(function () {
+                Route::get('list', 'list')->name('list');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('edit/{id}', 'edit')->name('edit');
+                Route::put('update/{id}', 'update')->name('update');
+                Route::delete('delete/{id}', 'delete')->name('delete');
+            });
+        });
+
+        Route::prefix('mood')->name('mood.')->group(function () {
+            Route::controller(AdminMoodController::class)->group(function () {
                 Route::get('list', 'list')->name('list');
                 Route::get('create', 'create')->name('create');
                 Route::post('store', 'store')->name('store');

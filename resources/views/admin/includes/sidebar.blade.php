@@ -25,9 +25,17 @@
 
         <div class="gap-2 d-flex flex-column">
             <a href="{{ route('admin.gender.list') }}"
-                class="nav-link {{ request()->routeIs('admin.gender.list') ? 'active' : '' }}">
+                class="nav-link {{ request()->routeIs('admin.gender.*') ? 'active' : '' }}">
                 <i class="bi bi-gender-male"></i>
                 Gender
+            </a>
+        </div>
+
+        <div class="gap-2 d-flex flex-column">
+            <a href="{{ route('admin.mood.list') }}"
+                class="nav-link {{ request()->routeIs('admin.mood.*') ? 'active' : '' }}">
+                <i class="bi bi-emoji-smile"></i>
+                Mood
             </a>
         </div>
     </nav>
