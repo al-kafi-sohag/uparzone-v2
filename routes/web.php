@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationCo
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\GenderController as AdminGenderController;
 use App\Http\Controllers\Admin\MoodController as AdminMoodController;
+use App\Http\Controllers\Admin\PostCategoryController as AdminPostCategoryController;
 
 Route::get('/', function () {
     return view('comming-soon');
@@ -54,6 +55,17 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
         Route::prefix('mood')->name('mood.')->group(function () {
             Route::controller(AdminMoodController::class)->group(function () {
+                Route::get('list', 'list')->name('list');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('edit/{id}', 'edit')->name('edit');
+                Route::put('update/{id}', 'update')->name('update');
+                Route::delete('delete/{id}', 'delete')->name('delete');
+            });
+        });
+
+        Route::prefix('post-category')->name('post-category.')->group(function () {
+            Route::controller(AdminPostCategoryController::class)->group(function () {
                 Route::get('list', 'list')->name('list');
                 Route::get('create', 'create')->name('create');
                 Route::post('store', 'store')->name('store');

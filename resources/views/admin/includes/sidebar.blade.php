@@ -38,6 +38,14 @@
                 Mood
             </a>
         </div>
+
+        <div class="gap-2 d-flex flex-column">
+            <a href="{{ route('admin.post-category.list') }}"
+                class="nav-link {{ request()->routeIs('admin.post-category.*') ? 'active' : '' }}">
+                <i class="bi bi-folder"></i>
+                Post Category
+            </a>
+        </div>
     </nav>
 </div>
 

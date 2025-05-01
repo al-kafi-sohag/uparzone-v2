@@ -16,7 +16,7 @@ class MoodController extends Controller
 
     public function list()
     {
-        $data['moods'] = Mood::all();
+        $data['moods'] = Mood::orderBy('order', 'asc')->get();
         return view('admin.mood.list', $data);
     }
 
