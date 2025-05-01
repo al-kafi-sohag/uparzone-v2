@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\GenderController as AdminGenderController;
 use App\Http\Controllers\Admin\MoodController as AdminMoodController;
 use App\Http\Controllers\Admin\PostCategoryController as AdminPostCategoryController;
+use App\Http\Controllers\Admin\ReligionController as AdminReligionController;
 
 Route::get('/', function () {
     return view('comming-soon');
@@ -66,6 +67,17 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
         Route::prefix('post-category')->name('post-category.')->group(function () {
             Route::controller(AdminPostCategoryController::class)->group(function () {
+                Route::get('list', 'list')->name('list');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('edit/{id}', 'edit')->name('edit');
+                Route::put('update/{id}', 'update')->name('update');
+                Route::delete('delete/{id}', 'delete')->name('delete');
+            });
+        });
+
+        Route::prefix('religion')->name('religion.')->group(function () {
+            Route::controller(AdminReligionController::class)->group(function () {
                 Route::get('list', 'list')->name('list');
                 Route::get('create', 'create')->name('create');
                 Route::post('store', 'store')->name('store');

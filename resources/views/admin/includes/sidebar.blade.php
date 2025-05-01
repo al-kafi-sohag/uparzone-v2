@@ -46,6 +46,14 @@
                 Post Category
             </a>
         </div>
+
+        <div class="gap-2 d-flex flex-column">
+            <a href="{{ route('admin.religion.list') }}"
+                class="nav-link {{ request()->routeIs('admin.religion.*') ? 'active' : '' }}">
+                <i class="bi bi-book"></i>
+                Religion
+            </a>
+        </div>
     </nav>
 </div>
 
