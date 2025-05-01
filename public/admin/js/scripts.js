@@ -1,19 +1,48 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile sidebar toggle
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const toggleSidebarBtn = document.getElementById('toggleSidebar');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
     const sidebar = document.querySelector('.sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
+    // Toggle sidebar open
+    if (toggleSidebarBtn && sidebar) {
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('show');
+            sidebarBackdrop.classList.remove('d-none');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when sidebar is open
+        });
+    }
+
+    // Close sidebar
+    if (closeSidebarBtn && sidebar) {
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            sidebarBackdrop.classList.add('d-none');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+    }
+
+    // Close sidebar when clicking on backdrop
+    if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            sidebarBackdrop.classList.add('d-none');
+            document.body.style.overflow = ''; // Restore scrolling
         });
     }
 
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
-            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        if (window.innerWidth <= 992) { // Using 992px to match Bootstrap's lg breakpoint
+            if (sidebar && sidebar.classList.contains('show') && 
+                !sidebar.contains(e.target) && 
+                !toggleSidebarBtn.contains(e.target)) {
                 sidebar.classList.remove('show');
+                if (sidebarBackdrop) {
+                    sidebarBackdrop.classList.add('d-none');
+                }
+                document.body.style.overflow = ''; // Restore scrolling
             }
         }
     });
