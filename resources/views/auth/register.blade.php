@@ -1,39 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="flex justify-center mb-6">
+        <img src="{{ asset('frontend/img/logo.svg') }}" alt="Logo" class="h-16">
+    </div>
 
     <div class="mb-6 text-center">
         <h1 class="text-2xl font-bold text-gray-800">{{ __('Register') }}</h1>
         <p class="mt-2 text-gray-600">{{ __('Sign up to get started') }}</p>
     </div>
 
-    <form id="registrationForm" class="space-y-4">
+    <form id="registrationForm" class="space-y-4" action="{{ route('register') }}" method="POST">
+        @csrf
         <div class="space-y-2">
             <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Full Name') }}</label>
-            <input id="name" name="name" type="text" placeholder="{{ __('Enter your full name') }}"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            <p id="nameError" class="hidden mt-1 text-xs text-red-500"></p>
+            <input id="name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name" autofocus
+                placeholder="{{ __('Enter your full name') }}"
+                class="w-full px-3 py-2 border @error('name') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            @error('name')
+                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="space-y-2">
             <label for="email" class="block text-sm font-medium text-gray-700">{{ __('Email Address') }}</label>
-            <input id="email" name="email" type="email" placeholder="{{ __('Enter your email') }}"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            <p id="emailError" class="hidden mt-1 text-xs text-red-500"></p>
+            <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email"
+                placeholder="{{ __('Enter your email') }}"
+                class="w-full px-3 py-2 border @error('email') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            @error('email')
+                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="space-y-2">
             <label for="password" class="block text-sm font-medium text-gray-700">{{ __('Password') }}</label>
-            <input id="password" name="password" type="password" placeholder="{{ __('Create a password') }}"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            <p id="passwordError" class="hidden mt-1 text-xs text-red-500"></p>
+            <input id="password" name="password" type="password" required autocomplete="new-password"
+                placeholder="{{ __('Create a password') }}"
+                class="w-full px-3 py-2 border @error('password') border-red-500 @else border-gray-300 @enderror rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            @error('password')
+                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="space-y-2">
-            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">{{ __('Confirm Password') }}</label>
-            <input id="confirmPassword" name="confirmPassword" type="password" placeholder="{{ __('Confirm your password') }}"
+            <label for="password-confirm" class="block text-sm font-medium text-gray-700">{{ __('Confirm Password') }}</label>
+            <input id="password-confirm" name="password_confirmation" type="password" required autocomplete="new-password"
+                placeholder="{{ __('Confirm your password') }}"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            <p id="confirmPasswordError" class="hidden mt-1 text-xs text-red-500"></p>
         </div>
 
         <div class="pt-2">
@@ -54,7 +67,7 @@
         </div>
 
         <div>
-            <button type="button"
+            <a href="{{ route('auth.google') }}" type="button"
                 class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
                     <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
@@ -69,13 +82,13 @@
                     </g>
                 </svg>
                 {{ __('Sign up with Google') }}
-            </button>
+            </a>
         </div>
 
         <div class="mt-4 text-sm text-center text-gray-600">
             {{ __('Already have an account?') }}
-            <a href="#" class="text-blue-600 hover:underline">
-                {{ __('Sign in') }}
+            <a href="{{ route('login') }}" class="text-blue-600 hover:underline">
+                {{ __('Log in') }}
             </a>
         </div>
     </form>

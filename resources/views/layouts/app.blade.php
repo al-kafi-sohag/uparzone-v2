@@ -24,6 +24,7 @@
     <div class="relative flex flex-col w-full max-w-md mx-auto bg-white border-gray-200 border-x md:my-4 md:min-h-0 md:rounded-xl md:max-h-[800px]" id="app">
         <main class="flex-grow p-4">
             <div class="w-full max-w-md mx-auto">
+                @include('includes.validation-errors')
                 @yield('content')
             </div>
         </main>
