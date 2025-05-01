@@ -21,9 +21,14 @@
                 <i class="bi bi-house"></i>
                 Dashboard
             </a>
+        </div>
 
-
-
+        <div class="gap-2 d-flex flex-column">
+            <a href="{{ route('admin.gender.list') }}"
+                class="nav-link {{ request()->routeIs('admin.gender.list') ? 'active' : '' }}">
+                <i class="bi bi-gender-male"></i>
+                Gender
+            </a>
         </div>
     </nav>
 </div>

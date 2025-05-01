@@ -12,22 +12,6 @@
     @stack('style_links')
 
     @include('admin.includes.styles')
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (session('success'))
-                showAlert('success', '{{ session('success') }}');
-            @endif
-
-            @if (session('error'))
-                showAlert('error', '{{ session('error') }}');
-            @endif
-
-            @if (session('warning'))
-                showAlert('warning', '{{ session('warning') }}');
-            @endif
-        });
-    </script>
 </head>
 
 <body>
