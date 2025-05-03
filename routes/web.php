@@ -6,6 +6,7 @@ use App\Http\Controllers\User\GoogleController as UserGoogleController;
 use App\Http\Controllers\User\OnboardingController as UserOnboardingController;
 use App\Http\Controllers\User\HomeController as UserHomeController;
 use App\Http\Controllers\User\AuthenticationController as UserAuthenticationController;
+use App\Http\Controllers\User\ProfileController as UserProfileController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -94,5 +95,9 @@ Route::group(['as' => 'user.', 'middleware' => 'auth:web'], function () {
 
     Route::controller(UserHomeController::class)->group(function () {
         Route::get('home', 'home')->name('home');
+    });
+
+    Route::controller(UserProfileController::class)->group(function () {
+        Route::get('complete-profile', 'completeProfile')->name('cp');
     });
 });
