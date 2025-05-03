@@ -20,6 +20,7 @@ class Mood extends Model
         'slug',
         'order',
         'status',
+        'emoji',
     ];
 
     protected $casts = [

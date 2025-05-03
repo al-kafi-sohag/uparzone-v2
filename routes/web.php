@@ -90,15 +90,15 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
 });
 
-Route::group(['as' => 'user.', 'middleware' => 'auth:web'], function () {
+Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
     Route::post('logout', [UserAuthenticationController::class, 'logout'])->name('logout');
 
     Route::controller(UserHomeController::class)->group(function () {
-        Route::get('home', 'home')->name('home');
+        Route::get('home', 'home')->name('home')->middleware('user.profile.complete');
     });
 
     Route::controller(UserProfileController::class)->group(function () {
         Route::get('complete-profile', 'completeProfile')->name('cp');
-        Route::get('language-change/{lang}', 'languageChange')->name('language.change');
+        Route::post('complete-profile', 'storeProfileData')->name('cp.store');
     });
 });

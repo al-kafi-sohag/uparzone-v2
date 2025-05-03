@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -99,4 +100,25 @@ class User extends Authenticatable
             'status' => 'integer'
         ];
     }
+
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
+    }
+
+    public function mood(): BelongsTo
+    {
+        return $this->belongsTo(Mood::class, 'mood_id');
+    }
+
+    public function religion(): BelongsTo
+    {
+        return $this->belongsTo(Religion::class, 'religion_id');
+    }
+
+    public function referer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referer_id');
+    }
+
 }

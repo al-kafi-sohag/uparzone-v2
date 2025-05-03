@@ -28,7 +28,7 @@
                         @foreach ($moods as $mood)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $mood->name }}</td>
+                                <td>{{ $mood->name }} <span class="small">({{ $mood->emoji }})</span></td>
                                 <td>
                                     <span class="badge bg-{{ $mood->status_badge }}">{{ $mood->status_name }}</span>
                                 </td>
