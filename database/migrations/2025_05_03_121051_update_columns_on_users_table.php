@@ -52,9 +52,8 @@ return new class extends Migration
             $table->string('zip_code')->nullable();
             $table->boolean('zip_code_privacy')->default(false);
 
-            $table->unsignedBigInteger('gender_id')->nullable();
+            $table->string('gender')->nullable();
             $table->boolean('gender_privacy')->default(false);
-            $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
 
             $table->unsignedBigInteger('mood_id')->nullable();
             $table->boolean('mood_privacy')->default(false);
@@ -91,7 +90,7 @@ return new class extends Migration
             $table->dropColumn('state');
             $table->dropColumn('country');
             $table->dropColumn('zip_code');
-            $table->dropColumn('gender_id');
+            $table->dropColumn('gender');
             $table->dropColumn('mood_id');
             $table->dropColumn('religion_id');
             $table->dropColumn('balance_privacy');

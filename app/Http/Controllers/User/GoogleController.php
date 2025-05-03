@@ -8,6 +8,8 @@ use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class GoogleController extends Controller
 {
@@ -29,14 +31,15 @@ class GoogleController extends Controller
                 $newUser = User::updateOrCreate(['email' => $user->email],[
                         'name' => $user->name,
                         'google_id'=> $user->id,
-                        'password' => encrypt('123456dummy')
+                        'password' => Hash::make(rand(100000,999999))
                     ]);
 
                 Auth::login($newUser);
                 return redirect()->intended('home');
             }
         } catch (Exception $e) {
-            dd($e->getMessage());
+            Log::error("GoogleController: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong');
         }
     }
 }

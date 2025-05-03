@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -97,15 +100,16 @@ class User extends Authenticatable
             'gender_privacy' => 'boolean',
             'mood_privacy' => 'boolean',
             'religion_privacy' => 'boolean',
-            'status' => 'integer'
+            'status' => 'integer',
+            'referer_id' => 'integer',
+            'reference_code' => 'string',
+            'google_id' => 'string',
+            'phone' => 'string',
+            'lang' => 'string',
+            'gender' => 'string',
+
         ];
     }
-
-    public function gender(): BelongsTo
-    {
-        return $this->belongsTo(Gender::class, 'gender_id');
-    }
-
     public function mood(): BelongsTo
     {
         return $this->belongsTo(Mood::class, 'mood_id');

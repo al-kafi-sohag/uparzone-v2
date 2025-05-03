@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\User\ProfileRequest;
+use App\Http\Requests\User\SetLanguageRequest;
+use App\Models\Gender;
+use App\Models\Mood;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -18,27 +21,43 @@ class ProfileController extends Controller
 
     public function completeProfile()
     {
+        if (Auth::user()->is_complete_profile) {
+            return redirect()->route('user.home');
+        }
         $data['user'] = Auth::user();
+        $data['moods'] = Mood::select('id', 'name', 'emoji', 'order')->where('status', Mood::STATUS_ACTIVE)->orderBy('order', 'asc')->get();
         return view('user.profile.complete-profile', $data);
     }
 
-    public function languageChange($lang): JsonResponse
+    public function storeProfileData(ProfileRequest $request)
     {
-        $supportedLanguages = ['en', 'bn', 'hi'];
-        if (!in_array($lang, $supportedLanguages)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unsupported language'
-            ]);
-        }
-        User::where('id', Auth::user()->id)->update(['lang' => $lang]);
-        App::setLocale($lang);
+        User::where('id', Auth::user()->id)->update([
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'profession' => $request->profession,
+            'mood_id' => $request->mood,
+            'is_complete_profile' => true,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Profile updated successfully',
+            'data' => [
+                'is_complete_profile' => true
+            ]
+        ]);
+    }
+
+    public function setLanguage(SetLanguageRequest $request): JsonResponse
+    {
+        User::where('id', Auth::user()->id)->update(['lang' => $request->language]);
+        App::setLocale($request->language);
 
         return response()->json([
             'status' => 'success',
             'message' => 'Language changed successfully',
             'data' => [
-                'language' => $lang
+                'language' => $request->language
             ]
         ]);
     }
