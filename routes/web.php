@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\GoogleController as UserGoogleController;
 use App\Http\Controllers\User\OnboardingController as UserOnboardingController;
+use App\Http\Controllers\User\HomeController as UserHomeController;
+use App\Http\Controllers\User\AuthenticationController as UserAuthenticationController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -17,12 +19,9 @@ Route::get('/', function () {
     return view('comming-soon');
 });
 
+//User Before
 Auth::routes();
-Route::get('onboarding', [UserOnboardingController::class, 'index'])->name('onboarding');
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
+Route::get('onboarding', [UserOnboardingController::class, 'index'])->name('user.onboarding');
 Route::controller(UserGoogleController::class)->group(function(){
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
@@ -86,5 +85,14 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
                 Route::delete('delete/{id}', 'delete')->name('delete');
             });
         });
+    });
+
+});
+
+Route::group(['as' => 'user.', 'middleware' => 'auth:web'], function () {
+    Route::post('logout', [UserAuthenticationController::class, 'logout'])->name('logout');
+
+    Route::controller(UserHomeController::class)->group(function () {
+        Route::get('home', 'home')->name('home');
     });
 });
