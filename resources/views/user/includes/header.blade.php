@@ -5,7 +5,7 @@
             <div class="flex items-center">
                 <a href="{{ route('user.home') }}" class="text-2xl font-bold text-black">
                     <img src="{{ asset('user/img/logo.svg') }}" alt="" class="navbar_logo"
-                        style="height: 3rem;width: 100%;">
+                        style="height: 2.5rem;width: 100%;">
                 </a>
             </div>
 

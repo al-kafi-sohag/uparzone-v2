@@ -24,8 +24,10 @@
     <div class="flex justify-center min-h-screen bg-gray-100" id="app">
         <div class="w-full max-w-md mx-auto bg-white shadow-lg overflow-hidden flex flex-col min-h-screen border border-gray-200 md:my-4 md:min-h-0 md:rounded-xl">
             @include('user.includes.header')
-            @include('includes.validation-errors')
-            @yield('content')
+            <main class="overflow-y-auto pt-2 mobile-height">
+                @include('includes.validation-errors')
+                @yield('content')
+            </main>
             @include('user.includes.footer')
         </div>
     </div>

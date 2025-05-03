@@ -99,5 +99,6 @@ Route::group(['as' => 'user.', 'middleware' => 'auth:web'], function () {
 
     Route::controller(UserProfileController::class)->group(function () {
         Route::get('complete-profile', 'completeProfile')->name('cp');
+        Route::get('language-change/{lang}', 'languageChange')->name('language.change');
     });
 });
