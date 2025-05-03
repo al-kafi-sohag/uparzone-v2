@@ -612,7 +612,7 @@
     // Submit personal details
     function submitPersonalDetails() {
         if (!formState.age || !formState.gender || !formState.profession) {
-            const lang = formState.language || 'english';
+            let lang = formState.language || 'english';
             showError(lang === 'english' ? 'Please fill in all fields' : (lang === 'bangla' ? 'সমস্ত ক্ষেত্র পূরণ করুন' : 'कृपया सभी फ़ील्ड भरें'));
             return;
         }
@@ -671,38 +671,46 @@
 
         showLoading();
         hideError();
-        hideSuccess();
 
-        setTimeout(function() {
-            // Mock response - in real implementation, this would come from your server
-            const mockResponse = {
-                valid: true,
-                referrerName: "John Doe",
-            };
+        const mockResponse = {
+            valid: true,
+            referrerName: "John Doe",
+        };
 
-            if (mockResponse.valid) {
-                formState.referrerName = mockResponse.referrerName;
-                const lang = formState.language || 'english';
+        axios.post('{{ route("user.cp.verify.reference") }}', { reference_code: formState.referenceCode }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+            .then(function(response) {
+                hideLoading();
+                formState.currentStep = 5;
+                updateProgress();
+                updateStepTitle();
+                renderStep5();
+                mockResponse.referrerName = response.data.data.referrer_name;
+                mockResponse.valid = true;
+                let lang = formState.language || 'english';
                 showSuccess(lang === 'english' ? `Reference code validated! You were referred by ${mockResponse.referrerName}` :
                            (lang === 'bangla' ? `রেফারেন্স কোড যাচাই করা হয়েছে! আপনাকে রেফার করেছেন ${mockResponse.referrerName}` :
                            `रेफरेंस कोड मान्य है! आपको ${mockResponse.referrerName} द्वारा रेफर किया गया था`));
 
-                // Move to next step after a brief delay to show the success message
-                setTimeout(function() {
-                    hideLoading();
-                    formState.currentStep = 5;
-                    updateProgress();
-                    updateStepTitle();
-                    renderStep5();
-                }, 1500);
-            } else {
+            })
+            .catch(function(error) {
+                console.log(error);
                 hideLoading();
-                const lang = formState.language || 'english';
+                formState.currentStep = 4;
+                updateProgress();
+                updateStepTitle();
+                renderStep4();
+                mockResponse.valid = false;
+                let lang = formState.language || 'english';
                 showError(lang === 'english' ? 'Invalid reference code. Please try again.' :
                          (lang === 'bangla' ? 'ভুল রেফারেন্স কোড। আবার চেষ্টা করুন।' :
                          'अमान्य रेफरेंस कोड। कृपया पुनः प्रयास करें।'));
-            }
-        }, 800);
+
+            });
     }
 
     // Skip reference code

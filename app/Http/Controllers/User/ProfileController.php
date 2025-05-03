@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ProfileRequest;
 use App\Http\Requests\User\SetLanguageRequest;
+use App\Http\Requests\User\VerifyReferenceCodeRequest;
 use App\Models\Gender;
 use App\Models\Mood;
 use App\Models\User;
@@ -58,6 +59,26 @@ class ProfileController extends Controller
             'message' => 'Language changed successfully',
             'data' => [
                 'language' => $request->language
+            ]
+        ]);
+    }
+
+    public function verifyReferenceCode(VerifyReferenceCodeRequest $request): JsonResponse
+    {
+        $user = User::where('reference_code', $request->reference_code)->first();
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Reference code does not exist',
+            ]);
+        }
+        User::where('id', Auth::user()->id)->update(['referer_id' => $user->id]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Reference code verified successfully',
+            'data' => [
+                'referer_id' => $user->id,
+                'referer_name' => $user->name
             ]
         ]);
     }

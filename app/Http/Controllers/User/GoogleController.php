@@ -34,7 +34,7 @@ class GoogleController extends Controller
                         'password' => Hash::make(rand(100000,999999))
                     ]);
 
-                Auth::login($newUser);
+                Auth::login($newUser, true);
                 return redirect()->intended('home');
             }
         } catch (Exception $e) {
