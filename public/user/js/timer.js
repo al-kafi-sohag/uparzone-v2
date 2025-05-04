@@ -7,7 +7,7 @@ $(document).ready(function () {
             .catch(function (error) {
                 console.log(error);
             });
-    }, 45000);
+    }, 25000);
 
     setInterval(function () {
         active_time++;
