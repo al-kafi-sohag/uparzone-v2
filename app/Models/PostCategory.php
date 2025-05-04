@@ -43,4 +43,9 @@ class PostCategory extends Model
     {
         return $this->status == self::STATUS_ACTIVE ? 'success' : 'danger';
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE);
+    }
 }

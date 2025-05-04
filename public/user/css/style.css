@@ -1,3 +1,8 @@
 .mobile-height {
     height: 82vh !important;
 }
+
+#time-tracking-bar {
+    width: 0%;
+    transition: width 10s linear;
+}

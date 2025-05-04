@@ -1,4 +1,9 @@
+const $progressBar = $('#time-tracking-bar');
+const heartbeatInterval = 10; //in seconds
+
 $(document).ready(function () {
+    resetProgressBar();
+
     setInterval(function () {
         balanceLoading();
         axios.post(AppUrl.heartbeat)
@@ -8,7 +13,8 @@ $(document).ready(function () {
             .catch(function (error) {
                 console.log(error);
             });
-    }, 25000);
+        resetProgressBar();
+    }, heartbeatInterval * 1000);
 
     setInterval(function () {
         active_time++;
@@ -32,4 +38,9 @@ function balanceLoading() {
             <span class="visually-hidden">Loading...</span>
         </div>
     `);
+}
+
+function resetProgressBar() {
+    $progressBar.css('width', '0%');
+    void $progressBar[0].offsetHeight;
 }

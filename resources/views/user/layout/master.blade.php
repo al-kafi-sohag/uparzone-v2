@@ -18,7 +18,6 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     @include('user.includes.style-bundle')
-    @stack('styles')
 </head>
 <body class="bg-gray-100">
     <div class="flex justify-center min-h-screen bg-gray-100" id="app">

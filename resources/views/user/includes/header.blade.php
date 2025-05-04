@@ -40,4 +40,8 @@
             </div>
         </div>
     </div>
+    <div class="w-full bg-gray-200 h-1">
+        <div id="time-tracking-bar" class="bg-teal-600 h-1 transition-all duration-500 ease-out">
+        </div>
+    </div>
 </header>
