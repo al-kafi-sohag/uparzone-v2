@@ -71,8 +71,8 @@ class TimeTrackingController extends Controller
     {
         DB::transaction(function () use ($user, $now, $duration, $rewardAmount) {
             $user->update(['last_active_at' => $now]);
-            $user->increment('active_time', $duration);
-            $user->increment('balance', $rewardAmount);
+            $user->update(['active_time' => $user->active_time + $duration]);
+            $user->update(['balance' => $user->balance + $rewardAmount]);
         });
 
         $user->refresh();
