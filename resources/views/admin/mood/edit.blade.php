@@ -2,6 +2,16 @@
 
 @section('title', __('Mood Edit'))
 
+@push('styles')
+    <style>
+        #emoji-picker {
+            position: absolute;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -20,6 +30,16 @@
                     <label for="name" class="form-label">{{ __('Name') }}</label>
                     <input type="text" class="form-control" id="name" name="name" required value="{{ old('name', $mood->name) }}">
                     @include('alerts.feedback', ['field' => 'name'])
+                </div>
+
+                <div class="mb-3">
+                    <label for="emoji" class="form-label">{{ __('Emoji') }}</label>
+                    <div class="d-flex align-items-center gap-2">
+                        <textarea id="emoji-input" name="emoji" rows="1" cols="1" class="form-control w-50">{{ old('emoji', $mood->emoji) }}</textarea>
+                        <button type="button" id="emoji-trigger" class="btn btn-primary w-25">😀 Add Emoji</button>
+                    </div>
+
+                    <emoji-picker id="emoji-picker" class="mt-2"></emoji-picker>
                 </div>
 
                 <div class="mb-3">
@@ -49,3 +69,35 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+    <script>
+        $(document).ready(function() {
+            const $picker = $('#emoji-picker');
+            const $trigger = $('#emoji-trigger');
+            const $input = $('#emoji-input');
+
+            // Toggle picker visibility
+            $trigger.on('click', function() {
+                $picker.toggle();
+            });
+
+            // Handle emoji selection
+            $picker.on('emoji-click', function(event) {
+                const emoji = event.originalEvent.detail.unicode;
+                $input.val(function(i, val) {
+                    return emoji;
+                });
+                $picker.hide();
+            });
+
+            // Optional: Close picker when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#emoji-picker, #emoji-trigger').length) {
+                    $picker.hide();
+                }
+            });
+        });
+    </script>
+@endpush

@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\GoogleController as UserGoogleController;
 use App\Http\Controllers\User\OnboardingController as UserOnboardingController;
+use App\Http\Controllers\User\HomeController as UserHomeController;
+use App\Http\Controllers\User\AuthenticationController as UserAuthenticationController;
+use App\Http\Controllers\User\ProfileController as UserProfileController;
+use App\Http\Controllers\User\TimeTrackingController as UserTimeTrackingController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -17,12 +21,9 @@ Route::get('/', function () {
     return view('comming-soon');
 });
 
+//User Before
 Auth::routes();
-Route::get('onboarding', [UserOnboardingController::class, 'index'])->name('onboarding');
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
+Route::get('onboarding', [UserOnboardingController::class, 'index'])->name('user.onboarding');
 Route::controller(UserGoogleController::class)->group(function(){
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
@@ -87,4 +88,23 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
             });
         });
     });
+
+});
+
+Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
+    Route::post('logout', [UserAuthenticationController::class, 'logout'])->name('logout');
+
+    Route::controller(UserHomeController::class)->group(function () {
+        Route::get('home', 'home')->name('home')->middleware('user.profile.complete');
+    });
+
+    Route::controller(UserProfileController::class)->group(function () {
+        Route::get('complete-profile', 'completeProfile')->name('cp');
+        Route::post('complete-profile', 'storeProfileData')->name('cp.store');
+        Route::post('set-language', 'setLanguage')->name('cp.language');
+        Route::post('verify-reference-code', 'verifyReferenceCode')->name('cp.verify.reference');
+    });
+
+    Route::post('heartbeat', [UserTimeTrackingController::class, 'heartbeat'])->name('heartbeat');
+
 });
