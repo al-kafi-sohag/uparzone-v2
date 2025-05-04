@@ -44,14 +44,17 @@ class TimeTrackingController extends Controller
 
     protected function calculateDuration($user, Carbon $now): int
     {
-        return $user->last_active_at
-            ? $user->last_active_at->diffInSeconds($now)
-            : 0;
+        if (!$user->last_active_at) {
+            return 0;
+        }
+        $lastActiveAt = Carbon::parse($user->last_active_at);
+        $duration = $lastActiveAt->diffInSeconds($now);
+        return $duration;
     }
 
     protected function shouldTrackActivity(int $duration): bool
     {
-        return $duration > 0 && $duration < 60;
+        return $duration > 0 && $duration < 90;
     }
 
     protected function createTimeTrackingRecord($user, Carbon $now, int $duration, float $rewardAmount): void
