@@ -111,5 +111,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
     Route::controller(UserPostController::class)->group(function () {
         Route::get('post/create', 'create')->name('post.create');
         Route::post('post/store', 'store')->name('post.store');
+        Route::post('post/upload-media', 'uploadMedia')->name('post.upload.media');
+        Route::delete('post/remove-media', 'removeMedia')->name('post.remove.media');
     });
 });
