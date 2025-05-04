@@ -70,11 +70,11 @@ class TimeTrackingController extends Controller
     protected function updateUser($user, Carbon $now, int $duration, float $rewardAmount): void
     {
         DB::transaction(function () use ($user, $now, $duration, $rewardAmount) {
-            $user->update(['last_active_at' => $now]);
-            $user->update(['active_time' => $user->active_time + $duration]);
-            $user->update(['balance' => $user->balance + $rewardAmount]);
+            $user->update([
+                'last_active_at' => $now,
+                'active_time' => $user->active_time + $duration,
+                'balance' => $user->balance + $rewardAmount,
+            ]);
         });
-
-        $user->refresh();
     }
 }

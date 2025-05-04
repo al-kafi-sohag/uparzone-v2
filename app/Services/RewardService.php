@@ -15,7 +15,7 @@ class RewardService
         0 => 0.02,
     ];
 
-    public function calculateReward(User $user, int $duration): float
+    public function calculateReward($user, int $duration): float
     {
         $referralCount = $user->total_referral;
         $rate = $this->getRewardRate($referralCount);

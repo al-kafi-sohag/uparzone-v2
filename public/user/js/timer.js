@@ -1,5 +1,6 @@
 $(document).ready(function () {
     setInterval(function () {
+        balanceLoading();
         axios.post(AppUrl.heartbeat)
             .then(function (response) {
                 $('#balance').html(parseFloat(response.data.data.balance).toFixed(2));
@@ -23,4 +24,12 @@ function formatTime(seconds) {
 
     // Format time as HH:MM:SS
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
+function balanceLoading() {
+    $('#balance').html(`
+        <div class="spinner-grow text-gray h-4 w-4" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    `);
 }
