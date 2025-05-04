@@ -1,0 +1,26 @@
+$(document).ready(function () {
+    setInterval(function () {
+        axios.post(AppUrl.heartbeat)
+            .then(function (response) {
+                $('#balance').html(parseFloat(response.data.data.balance).toFixed(2));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }, 45000);
+
+    setInterval(function () {
+        active_time++;
+        window.active_time = active_time;
+        $('#timer').html(formatTime(active_time));
+    }, 1000);
+});
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    // Format time as HH:MM:SS
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}

@@ -25,8 +25,8 @@ return new class extends Migration
             $table->float('reserved_balance', 2)->default(0);
             $table->float('freeze_balance', 2)->default(0);
 
-            $table->float('spent_time', 2)->default(0);
-            $table->boolean('spent_time_privacy')->default(false);
+            $table->float('active_time', 2)->default(0);
+            $table->boolean('active_time_privacy')->default(false);
 
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_complete_profile')->default(false);
@@ -80,7 +80,7 @@ return new class extends Migration
             $table->dropColumn('balance');
             $table->dropColumn('reserved_balance');
             $table->dropColumn('freeze_balance');
-            $table->dropColumn('spent_time');
+            $table->dropColumn('active_time');
             $table->dropColumn('is_premium');
             $table->dropColumn('is_complete_profile');
             $table->dropColumn('age');
@@ -94,7 +94,7 @@ return new class extends Migration
             $table->dropColumn('mood_id');
             $table->dropColumn('religion_id');
             $table->dropColumn('balance_privacy');
-            $table->dropColumn('spent_time_privacy');
+            $table->dropColumn('active_time_privacy');
             $table->dropColumn('age_privacy');
             $table->dropColumn('profession_privacy');
             $table->dropColumn('address_privacy');

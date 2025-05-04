@@ -7,6 +7,7 @@ use App\Http\Controllers\User\OnboardingController as UserOnboardingController;
 use App\Http\Controllers\User\HomeController as UserHomeController;
 use App\Http\Controllers\User\AuthenticationController as UserAuthenticationController;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
+use App\Http\Controllers\User\TimeTrackingController as UserTimeTrackingController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -103,4 +104,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
         Route::post('set-language', 'setLanguage')->name('cp.language');
         Route::post('verify-reference-code', 'verifyReferenceCode')->name('cp.verify.reference');
     });
+
+    Route::post('heartbeat', [UserTimeTrackingController::class, 'heartbeat'])->name('heartbeat');
+
 });

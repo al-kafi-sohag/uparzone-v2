@@ -12,7 +12,7 @@
             <!-- Time -->
             <div class="flex items-center">
                 <i data-lucide="clock" class="mr-1"></i>
-                <span class="text-sm" id="timer"></span>
+                <span class="text-sm" id="timer">{{ formatTime($active_time) }}</span>
             </div>
 
             {{-- <div class="flex items-center">
@@ -23,16 +23,16 @@
             <div class="flex items-center space-x-3">
                 <div class="flex items-center">
                     <i data-lucide="wallet"></i>
-                    @if (Auth::user()->wallet == 200 && Auth::user()->premium == 'inactive')
+                    @if ($balance > 200 && Auth::user()->is_premium == false)
                         <a href="" class="flex-auto items-center ml-2">
                             <p style="color: red; margin-top:10px">
-                                200tk <i data-lucide="lock"></i>
+                                <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk <i data-lucide="lock"></i>
                             </p>
                         </a>
                     @else
                         <a href="" class="flex-auto items-center ml-2">
                             <span class="itemsz">
-                                <span id="balance" class="balance-text">{{ number_format(Auth::user()->wallet, 2) }} tk</span>
+                                <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk
                             </span>
                         </a>
                     @endif

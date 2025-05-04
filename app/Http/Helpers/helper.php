@@ -28,3 +28,12 @@ function str_limit($string, $limit = 10, $end = '...')
 function profile_img ($img = null){
     return $img ? asset($img) : asset('user/img/default-user.jpg');
 }
+
+
+function formatTime($seconds) {
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
+    $seconds = $seconds % 60;
+
+    return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+}

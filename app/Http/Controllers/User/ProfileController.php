@@ -73,6 +73,9 @@ class ProfileController extends Controller
             ]);
         }
         User::where('id', Auth::user()->id)->update(['referer_id' => $user->id]);
+
+        $this->calculateTotalReferral($user->id);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Reference code verified successfully',
@@ -80,6 +83,14 @@ class ProfileController extends Controller
                 'referer_id' => $user->id,
                 'referer_name' => $user->name
             ]
+        ]);
+    }
+
+    protected function calculateTotalReferral($userId)
+    {
+        $user = User::where('id', $userId)->first();
+        $user->update([
+            'total_referral' => User::where('referer_id', $userId)->count(),
         ]);
     }
 }

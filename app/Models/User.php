@@ -34,8 +34,8 @@ class User extends Authenticatable
         'balance_privacy',
         'reserved_balance',
         'freeze_balance',
-        'spent_time',
-        'spent_time_privacy',
+        'active_time',
+        'active_time_privacy',
         'is_premium',
         'is_complete_profile',
         'age',
@@ -58,7 +58,9 @@ class User extends Authenticatable
         'mood_privacy',
         'religion_id',
         'religion_privacy',
-        'status'
+        'status',
+        'last_active_at',
+        'total_referral'
     ];
 
     /**

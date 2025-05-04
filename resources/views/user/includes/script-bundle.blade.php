@@ -6,3 +6,12 @@
 </script>
 <script src="{{ asset('user/js/theme.js') }}"></script>
 <script src="{{ asset('user/js/timer.js') }}"></script>
+
+<script>
+    window.active_time = {{ $active_time }};
+    sessionStorage.setItem('active_time', {{ $active_time }});
+    window.balance = {{ $balance }};
+    window.AppUrl = {
+        heartbeat: '{{ route('user.heartbeat') }}',
+    }
+</script>
