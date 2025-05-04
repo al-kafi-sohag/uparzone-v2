@@ -28,7 +28,7 @@ function formatTime(seconds) {
 
 function balanceLoading() {
     $('#balance').html(`
-        <div class="spinner-grow text-gray h-4 w-4" role="status">
+        <div class="border-2 border-teal-600 border-t-transparent rounded-full animate-spin h-3 w-3" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     `);

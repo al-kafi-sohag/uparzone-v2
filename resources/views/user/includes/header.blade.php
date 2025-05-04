@@ -25,13 +25,13 @@
                     <i data-lucide="wallet"></i>
                     @if ($balance > 200 && Auth::user()->is_premium == false)
                         <a href="" class="flex-auto items-center ml-2">
-                            <p style="color: red; margin-top:10px">
+                            <p class="flex items-center justify-between gap-1 text-red-500">
                                 <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk <i data-lucide="lock"></i>
                             </p>
                         </a>
                     @else
                         <a href="" class="flex-auto items-center ml-2">
-                            <span class="itemsz">
+                            <span class="itemsz flex items-center justify-between gap-1">
                                 <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk
                             </span>
                         </a>

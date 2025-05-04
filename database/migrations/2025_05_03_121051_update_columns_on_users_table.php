@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('lang')->default('en');
 
-            $table->float('balance', 2)->default(0);
+            $table->float('balance', 4)->default(0);
             $table->boolean('balance_privacy')->default(false);
 
-            $table->float('reserved_balance', 2)->default(0);
-            $table->float('freeze_balance', 2)->default(0);
+            $table->float('reserved_balance', 4)->default(0);
+            $table->float('freeze_balance', 4)->default(0);
 
             $table->float('active_time', 2)->default(0);
             $table->boolean('active_time_privacy')->default(false);
