@@ -16,7 +16,7 @@ class HomeController extends Controller
 
     public function home()
     {
-        $data['posts'] = Post::with('user')->active()->latest()->paginate(10);
+        $data['posts'] = Post::with(['user', 'media'])->active()->latest()->paginate(10);
 
         return view('user.home.home', $data);
     }

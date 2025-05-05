@@ -22,15 +22,18 @@
             </div>
 
             <!-- Post Image -->
-            <div class="relative w-full h-96 bg-gray-100">
-                @if($media = $post->getFirstMedia('post_media'))
-                    @if($media->mime_type === 'image/jpeg' || $media->mime_type === 'image/png')
+            @php
+                $media = $post->getFirstMedia('post_media');
+            @endphp
+            <div class="relative w-full h-96 bg-gray-100 {{ $media ? starts_with($media->mime_type, 'image/') ? 'h-96' : 'h-64' : 'h-64' }}">
+                @if($media)
+                    @if(starts_with($media->mime_type, 'image/'))
                         <img src="{{ $media->getFullUrl('thumb') }}"
-                             data-src="{{ $media->getFullUrl() }}"
+                             data-src="{{ $media->getFullUrl('original') }}"
                              alt="Post image"
                              class="lazyload object-cover absolute inset-0 w-full h-full">
 
-                    @elseif($media->mime_type === 'video/mp4')
+                    @elseif(starts_with($media->mime_type, 'video/'))
                         <video controls
                                class="object-cover absolute inset-0 w-full h-full">
                             <source src="{{ $media->getFullUrl() }}" type="video/mp4">

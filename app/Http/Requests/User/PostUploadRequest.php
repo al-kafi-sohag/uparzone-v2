@@ -30,7 +30,7 @@ class PostUploadRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
+            'description' => 'nullable|string|max:500',
             'temp_id' => 'required|exists:temporary_medias,temp_id',
             'category_id' => 'nullable|exists:post_categories,id',
             'religion_id' => 'nullable|exists:religions,id',
@@ -45,7 +45,6 @@ class PostUploadRequest extends FormRequest
         return [
             'title.required' => 'Please enter a title.',
             'title.max' => 'Title must be at most 255 characters.',
-            'description.required' => 'Please enter a description.',
             'description.max' => 'Description must be at most 500 characters.',
             'temp_id.required' => 'Please select a file.',
             'category_id.exists' => 'Invalid category.',

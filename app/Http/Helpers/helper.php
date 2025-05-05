@@ -37,3 +37,7 @@ function formatTime($seconds) {
 
     return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 }
+
+function starts_with($string, $substring) {
+    return Str::startsWith($string, $substring);
+}

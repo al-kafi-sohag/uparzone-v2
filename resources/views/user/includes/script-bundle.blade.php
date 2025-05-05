@@ -9,7 +9,7 @@
 
 <script>
     window.active_time = {{ $active_time }};
-    sessionStorage.setItem('active_time', {{ $active_time }});
+    window.heartbeatInterval = {{ (int)config('app.heartbeat_interval', 60) }};
     window.balance = {{ $balance }};
     window.AppUrl = {
         heartbeat: '{{ route('user.heartbeat') }}',

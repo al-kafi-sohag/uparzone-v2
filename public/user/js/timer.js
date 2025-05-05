@@ -1,8 +1,8 @@
 const $progressBar = $('#time-tracking-bar');
-const heartbeatInterval = 10; //in seconds
+const heartbeatInterval = window.heartbeatInterval || 60; //in seconds
 
 $(document).ready(function () {
-    resetProgressBar();
+    startProgress();
 
     setInterval(function () {
         balanceLoading();
@@ -13,7 +13,7 @@ $(document).ready(function () {
             .catch(function (error) {
                 console.log(error);
             });
-        resetProgressBar();
+        startProgress();
     }, heartbeatInterval * 1000);
 
     setInterval(function () {
@@ -40,7 +40,25 @@ function balanceLoading() {
     `);
 }
 
-function resetProgressBar() {
-    $progressBar.css('width', '0%');
-    void $progressBar[0].offsetHeight;
-}
+function startProgress() {
+    $progressBar.css("width", "0%");
+
+    let progress = 0;
+    const totalTime = heartbeatInterval;
+    const updateInterval = 1000;
+    const increment = 100 / totalTime;
+
+    const interval = setInterval(function() {
+      // Increment progress
+      progress += increment;
+
+      // If progress reaches or exceeds 100%, reset
+      if (progress >= 100) {
+        clearInterval(interval);
+        progress = 100;
+        $progressBar.css("width", "100%");
+      } else {
+        $progressBar.css("width", progress + "%");
+      }
+    }, updateInterval);
+  }

@@ -52,12 +52,12 @@ class TimeTrackingController extends Controller
         return $duration;
     }
 
-    protected function shouldTrackActivity(int $duration): bool
+    protected function shouldTrackActivity(float $duration): bool
     {
-        return $duration > 0 && $duration < 90;
+        return $duration > 0 && $duration < config('app.heartbeat_interval') + config('app.heartbeat_interval') * (30/100);
     }
 
-    protected function createTimeTrackingRecord($user, Carbon $now, int $duration, float $rewardAmount): void
+    protected function createTimeTrackingRecord($user, Carbon $now, float $duration, float $rewardAmount): void
     {
         UserTimeTracking::create([
             'user_id' => $user->id,
@@ -67,7 +67,7 @@ class TimeTrackingController extends Controller
         ]);
     }
 
-    protected function updateUser($user, Carbon $now, int $duration, float $rewardAmount): void
+    protected function updateUser($user, Carbon $now, float $duration, float $rewardAmount): void
     {
         DB::transaction(function () use ($user, $now, $duration, $rewardAmount) {
             $user->update([

@@ -47,7 +47,7 @@
                 </label>
                 <textarea id="description" rows="3"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md theme-ring focus:border-transparent"
-                    placeholder="Add a short description" required></textarea>
+                    placeholder="Add a short description"></textarea>
             </div>
 
             <!-- File Upload -->

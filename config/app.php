@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'heartbeat_interval' => env('HEARTBEAT_INTERVAL', 60),
+
 ];

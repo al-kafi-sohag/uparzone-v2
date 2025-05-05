@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Image\Manipulations;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -72,12 +73,22 @@ class Post extends Model implements HasMedia
         $this->addMediaCollection('post_media')
             ->singleFile()
             ->registerMediaConversions(function (Media $media) {
-                $this->addMediaConversion('thumb')
-                    ->width(400)
-                    ->height(230)
-                    ->pixelate(5)
-                    ->blur(5)
-                    ->nonQueued();
+                if (str_contains($media->mime_type, 'image')) {
+                    $this->addMediaConversion('original')
+                        ->format('webp')
+                        ->quality(80)
+                        ->optimize()
+                        ->nonQueued()
+                        ->performOnCollections('post_media');
+
+                    // Create a thumbnail in WebP format
+                    $this->addMediaConversion('thumb')
+                        ->format('webp')
+                        ->quality(10)
+                        ->blur(5)
+                        ->optimize()
+                        ->nonQueued();
+                }
             });
     }
 
