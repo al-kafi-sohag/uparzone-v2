@@ -21,20 +21,6 @@
         .content-type-tab:not(.selected):hover {
             background-color: #e5e7eb;
         }
-
-        .dark .content-type-tab {
-            background-color: #374151;
-            color: #e5e7eb;
-        }
-
-        .dark .content-type-tab:not(.selected):hover {
-            background-color: #4b5563;
-        }
-
-        .dark .content-type-tab.selected {
-            background-color: var(--theme-color);
-            color: white;
-        }
     </style>
 @endpush
 @section('content')
@@ -45,7 +31,8 @@
             @csrf
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Title') }} <small class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short title for your post)') }}</small>
+                    {{ __('Title') }} <small
+                        class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short title for your post)') }}</small>
                 </label>
                 <input type="text" id="title"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md theme-ring focus:border-transparent dark:bg-gray-700 dark:text-white"
@@ -55,7 +42,8 @@
             <!-- Description -->
             <div>
                 <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Description') }} <small class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short description for your post)') }}</small>
+                    {{ __('Description') }} <small
+                        class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short description for your post)') }}</small>
                 </label>
                 <textarea id="description" rows="3"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md theme-ring focus:border-transparent dark:bg-gray-700 dark:text-white"
@@ -64,13 +52,16 @@
 
             <!-- File Upload -->
             <div class="space-y-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Upload Media') }}</label>
+                <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Upload Media') }}</label>
 
                 <div id="uploadContainer">
                     <div id="uploadPlaceholder" class="file-upload theme-border-hover">
                         <i data-lucide="upload" class="w-10 h-10 upload-icon text-gray-400 mx-auto"></i>
-                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ __('Click to upload an image or video') }}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('PNG, JPG, GIF, MP4, MOV up to 50MB') }}</p>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            {{ __('Click to upload an image or video') }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('PNG, JPG, GIF, MP4, MOV up to 50MB') }}
+                        </p>
                     </div>
 
                     <div id="previewContainer" class="relative hidden">
@@ -112,7 +103,8 @@
                 <div class="flex flex-wrap" id="categoryOptions">
                     <button type="button" class="option-button selected" data-value="all">{{ __('All') }}</button>
                     @foreach($categories as $category)
-                        <button type="button" class="option-button" data-value="{{ $category->id }}">{{ $category->name }}</button>
+                        <button type="button" class="option-button"
+                            data-value="{{ $category->id }}">{{ $category->name }}</button>
                     @endforeach
                 </div>
                 <input type="hidden" id="categoryValue" value="all" />
@@ -129,7 +121,8 @@
                         <span>Not Adult Content</span>
                     </button>
                     <button type="button" id="adultContentBtn" class="content-type-tab py-2 px-1 text-center">
-                        <i data-lucide="alert-triangle" class="inline-block mr-1 align-text-bottom text-sm text-red-500"></i>
+                        <i data-lucide="alert-triangle"
+                            class="inline-block mr-1 align-text-bottom text-sm text-red-500"></i>
                         <span>Adult Content</span>
                     </button>
                 </div>
@@ -138,7 +131,8 @@
 
             <!-- Advanced Options (Collapsible) -->
             <div class="border border-gray-200 dark:border-gray-700 rounded-md mt-6">
-                <button type="button" id="advancedOptionsToggle" class="flex justify-between items-center w-full px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-50 focus:outline-none transition-colors">
+                <button type="button" id="advancedOptionsToggle"
+                    class="flex justify-between items-center w-full px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-50 focus:outline-none transition-colors">
                     <span class="flex items-center">
                         <i data-lucide="sliders" class="mr-2"></i>
                         {{ __('Advanced Options') }}
@@ -147,7 +141,8 @@
                 </button>
 
                 <!-- Collapsible Content -->
-                <div id="advancedOptionsContent" class="hidden overflow-hidden transition-all duration-300 max-h-0 px-4 space-y-6">
+                <div id="advancedOptionsContent"
+                    class="hidden overflow-hidden transition-all duration-300 max-h-0 px-4 space-y-6">
                     <!-- Religion -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -156,7 +151,8 @@
                         <div class="flex flex-wrap" id="religionOptions">
                             <button type="button" class="option-button selected" data-value="all">{{ __('All') }}</button>
                             @foreach($religions as $religion)
-                                <button type="button" class="option-button" data-value="{{ $religion->id }}">{{ $religion->name }}</button>
+                                <button type="button" class="option-button"
+                                    data-value="{{ $religion->id }}">{{ $religion->name }}</button>
                             @endforeach
                         </div>
                         <input type="hidden" id="religionValue" value="all" />
@@ -168,9 +164,11 @@
                             {{ __('Mood') }}
                         </label>
                         <div class="flex flex-wrap" id="moodOptions">
-                            <button type="button" class="option-button selected" data-value="all">🌟 {{ __('All') }}</button>
+                            <button type="button" class="option-button selected" data-value="all">🌟
+                                {{ __('All') }}</button>
                             @foreach($moods as $mood)
-                                <button type="button" class="option-button" data-value="{{ $mood->id }}">{{ $mood->emoji ?? '😊' }} {{ $mood->name }}</button>
+                                <button type="button" class="option-button"
+                                    data-value="{{ $mood->id }}">{{ $mood->emoji ?? '😊' }} {{ $mood->name }}</button>
                             @endforeach
                         </div>
                         <input type="hidden" id="moodValue" value="all" />
@@ -184,7 +182,8 @@
                         <div class="flex flex-wrap" id="genderOptions">
                             <button type="button" class="option-button selected" data-value="all">All</button>
                             @foreach($genders as $gender)
-                                <button type="button" class="option-button" data-value="{{ $gender->id }}">{{ $gender->name }}</button>
+                                <button type="button" class="option-button"
+                                    data-value="{{ $gender->id }}">{{ $gender->name }}</button>
                             @endforeach
                         </div>
                         <input type="hidden" id="genderValue" value="all" />
@@ -311,14 +310,14 @@
             setupOptionButtons('genderOptions', 'genderValue');
             setupOptionButtons('categoryOptions', 'categoryValue');
 
-            $('#notAdultContentBtn, #adultContentBtn').on('click', function() {
+            $('#notAdultContentBtn, #adultContentBtn').on('click', function () {
                 $('#notAdultContentBtn, #adultContentBtn').removeClass('selected');
                 $(this).addClass('selected');
                 const isAdult = $(this).attr('id') === 'adultContentBtn';
                 $('#adultContentValue').val(isAdult);
                 preferences.adultContent = isAdult;
             });
-            $('#advancedOptionsToggle').on('click', function() {
+            $('#advancedOptionsToggle').on('click', function () {
                 const $content = $('#advancedOptionsContent');
                 const $icon = $('#advancedOptionsIcon');
 
@@ -336,7 +335,7 @@
                     $content.css('max-height', '0');
                     $content.css('padding-top', '0');
                     $content.css('padding-bottom', '0');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $content.addClass('hidden');
                     }, 300);
                 }
@@ -431,12 +430,12 @@
 
                 $('#submitButton').prop('disabled', true);
                 $('#submitButtonText').html(`
-                  <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Creating Post...
-                `);
+                      <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Creating Post...
+                    `);
 
                 try {
                     const formData = new FormData();
@@ -482,9 +481,9 @@
                 } finally {
                     $('#submitButton').prop('disabled', false);
                     $('#submitButtonText').html(`
-                        <span class="check-icon mr-2"></span>
-                        Create Post
-                    `);
+                            <span class="check-icon mr-2"></span>
+                            Create Post
+                        `);
                     $('.check-icon').html(lucide.icons.check.toSvg());
                 }
             });
