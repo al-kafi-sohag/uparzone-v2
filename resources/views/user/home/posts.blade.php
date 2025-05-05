@@ -22,7 +22,7 @@
             </div>
 
             <!-- Post Image -->
-            <div class="relative w-full h-56 bg-gray-100">
+            <div class="relative w-full h-96 bg-gray-100">
                 @if($media = $post->getFirstMedia('post_media'))
                     @if($media->mime_type === 'image/jpeg' || $media->mime_type === 'image/png')
                         <img src="{{ $media->getFullUrl('thumb') }}"
