@@ -84,7 +84,8 @@ class Post extends Model implements HasMedia
                     $this->addMediaConversion('thumb')
                         ->format('webp')
                         ->quality(10)
-                        ->blur(5)
+                        ->blur(1)
+                        ->pixelate(5)
                         ->optimize();
                 }
             });
