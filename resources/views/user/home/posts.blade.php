@@ -25,7 +25,7 @@
             @php
                 $media = $post->getFirstMedia('post_media');
             @endphp
-            <div class="relative w-full h-96 bg-gray-100 {{ $media ? starts_with($media->mime_type, 'image/') ? 'h-96' : 'h-64' : 'h-64' }}">
+            <div class="relative w-full bg-gray-100 {{ $media ? starts_with($media->mime_type, 'image/') ? 'h-96' : 'h-64' : 'h-64' }}">
                 @if($media)
                     @if(starts_with($media->mime_type, 'image/'))
                         <img src="{{ $media->getFullUrl('thumb') }}"
