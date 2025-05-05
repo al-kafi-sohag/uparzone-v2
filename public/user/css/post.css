@@ -106,28 +106,3 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #111827;
-        color: #f9fafb;
-    }
-
-    .option-button:not(.selected) {
-        background-color: #374151;
-        color: #e5e7eb;
-    }
-
-    .option-button:not(.selected):hover {
-        background-color: #4b5563;
-    }
-
-    .progress-bar {
-        background-color: #374151;
-    }
-
-    .file-upload {
-        border-color: #374151;
-    }
-}
