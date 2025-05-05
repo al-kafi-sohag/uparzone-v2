@@ -24,43 +24,43 @@
     </style>
 @endpush
 @section('content')
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">{{ __('Share Your Thoughts') }}</h1>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">{{ __('Share Your Thoughts') }}</h1>
 
         <form id="createPostForm" class="space-y-6" enctype="multipart/form-data">
             @csrf
             <div>
-                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
                     {{ __('Title') }} <small
-                        class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short title for your post)') }}</small>
+                        class="text-xs text-gray-500">{{ __('(A short title for your post)') }}</small>
                 </label>
                 <input type="text" id="title"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md theme-ring focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md theme-ring focus:border-transparent"
                     placeholder="Give your post a title" required />
             </div>
 
             <!-- Description -->
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
                     {{ __('Description') }} <small
-                        class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short description for your post)') }}</small>
+                        class="text-xs text-gray-500">{{ __('(A short description for your post)') }}</small>
                 </label>
                 <textarea id="description" rows="3"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md theme-ring focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md theme-ring focus:border-transparent"
                     placeholder="Add a short description" required></textarea>
             </div>
 
             <!-- File Upload -->
             <div class="space-y-4">
                 <label
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Upload Media') }}</label>
+                    class="block text-sm font-medium text-gray-700 mb-1">{{ __('Upload Media') }}</label>
 
                 <div id="uploadContainer">
                     <div id="uploadPlaceholder" class="file-upload theme-border-hover">
                         <i data-lucide="upload" class="w-10 h-10 upload-icon text-gray-400 mx-auto"></i>
-                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        <p class="mt-2 text-sm text-gray-500">
                             {{ __('Click to upload an image or video') }}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('PNG, JPG, GIF, MP4, MOV up to 50MB') }}
+                        <p class="text-xs text-gray-500">{{ __('PNG, JPG, GIF, MP4, MOV up to 50MB') }}
                         </p>
                     </div>
 
@@ -85,8 +85,8 @@
             <!-- Upload Progress -->
             <div id="uploadProgress" class="space-y-2 hidden">
                 <div class="flex justify-between text-sm">
-                    <span class="text-gray-700 dark:text-gray-300">Uploading...</span>
-                    <span id="progressText" class="text-gray-700 dark:text-gray-300">0%</span>
+                    <span class="text-gray-700">Uploading...</span>
+                    <span id="progressText" class="text-gray-700">0%</span>
                 </div>
                 <div class="progress-bar">
                     <div id="progressBarFill" class="progress-bar-fill" style="width: 0%"></div>
@@ -97,7 +97,7 @@
 
             <!-- Category -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
                     {{ __('Post Category') }}
                 </label>
                 <div class="flex flex-wrap" id="categoryOptions">
@@ -112,10 +112,10 @@
 
             <!-- Adult Content Toggle -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
                     Content Type
                 </label>
-                <div class="grid grid-cols-2 w-full rounded-md overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div class="grid grid-cols-2 w-full rounded-md overflow-hidden border border-gray-200">
                     <button type="button" id="notAdultContentBtn" class="content-type-tab selected py-2 px-1 text-center">
                         <i data-lucide="shield-check" class="inline-block mr-1 align-text-bottom text-sm text-white"></i>
                         <span>Not Adult Content</span>
@@ -130,9 +130,9 @@
             </div>
 
             <!-- Advanced Options (Collapsible) -->
-            <div class="border border-gray-200 dark:border-gray-700 rounded-md mt-6">
+            <div class="border border-gray-200 rounded-md mt-6">
                 <button type="button" id="advancedOptionsToggle"
-                    class="flex justify-between items-center w-full px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-50 focus:outline-none transition-colors">
+                    class="flex justify-between items-center w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-teal-50 focus:outline-none transition-colors">
                     <span class="flex items-center">
                         <i data-lucide="sliders" class="mr-2"></i>
                         {{ __('Advanced Options') }}
@@ -145,7 +145,7 @@
                     class="hidden overflow-hidden transition-all duration-300 max-h-0 px-4 space-y-6">
                     <!-- Religion -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             {{ __('Preferred Religion') }}
                         </label>
                         <div class="flex flex-wrap" id="religionOptions">
@@ -160,7 +160,7 @@
 
                     <!-- Mood -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             {{ __('Mood') }}
                         </label>
                         <div class="flex flex-wrap" id="moodOptions">
@@ -176,7 +176,7 @@
 
                     <!-- Gender -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             {{ __('Gender') }}
                         </label>
                         <div class="flex flex-wrap" id="genderOptions">
