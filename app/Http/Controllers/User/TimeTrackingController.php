@@ -42,7 +42,7 @@ class TimeTrackingController extends Controller
         ]);
     }
 
-    protected function calculateDuration($user, Carbon $now): int
+    protected function calculateDuration($user, Carbon $now): float
     {
         if (!$user->last_active_at) {
             return 0;
