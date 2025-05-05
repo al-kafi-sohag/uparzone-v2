@@ -78,7 +78,6 @@ class Post extends Model implements HasMedia
                         ->format('webp')
                         ->quality(80)
                         ->optimize()
-                        ->nonQueued()
                         ->performOnCollections('post_media');
 
                     // Create a thumbnail in WebP format
@@ -86,8 +85,7 @@ class Post extends Model implements HasMedia
                         ->format('webp')
                         ->quality(10)
                         ->blur(5)
-                        ->optimize()
-                        ->nonQueued();
+                        ->optimize();
                 }
             });
     }
