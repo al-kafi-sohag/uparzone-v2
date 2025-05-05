@@ -39,13 +39,13 @@
 @endpush
 @section('content')
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Create New Post</h1>
+        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">{{ __('Share Your Thoughts') }}</h1>
 
         <form id="createPostForm" class="space-y-6" enctype="multipart/form-data">
             @csrf
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Title
+                    {{ __('Title') }} <small class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short title for your post)') }}</small>
                 </label>
                 <input type="text" id="title"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md theme-ring focus:border-transparent dark:bg-gray-700 dark:text-white"
@@ -55,7 +55,7 @@
             <!-- Description -->
             <div>
                 <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Description
+                    {{ __('Description') }} <small class="text-xs text-gray-500 dark:text-gray-400">{{ __('(A short description for your post)') }}</small>
                 </label>
                 <textarea id="description" rows="3"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md theme-ring focus:border-transparent dark:bg-gray-700 dark:text-white"
@@ -64,13 +64,13 @@
 
             <!-- File Upload -->
             <div class="space-y-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Media</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Upload Media') }}</label>
 
                 <div id="uploadContainer">
                     <div id="uploadPlaceholder" class="file-upload theme-border-hover">
                         <i data-lucide="upload" class="w-10 h-10 upload-icon text-gray-400 mx-auto"></i>
-                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Click to upload an image or video</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF, MP4, MOV up to 10MB</p>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ __('Click to upload an image or video') }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('PNG, JPG, GIF, MP4, MOV up to 50MB') }}</p>
                     </div>
 
                     <div id="previewContainer" class="relative hidden">
@@ -107,10 +107,10 @@
             <!-- Category -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Post Category
+                    {{ __('Post Category') }}
                 </label>
                 <div class="flex flex-wrap" id="categoryOptions">
-                    <button type="button" class="option-button selected" data-value="all">All</button>
+                    <button type="button" class="option-button selected" data-value="all">{{ __('All') }}</button>
                     @foreach($categories as $category)
                         <button type="button" class="option-button" data-value="{{ $category->id }}">{{ $category->name }}</button>
                     @endforeach
@@ -141,7 +141,7 @@
                 <button type="button" id="advancedOptionsToggle" class="flex justify-between items-center w-full px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-50 focus:outline-none transition-colors">
                     <span class="flex items-center">
                         <i data-lucide="sliders" class="mr-2"></i>
-                        Advanced Options
+                        {{ __('Advanced Options') }}
                     </span>
                     <i data-lucide="chevron-down" id="advancedOptionsIcon" class="transition-transform duration-200"></i>
                 </button>
@@ -151,10 +151,10 @@
                     <!-- Religion -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Preferred Religion
+                            {{ __('Preferred Religion') }}
                         </label>
                         <div class="flex flex-wrap" id="religionOptions">
-                            <button type="button" class="option-button selected" data-value="all">All</button>
+                            <button type="button" class="option-button selected" data-value="all">{{ __('All') }}</button>
                             @foreach($religions as $religion)
                                 <button type="button" class="option-button" data-value="{{ $religion->id }}">{{ $religion->name }}</button>
                             @endforeach
@@ -165,10 +165,10 @@
                     <!-- Mood -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Mood
+                            {{ __('Mood') }}
                         </label>
                         <div class="flex flex-wrap" id="moodOptions">
-                            <button type="button" class="option-button selected" data-value="all">🌟 All</button>
+                            <button type="button" class="option-button selected" data-value="all">🌟 {{ __('All') }}</button>
                             @foreach($moods as $mood)
                                 <button type="button" class="option-button" data-value="{{ $mood->id }}">{{ $mood->emoji ?? '😊' }} {{ $mood->name }}</button>
                             @endforeach
@@ -179,7 +179,7 @@
                     <!-- Gender -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Gender
+                            {{ __('Gender') }}
                         </label>
                         <div class="flex flex-wrap" id="genderOptions">
                             <button type="button" class="option-button selected" data-value="all">All</button>
@@ -197,7 +197,7 @@
                 <button type="submit" id="submitButton" disabled class="submit-button">
                     <span id="submitButtonText" class="flex items-center">
                         <span class="check-icon mr-2"></span>
-                        Create Post
+                        {{ __('Create Post') }}
                     </span>
                 </button>
             </div>
@@ -209,7 +209,6 @@
 
     <script>
         $(document).ready(function () {
-            // State
             let selectedFile = null;
             let uploading = false;
             let uploadController = null;
@@ -227,22 +226,20 @@
             });
 
             $('#fileInput').on('change', function (e) {
+                console.log(this.files[0]);
                 if (this.files && this.files[0]) {
                     selectedFile = this.files[0];
 
-                    // Validate file size (10MB max)
-                    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+                    const maxSize = 50 * 1024 * 1024; // 50MB in bytes
                     if (selectedFile.size > maxSize) {
-                        alert('File size exceeds 10MB limit. Please select a smaller file.');
+                        alert('File size exceeds 50MB limit. Please select a smaller file.');
                         $('#fileInput').val('');
                         selectedFile = null;
                         return;
                     }
 
-                    // Create preview URL
                     const fileUrl = URL.createObjectURL(selectedFile);
 
-                    // Show preview based on file type
                     if (selectedFile.type.startsWith('image/')) {
                         $('#imagePreview img').attr('src', fileUrl);
                         $('#imagePreview').removeClass('hidden');
@@ -258,26 +255,19 @@
                         return;
                     }
 
-                    // Show preview container, hide placeholder
                     $('#previewContainer').removeClass('hidden');
                     $('#uploadPlaceholder').addClass('hidden');
 
-                    // Start file upload immediately
                     uploadFile();
                 }
             });
 
             $('#removeFileBtn').on('click', async function () {
-                // Cancel ongoing upload if any
                 if (uploadController) {
                     uploadController.abort();
                     uploadController = null;
                 }
-
-                // Get the temp_id if it exists
                 const tempId = $('#fileInput').data('temp-id');
-
-                // If we have a temp_id, delete the file from the server
                 if (tempId) {
                     try {
                         await axios.delete(`{{ route('user.post.remove.media') }}`, {
@@ -291,44 +281,26 @@
                     } catch (error) {
                         console.error('Error removing file:', error);
                     }
-
-                    // Clear the temp-id
                     $('#fileInput').removeData('temp-id');
                 }
-
-                // Clear file input
                 $('#fileInput').val('');
                 selectedFile = null;
-
-                // Hide preview, show placeholder
                 $('#previewContainer').addClass('hidden');
                 $('#uploadPlaceholder').removeClass('hidden');
                 $('#uploadProgress').addClass('hidden');
-
-                // Disable submit button
                 $('#submitButton').prop('disabled', true);
-
-                // Reset progress bar
                 $('#progressBarFill').css('width', '0%');
                 $('#progressText').text('0%');
             });
 
-            // Set up option buttons
             function setupOptionButtons(containerId, hiddenInputId) {
                 const $container = $(`#${containerId}`);
                 const $hiddenInput = $(`#${hiddenInputId}`);
 
                 $container.find('.option-button').on('click', function () {
-                    // Remove selected class from all buttons
                     $container.find('.option-button').removeClass('selected');
-
-                    // Add selected class to clicked button
                     $(this).addClass('selected');
-
-                    // Update hidden input value
                     $hiddenInput.val($(this).data('value'));
-
-                    // Update preferences object
                     const preferenceName = containerId.replace('Options', '').toLowerCase();
                     preferences[preferenceName] = $(this).data('value');
                 });
@@ -339,21 +311,13 @@
             setupOptionButtons('genderOptions', 'genderValue');
             setupOptionButtons('categoryOptions', 'categoryValue');
 
-            // Adult content toggle tabs
             $('#notAdultContentBtn, #adultContentBtn').on('click', function() {
-                // Remove selected class from both buttons
                 $('#notAdultContentBtn, #adultContentBtn').removeClass('selected');
-
-                // Add selected class to clicked button
                 $(this).addClass('selected');
-
-                // Update hidden input and preferences
                 const isAdult = $(this).attr('id') === 'adultContentBtn';
                 $('#adultContentValue').val(isAdult);
                 preferences.adultContent = isAdult;
             });
-
-            // Advanced options toggle with smooth transition
             $('#advancedOptionsToggle').on('click', function() {
                 const $content = $('#advancedOptionsContent');
                 const $icon = $('#advancedOptionsIcon');
@@ -361,46 +325,38 @@
                 $icon.toggleClass('rotate-180');
 
                 if ($content.hasClass('hidden')) {
-                    // Opening the panel
                     $content.removeClass('hidden');
                     $content.css('max-height', '0');
-                    // Force a reflow to ensure the transition works
                     $content[0].offsetHeight;
-                    // Set the max-height to a large value to ensure content fits
+                    $content.css('max-height', '1000px');
                     $content.css('max-height', '1000px');
                     $content.css('padding-top', '0.5rem');
                     $content.css('padding-bottom', '1rem');
                 } else {
-                    // Closing the panel
                     $content.css('max-height', '0');
                     $content.css('padding-top', '0');
                     $content.css('padding-bottom', '0');
-                    // Add hidden class after transition completes
                     setTimeout(function() {
                         $content.addClass('hidden');
                     }, 300);
                 }
             });
 
-            // Upload file with progress tracking
             async function uploadFile() {
                 if (!selectedFile) return;
 
-                // Show upload progress
+                console.log(selectedFile);
+                var formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+                var fileInFormData = formData.get('file');
+                console.log('File MIME type:', fileInFormData);
                 $('#uploadProgress').removeClass('hidden');
                 $('#submitButton').prop('disabled', true);
-
-                // Create form data
-                const formData = new FormData();
-                formData.append('file', selectedFile);
-                formData.append('_token', $('input[name="_token"]').val());
-
-                // Create abort controller for cancellation
                 uploadController = new AbortController();
                 const signal = uploadController.signal;
 
                 try {
-                    // Use Axios to upload the file
                     const response = await axios.post('{{ route("user.post.upload.media") }}', formData, {
                         signal,
                         headers: {
@@ -414,18 +370,11 @@
                         }
                     });
 
-                    // Store the temp_id for later use when submitting the form
                     if (response.data.success) {
                         const tempId = response.data.data.temp_id;
                         $('#fileInput').data('temp-id', tempId);
-
-                        // Enable submit button after successful upload
                         $('#submitButton').prop('disabled', false);
-
-                        // Hide progress bar but keep the file preview
                         $('#uploadProgress').addClass('hidden');
-
-                        // Show success notification
                         showNotification('File uploaded successfully!', 'success');
                     } else {
                         throw new Error(response.data.message || 'Upload failed');
@@ -436,12 +385,8 @@
                     } else {
                         console.error('Upload error:', error);
                         let errorMessage = 'Error uploading file. Please try again.';
-
-                        // Extract error message from response if available
                         if (error.response && error.response.data) {
                             errorMessage = error.response.data.message || errorMessage;
-
-                            // Handle validation errors
                             if (error.response.data.errors && error.response.data.errors.file) {
                                 errorMessage = error.response.data.errors.file[0];
                             }
@@ -449,15 +394,12 @@
 
                         showNotification(errorMessage, 'error');
                     }
-
-                    // Reset everything on error
                     $('#removeFileBtn').click();
                 } finally {
                     uploadController = null;
                 }
             }
 
-            // Simulate file upload with progress updates
             async function simulateFileUpload() {
                 const totalSteps = 10;
                 for (let i = 1; i <= totalSteps; i++) {
@@ -468,7 +410,6 @@
                 }
             }
 
-            // Show notification
             function showNotification(message, type = 'success') {
                 const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
                 $('<div>')
@@ -479,7 +420,6 @@
                     .fadeOut(function () { $(this).remove(); });
             }
 
-            // Form submission
             $('#createPostForm').on('submit', async function (e) {
                 e.preventDefault();
 
@@ -489,7 +429,6 @@
                     return;
                 }
 
-                // Start submission
                 $('#submitButton').prop('disabled', true);
                 $('#submitButtonText').html(`
                   <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -500,7 +439,6 @@
                 `);
 
                 try {
-                    // Gather form data
                     const formData = new FormData();
                     formData.append('title', $('#title').val());
                     formData.append('description', $('#description').val());
@@ -512,7 +450,8 @@
                     formData.append('is_adult_content', preferences.adultContent);
                     formData.append('_token', $('input[name="_token"]').val());
 
-                    // Send the post data to the server
+                    console.log(formData.get('temp_id'));
+
                     const response = await axios.post('{{ route("user.post.store") }}', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
@@ -521,43 +460,16 @@
                     });
 
                     if (response.data.success) {
-                        // Reset form after successful submission
-                        $('#createPostForm')[0].reset();
-                        $('#removeFileBtn').click();
-
-                        // Reset preferences
-                        $('.option-button.selected').each(function () {
-                            if ($(this).data('value') !== 'all') {
-                                $(this).removeClass('selected');
-                                $(this).closest('div').find('[data-value="all"]').addClass('selected');
-                            }
-                        });
-
-                        preferences.religion = 'all';
-                        preferences.mood = 'all';
-                        preferences.gender = 'all';
-                        preferences.category = 'all';
-                        preferences.adultContent = false;
-
-                        // Reset adult content toggle
-                        $('#notAdultContentBtn').addClass('selected');
-                        $('#adultContentBtn').removeClass('selected');
-                        $('#adultContentValue').val('false');
-
-                        // Show success message
                         showNotification(response.data.message || 'Post created successfully!', 'success');
+                        window.location.href = '{{ route("user.home") }}';
                     } else {
                         throw new Error(response.data.message || 'Failed to create post');
                     }
                 } catch (error) {
                     console.error('Error creating post:', error);
                     let errorMessage = 'Error creating post. Please try again.';
-
-                    // Extract error message from response if available
                     if (error.response && error.response.data) {
                         errorMessage = error.response.data.message || errorMessage;
-
-                        // Handle validation errors
                         if (error.response.data.errors) {
                             const firstError = Object.values(error.response.data.errors)[0];
                             if (Array.isArray(firstError) && firstError.length > 0) {
@@ -568,7 +480,6 @@
 
                     showNotification(errorMessage, 'error');
                 } finally {
-                    // Reset button state
                     $('#submitButton').prop('disabled', false);
                     $('#submitButtonText').html(`
                         <span class="check-icon mr-2"></span>

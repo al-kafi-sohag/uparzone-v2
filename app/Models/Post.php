@@ -7,26 +7,65 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, HasSlug;
+
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
+
 
     protected $fillable = [
         'title',
-        'description',
+        'content',
         'user_id',
-        'category_id',
+        'post_category_id',
         'religion_id',
         'mood_id',
         'gender_id',
-        'is_adult_content',
+        'is_adult',
         'status'
     ];
 
-    protected $casts = [
-        'is_adult_content' => 'boolean',
+    protected $appends = [
+        'status_name',
+        'status_badge',
+        'media_url',
+        'media_type',
+        'media_thumb_url'
     ];
+    protected $casts = [
+        'is_adult' => 'boolean',
+    ];
+
+    public function getStatusNameAttribute()
+    {
+        return $this->status == self::STATUS_ACTIVE ? 'Active' : 'Inactive';
+    }
+
+    public function getStatusBadgeAttribute()
+    {
+        return $this->status == self::STATUS_ACTIVE ? 'success' : 'danger';
+    }
+
+    public function getMediaTypeAttribute()
+    {
+        return optional($this->getFirstMedia('post_media'))->mime_type;
+    }
+
+    public function getMediaUrlAttribute()
+    {
+        return optional($this->getFirstMedia('post_media'))->getFullUrl();
+    }
+
+    public function getMediaThumbUrlAttribute()
+    {
+        return optional($this->getFirstMedia('post_media'))->getFullUrl('thumb');
+    }
+
 
     public function registerMediaCollections(): void
     {
@@ -34,12 +73,11 @@ class Post extends Model implements HasMedia
             ->singleFile()
             ->registerMediaConversions(function (Media $media) {
                 $this->addMediaConversion('thumb')
-                    ->width(300)
-                    ->height(300);
-                    
-                $this->addMediaConversion('medium')
-                    ->width(600)
-                    ->height(600);
+                    ->width(400)
+                    ->height(230)
+                    ->pixelate(5)
+                    ->blur(5)
+                    ->nonQueued();
             });
     }
 
@@ -66,5 +104,19 @@ class Post extends Model implements HasMedia
     public function gender()
     {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->usingSeparator('-')
+            ->usingLanguage('en');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
     }
 }

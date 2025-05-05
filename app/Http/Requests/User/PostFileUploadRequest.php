@@ -11,7 +11,7 @@ class PostFileUploadRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->guard('web')->check();
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class PostFileUploadRequest extends FormRequest
             'file' => [
                 'required',
                 'file',
-                'max:20480', // 20MB max
+                'max:51200', // 50MB max
                 'mimes:jpeg,png,jpg,gif,mp4,mov,webm',
             ],
         ];
@@ -41,8 +41,17 @@ class PostFileUploadRequest extends FormRequest
         return [
             'file.required' => __( 'Please select a file to upload.'),
             'file.file' => __('The uploaded content must be a valid file.'),
-            'file.max' => __('The file size cannot exceed 20MB.'),
+            'file.max' => __('The file size cannot exceed 50MB.'),
             'file.mimes' => __('Only JPEG, PNG, JPG, GIF, MP4, MOV, and WEBM files are allowed.'),
         ];
+    }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()
+        ], 422);
     }
 }

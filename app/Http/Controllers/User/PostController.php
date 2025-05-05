@@ -11,6 +11,7 @@ use App\Models\Religion;
 use App\Models\Gender;
 use App\Models\Post;
 use App\Services\PostService;
+use App\Http\Requests\User\PostUploadRequest;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -64,8 +65,7 @@ class PostController extends Controller
     {
         try {
             $result = $this->postService->removeTemporaryFile(
-                $request->temp_id,
-                auth('web')->user()->id
+                $request->temp_id
             );
 
             if (!$result['success']) {
@@ -85,19 +85,8 @@ class PostController extends Controller
     /**
      * Store a new post
      */
-    public function store(Request $request)
+    public function store(PostUploadRequest $request)
     {
-        // Validate the request
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'temp_id' => 'required|string',
-            'category_id' => 'nullable|exists:post_categories,id',
-            'religion_id' => 'nullable|exists:religions,id',
-            'mood_id' => 'nullable|exists:moods,id',
-            'gender_id' => 'nullable|exists:genders,id',
-            'is_adult_content' => 'nullable|boolean',
-        ]);
 
         try {
             DB::beginTransaction();
@@ -105,20 +94,19 @@ class PostController extends Controller
             // Create the post
             $post = Post::create([
                 'title' => $request->title,
-                'description' => $request->description,
-                'user_id' => auth('web')->user()->id,
-                'category_id' => $request->category_id !== 'all' ? $request->category_id : null,
+                'content' => $request->description,
+                'user_id' => user()->id,
+                'post_category_id' => $request->category_id !== 'all' ? $request->category_id : null,
                 'religion_id' => $request->religion_id !== 'all' ? $request->religion_id : null,
                 'mood_id' => $request->mood_id !== 'all' ? $request->mood_id : null,
                 'gender_id' => $request->gender_id !== 'all' ? $request->gender_id : null,
-                'is_adult_content' => $request->is_adult_content ?? false,
-                'status' => 'active',
+                'is_adult' => $request->is_adult_content ?? false,
+                'status' => 1,
             ]);
 
             // Move temporary file to post
             $this->postService->moveTemporaryFileToPost(
                 $request->temp_id,
-                auth('web')->user()->id,
                 $post
             );
 

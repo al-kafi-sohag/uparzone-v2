@@ -12,25 +12,13 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class PostService
 {
-    /**
-     * Upload a file to temporary storage using Spatie Media Library
-     *
-     * @param UploadedFile $file
-     * @param int $userId
-     * @return array
-     * @throws \Exception
-     */
     public function uploadTemporaryFile(UploadedFile $file, int $userId): array
     {
         try {
             DB::beginTransaction();
-
-            // Create temporary media record
             $tempMedia = TemporaryMedia::create([
                 'user_id' => $userId,
             ]);
-
-            // Add media to the temporary record
             $media = $tempMedia->addMedia($file)
                 ->toMediaCollection('temp_media');
 
@@ -62,18 +50,11 @@ class PostService
         }
     }
 
-    /**
-     * Remove a temporary file
-     *
-     * @param string $tempId
-     * @param int $userId
-     * @return array
-     */
-    public function removeTemporaryFile(string $tempId, int $userId): array
+
+    public function removeTemporaryFile(string $tempId): array
     {
         try {
             $tempMedia = TemporaryMedia::where('temp_id', $tempId)
-                ->where('user_id', $userId)
                 ->first();
 
             if (!$tempMedia) {
@@ -83,10 +64,7 @@ class PostService
                 ];
             }
 
-            // Delete the media files
             $tempMedia->clearMediaCollection('temp_media');
-
-            // Delete the record
             $tempMedia->delete();
 
             return [
@@ -101,30 +79,19 @@ class PostService
         }
     }
 
-    /**
-     * Move a temporary file to a post
-     *
-     * @param string $tempId
-     * @param int $userId
-     * @param Post $post
-     * @return bool
-     * @throws \Exception
-     */
-    public function moveTemporaryFileToPost(string $tempId, int $userId, Post $post): bool
+
+    public function moveTemporaryFileToPost(string $tempId, Post $post): bool
     {
         $tempMedia = TemporaryMedia::where('temp_id', $tempId)
-            ->where('user_id', $userId)
             ->first();
 
         if (!$tempMedia || !$tempMedia->hasMedia('temp_media')) {
             throw new \Exception('No media found for this post');
         }
 
-        // Move media from temporary to post
         $tempMedia->getFirstMedia('temp_media')
             ->move($post, 'post_media');
 
-        // Delete the temporary media record
         $tempMedia->delete();
 
         return true;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
@@ -13,8 +14,10 @@ class HomeController extends Controller
         $this->middleware('auth:web');
     }
 
-    public function home(): View
+    public function home()
     {
-        return view('user.home.home');
+        $data['posts'] = Post::with('user')->active()->latest()->paginate(10);
+
+        return view('user.home.home', $data);
     }
 }

@@ -10,7 +10,7 @@ class OnboardingController extends Controller
     public function index()
     {
         if (user()) {
-            return redirect()->route('home');
+            return redirect()->route('user.home');
         }
         return view('auth.onboarding');
     }
