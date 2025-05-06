@@ -35,8 +35,8 @@
 
                     @elseif(starts_with($media->mime_type, 'video/'))
                         <video controls
-                               class="object-cover absolute inset-0 w-full h-full">
-                            <source src="{{ $media->getFullUrl() }}" type="video/mp4">
+                               class="post-video object-cover absolute inset-0 w-full h-full" id="my-video-{{ $post->id }}">
+                            <source src="{{ $media->getFullUrl() }}" type="{{ $media->mime_type }}">
                             Your browser does not support the video tag.
                         </video>
                     @endif
