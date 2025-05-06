@@ -9,6 +9,8 @@ use App\Http\Controllers\User\AuthenticationController as UserAuthenticationCont
 use App\Http\Controllers\User\ProfileController as UserProfileController;
 use App\Http\Controllers\User\TimeTrackingController as UserTimeTrackingController;
 use App\Http\Controllers\User\PostController as UserPostController;
+use App\Http\Controllers\User\ReactionsController as UserReactionsController;
+use App\Http\Controllers\User\CommentController as UserCommentController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -113,5 +115,13 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
         Route::post('post/store', 'store')->name('post.store');
         Route::post('post/upload-media', 'uploadMedia')->name('post.upload.media');
         Route::delete('post/remove-media', 'removeMedia')->name('post.remove.media');
+    });
+
+    Route::controller(UserReactionsController::class)->group(function () {
+        Route::post('post/reaction', 'store')->name('post.reaction');
+    });
+
+    Route::controller(UserCommentController::class)->group(function () {
+        Route::post('post/comment', 'store')->name('post.comment');
     });
 });

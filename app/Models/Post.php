@@ -28,7 +28,8 @@ class Post extends Model implements HasMedia
         'mood_id',
         'gender_id',
         'is_adult',
-        'status'
+        'status',
+        'reactions'
     ];
 
     protected $appends = [
@@ -114,6 +115,11 @@ class Post extends Model implements HasMedia
     public function gender()
     {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function postReactions()
+    {
+        return $this->hasMany(Reaction::class);
     }
 
     public function getSlugOptions(): SlugOptions

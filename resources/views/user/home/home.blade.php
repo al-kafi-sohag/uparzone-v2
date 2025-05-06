@@ -28,6 +28,7 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
 <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+<script src="{{ asset('user/js/reaction.js') }}"></script>
 <script>
     // Variables for pagination
 let currentPage = 1;
@@ -170,10 +171,7 @@ function loadMorePosts() {
                     // Initialize FluidPlayer for new videos
                     initializeFluidPlayers();
 
-                    // Initialize Lucide icons for new elements
-                    if (typeof lucide !== 'undefined') {
-                        lucide.createIcons();
-                    }
+                    lucide.createIcons();
                 }
                 isLoading = false;
             })

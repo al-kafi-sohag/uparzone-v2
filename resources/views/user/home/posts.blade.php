@@ -53,13 +53,15 @@
             <div class="px-3 py-3 border-t border-gray-100">
                 <div class="flex justify-between items-center">
                     <div class="flex space-x-4">
-                        <button class="flex items-center text-gray-600 hover:text-gray-900 love-button"
-                            data-post-id="" data-loved="false"
+                        <button class="flex items-center text-gray-600 hover:text-gray-900 love-button group"
+                            data-post-id="{{ $post->id }}" data-loved="{{ $post->user_has_reacted ? 'true' : 'false' }}"
+                            aria-label="{{ $post->user_has_reacted ? 'Unlike post' : 'Like post' }}"
+                            title="{{ $post->user_has_reacted ? 'Unlike post' : 'Like post' }}"
                             >
-                            <i data-lucide="heart" class="mr-1 w-4 h-4 transition-colors duration-200
-                            text-gray-600 fill-transparent
-                            group-hover:text-red-500"></i>
-                            <span class="text-xs love-count">0</span>
+                            <i data-lucide="heart" class="mr-1 w-4 h-4 transition-all duration-200 ease-in-out
+                            {{ $post->user_has_reacted ? 'text-red-500 fill-red-500' : 'text-gray-600 fill-transparent' }}
+                            group-hover:text-red-500 group-hover:scale-110"></i>
+                            <span class="text-xs love-count font-medium">{{ $post->reactions ?? 0 }}</span>
                         </button>
                         <button class="flex items-center text-gray-600 hover:text-gray-900">
                             <i data-lucide="message-circle" class="mr-1 w-4 h-4"></i>
