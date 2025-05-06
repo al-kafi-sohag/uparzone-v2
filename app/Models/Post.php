@@ -29,7 +29,10 @@ class Post extends Model implements HasMedia
         'gender_id',
         'is_adult',
         'status',
-        'reactions'
+        'views',
+        'reactions',
+        'comments',
+        'shares',
     ];
 
     protected $appends = [

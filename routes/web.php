@@ -123,5 +123,6 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
 
     Route::controller(UserCommentController::class)->group(function () {
         Route::post('post/comment', 'store')->name('post.comment');
+        Route::post('post/comments', 'getComments')->name('post.comments');
     });
 });

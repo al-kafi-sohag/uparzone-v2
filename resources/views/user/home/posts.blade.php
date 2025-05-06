@@ -53,7 +53,7 @@
             <div class="px-3 py-3 border-t border-gray-100">
                 <div class="flex justify-between items-center">
                     <div class="flex space-x-4">
-                        <button class="flex items-center text-gray-600 hover:text-gray-900 love-button group"
+                        <button class="flex items-center text-gray-600 hover:text-gray-900 love-button group" type="button"
                             data-post-id="{{ $post->id }}" data-loved="{{ $post->user_has_reacted ? 'true' : 'false' }}"
                             aria-label="{{ $post->user_has_reacted ? 'Unlike post' : 'Like post' }}"
                             title="{{ $post->user_has_reacted ? 'Unlike post' : 'Like post' }}"
@@ -63,9 +63,9 @@
                             group-hover:text-red-500 group-hover:scale-110"></i>
                             <span class="text-xs love-count font-medium">{{ $post->reactions ?? 0 }}</span>
                         </button>
-                        <button class="flex items-center text-gray-600 hover:text-gray-900">
+                        <button class="flex items-center text-gray-600 hover:text-gray-900 comment-button" data-post-id="{{ $post->id }}" type="button">
                             <i data-lucide="message-circle" class="mr-1 w-4 h-4"></i>
-                            <span class="text-xs">8</span>
+                            <span class="text-xs popup-comment-count">0</span>
                         </button>
                     </div>
                     <button class="text-gray-600 hover:text-gray-900">
@@ -79,3 +79,4 @@
     @endforelse
 
 </div>
+@include('user.home.comment-popup')

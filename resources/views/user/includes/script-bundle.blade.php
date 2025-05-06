@@ -17,6 +17,8 @@
         heartbeat: '{{ route('user.heartbeat') }}',
         home: '{{ route('user.home') }}',
         reaction: '{{ route('user.post.reaction') }}',
+        comment: '{{ route('user.post.comment') }}',
+        comments: '{{ route('user.post.comments') }}',
     }
     window.ImageUrl = {
         logo: '{{ asset('frontend/img/logo.svg') }}'

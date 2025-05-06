@@ -29,6 +29,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
 <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 <script src="{{ asset('user/js/reaction.js') }}"></script>
+<script src="{{ asset('user/js/comment.js') }}"></script>
 <script>
     // Variables for pagination
 let currentPage = 1;
