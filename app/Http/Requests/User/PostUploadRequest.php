@@ -17,6 +17,8 @@ class PostUploadRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'title' => sanitize_content($this->input('title')),
+            'description' => sanitize_content($this->input('description')),
             'category_id' => $this->category == 'all' ? null : $this->category,
             'religion_id' => $this->religion == 'all' ? null : $this->religion,
             'mood_id' => $this->mood == 'all' ? null : $this->mood,

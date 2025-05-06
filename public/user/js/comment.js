@@ -20,25 +20,31 @@ $(document).ready(function () {
         toastify(error.response?.data?.message || 'An error occurred while loading comments', 'error');
     }
 
+    // Update comment count only for the current post
+    function updateCommentCount(count) {
+        console.log(count);
+        // Update count in the popup
+        $("#comments-popup .popup-comment-count").text(count);
+        // Update count only for the specific post button
+        if (currentPostId) {
+            $(`.comment-button[data-post-id="${currentPostId}"] .popup-comment-count`).text(count);
+        }
+    }
+
     function renderComments() {
         $container.empty();
-
         const commentsData = allCommentsData[currentPostId] || [];
-
         if (commentsData.length === 0) {
             $("#no-comments-message").removeClass("hidden");
         } else {
             $("#no-comments-message").addClass("hidden");
-
             commentsData.forEach((comment) => {
                 const $commentEl = renderComment(comment);
-                $container.append($commentEl);
+                $container.prepend($commentEl);
             });
         }
 
-        $(".comment-count").text(commentsData.length);
-        $(".popup-comment-count").text(commentsData.length);
-        $(`.comment-button[data-post-id="${currentPostId}"] .popup-comment-count`).text(commentsData.length);
+        updateCommentCount(commentsData.length);
     }
 
     function renderComment(comment) {
@@ -56,7 +62,6 @@ $(document).ready(function () {
                         </div>
                         <p class="text-sm mt-1">${comment.content}</p>
                     </div>
-
                     <div class="reply-container-${comment.id} ml-6 mt-3 space-y-3">
                         <!-- Replies will be inserted here -->
                     </div>
@@ -64,8 +69,12 @@ $(document).ready(function () {
             </div>
         </div>
     `);
-
         return $comment;
+    }
+
+    function closeComments() {
+        $("#comments-popup").addClass("hidden");
+        $(".reply-form").remove();
     }
 
     // <button class="reply-button text-xs text-gray-500 mt-1 hover:text-gray-700" data-comment-id="${comment.id}">
@@ -73,27 +82,16 @@ $(document).ready(function () {
                     // </button>
 
     $(document).on("click", ".comment-button", function () {
-        console.log("Comment button clicked");
         currentPostId = $(this).data("post-id");
-
-        // Show the popup immediately with loading indicator
         $("#comments-popup").removeClass("hidden");
         showLoading();
-
-        // Fetch comments from the server
         axios.post(window.AppUrl.comments, {
             post_id: currentPostId
         })
         .then(function (response) {
             if (response.data.success) {
-                // Store the comments data
                 allCommentsData[currentPostId] = response.data.comments;
-
-                // Update comment count on the post button
-                $(`.comment-button[data-post-id="${currentPostId}"] .popup-comment-count`).text(response.data.count);
-                $(".popup-comment-count").text(response.data.count);
-
-                // Render the comments
+                updateCommentCount(response.data.count);
                 renderComments();
             } else {
                 handleError({ response: { data: { message: 'Failed to load comments' } } });
@@ -105,8 +103,7 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".close-comments-button", function () {
-        $("#comments-popup").addClass("hidden");
-        $(".reply-form").remove();
+        closeComments();
     });
 
     $(document).on("submit", "#comment-form", function (e) {
@@ -114,7 +111,6 @@ $(document).ready(function () {
         const commentText = $("#comment-text").val().trim();
         if (!commentText || !currentPostId) return;
 
-        // Disable the form while submitting
         const $form = $(this);
         const $submitBtn = $form.find('button[type="submit"]');
         const originalBtnHtml = $submitBtn.html();
@@ -122,7 +118,6 @@ $(document).ready(function () {
         $submitBtn.html('<div class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>');
         $form.find('textarea').prop('disabled', true);
 
-        // Send the comment to the server
         axios.post(window.AppUrl.comment, {
             post_id: currentPostId,
             content: commentText,
@@ -130,23 +125,14 @@ $(document).ready(function () {
         })
         .then(function (response) {
             if (response.data.success) {
-                // Add the new comment to the local data
                 if (!allCommentsData[currentPostId]) {
                     allCommentsData[currentPostId] = [];
                 }
 
                 allCommentsData[currentPostId].unshift(response.data.comment);
-
-                // Clear the form
                 $("#comment-text").val("");
-
-                // Render the updated comments
                 renderComments();
-
-                // Update the comment count
-                const newCount = parseInt($(".popup-comment-count").text()) + 1;
-                $(".popup-comment-count").text(newCount);
-                $(`.comment-button[data-post-id="${currentPostId}"] .popup-comment-count`).text(newCount);
+                toastify('Comment posted successfully', 'success');
             } else {
                 toastify('Failed to post comment', 'error');
             }
@@ -156,7 +142,6 @@ $(document).ready(function () {
             toastify(error.response?.data?.message || 'An error occurred while posting your comment', 'error');
         })
         .finally(function () {
-            // Re-enable the form
             $submitBtn.html(originalBtnHtml);
             $form.find('textarea').prop('disabled', false);
             $form.find('textarea').focus();
@@ -165,15 +150,10 @@ $(document).ready(function () {
 
     $(document).on("click", ".reply-button", function () {
         const commentId = $(this).data("comment-id");
-
         $(".reply-form").remove();
-
         const $replyForm = $("#reply-form-template").contents().clone();
-
         $replyForm.attr("data-comment-id", commentId);
-
         $(this).after($replyForm);
-
         $replyForm.find("textarea").focus();
     });
 
@@ -181,18 +161,12 @@ $(document).ready(function () {
         e.preventDefault();
         const commentId = parseInt($(this).data("comment-id"));
         const replyText = $(this).find(".reply-text").val().trim();
-
         if (!replyText || !currentPostId) return;
-
-        // Disable the form while submitting
         const $form = $(this);
         const $submitBtn = $form.find('button[type="submit"]');
         const originalBtnHtml = $submitBtn.html();
-
         $submitBtn.html('<div class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>');
         $form.find('textarea').prop('disabled', true);
-
-        // Send the reply to the server
         axios.post(window.AppUrl.comment, {
             post_id: currentPostId,
             content: replyText,
@@ -200,7 +174,6 @@ $(document).ready(function () {
         })
         .then(function (response) {
             if (response.data.success) {
-                // Find the parent comment and add the reply
                 const commentsData = allCommentsData[currentPostId] || [];
                 commentsData.forEach((comment) => {
                     if (comment.id === commentId) {
@@ -212,16 +185,8 @@ $(document).ready(function () {
                     }
                 });
 
-                // Remove the reply form
                 $form.remove();
-
-                // Render the updated comments
                 renderComments();
-
-                // Update the comment count
-                const newCount = parseInt($(".popup-comment-count").text()) + 1;
-                $(".popup-comment-count").text(newCount);
-                $(`.comment-button[data-post-id="${currentPostId}"] .popup-comment-count`).text(newCount);
             } else {
                 toastify('Failed to post reply', 'error');
             }
@@ -231,7 +196,6 @@ $(document).ready(function () {
             toastify(error.response?.data?.message || 'An error occurred while posting your reply', 'error');
         })
         .finally(function () {
-            // Re-enable the form if it wasn't removed
             if ($form.length) {
                 $submitBtn.html(originalBtnHtml);
                 $form.find('textarea').prop('disabled', false);

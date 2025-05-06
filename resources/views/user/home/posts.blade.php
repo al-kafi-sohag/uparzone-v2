@@ -65,7 +65,7 @@
                         </button>
                         <button class="flex items-center text-gray-600 hover:text-gray-900 comment-button" data-post-id="{{ $post->id }}" type="button">
                             <i data-lucide="message-circle" class="mr-1 w-4 h-4"></i>
-                            <span class="text-xs popup-comment-count">0</span>
+                            <span class="text-xs popup-comment-count">{{ $post->comments ?? 0 }}</span>
                         </button>
                     </div>
                     <button class="text-gray-600 hover:text-gray-900">

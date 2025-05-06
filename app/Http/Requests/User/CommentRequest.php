@@ -14,11 +14,16 @@ class CommentRequest extends FormRequest
         return auth()->guard()->check();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    public function prepareForValidation()
+    {
+
+
+        // Merge the sanitized content back
+        $this->merge([
+            'content' => sanitize_content($this->input('content')),
+        ]);
+    }
+
     public function rules(): array
     {
         return [

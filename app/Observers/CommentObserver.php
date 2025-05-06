@@ -3,17 +3,17 @@
 namespace App\Observers;
 
 use App\Models\Comment;
+use Illuminate\Support\Facades\Log;
 
 class CommentObserver
 {
     /**
      * Handle the Comment "created" event.
      */
-    public function created(Comment $comment): void
+    public function creating(Comment $comment): void
     {
         // Update comment count on the post
-        $post = $comment->post;
-        $post->increment('comments');
+        $comment->post()->increment('comments');
     }
 
     /**
@@ -27,11 +27,9 @@ class CommentObserver
     /**
      * Handle the Comment "deleted" event.
      */
-    public function deleted(Comment $comment): void
+    public function deleting(Comment $comment): void
     {
-        // Decrement comment count on the post
-        $post = $comment->post;
-        $post->decrement('comments');
+        $comment->post()->decrement('comments');
     }
 
     /**

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\CommentObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([CommentObserver::class])]
 class Comment extends Model
 {
     protected $fillable = [

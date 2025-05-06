@@ -2,7 +2,7 @@
  <div id="comments-popup" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center sm:items-center hidden">
     <div class="bg-white w-full max-w-lg rounded-t-xl sm:rounded-xl max-h-[80vh] overflow-hidden flex flex-col animate-slide-up">
         <div class="p-4 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
-            <h3 class="font-medium">Comments (<span class="popup-comment-count"></span>)</h3>
+            <h3 class="font-medium">Comments (<span class="popup-comment-count">{{ $post->comments ?? 0 }}</span>)</h3>
             <button class="close-comments-button text-gray-500 hover:text-gray-700">
                 <i data-lucide="x" class="h-4 w-4"></i>
             </button>

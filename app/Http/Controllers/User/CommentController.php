@@ -28,7 +28,7 @@ class CommentController extends Controller
             ->map(function ($comment) {
                 $replies = Comment::with('user')
                     ->where('parent_id', $comment->id)
-                    ->orderBy('created_at', 'asc')
+                    ->orderBy('created_at', 'desc')
                     ->get()
                     ->map(function ($reply) {
                         return [
@@ -51,6 +51,7 @@ class CommentController extends Controller
                         'avatar' => $comment->user->profile_photo_url ?? '',
                     ],
                     'replies' => $replies,
+
                 ];
             });
 
