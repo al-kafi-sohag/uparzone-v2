@@ -20,6 +20,11 @@ class RewardService
     {
         $referralCount = $user->total_referral;
         $rate = $this->getRewardRate($referralCount);
+        Log::info('Reward rate', [
+            'user' => $user->id,
+            'referral_count' => $referralCount,
+            'rate' => $rate,
+        ]);
         $result = ($rate * $duration)/30;
         return (float) number_format($result, 4, '.', '');
     }

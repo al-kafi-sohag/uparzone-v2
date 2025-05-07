@@ -32,7 +32,7 @@ class UserPaidPremiumJob implements ShouldQueue
             ]);
 
 
-            $userTransaction = UserTransaction::find($userPayment->user_id);
+            $userTransaction = UserTransaction::find($userPayment->user_transaction_id);
             $userTransaction->update([
                 'status' => UserTransaction::STATUS_COMPLETED,
             ]);
