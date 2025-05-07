@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\UserPaymentObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy([UserPaymentObserver::class])]
 class UserPayment extends Model
 {
     public const STATUS_PENDING = 0;
@@ -70,5 +74,10 @@ class UserPayment extends Model
             self::PAYMENT_METHOD_MANUAL => 'bg-green-500',
             default => 'bg-red-500',
         };
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
