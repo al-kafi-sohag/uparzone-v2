@@ -59,4 +59,10 @@ class WithdrawController extends Controller
             return redirect()->route('user.wallet');
         }
     }
+
+    public function list()
+    {
+        $data['withdraws'] = UserWithdraw::where('user_id', user()->id)->latest()->paginate(10);
+        return view('user.wallet.list', $data);
+    }
 }

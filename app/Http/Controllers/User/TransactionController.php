@@ -18,7 +18,7 @@ class TransactionController extends Controller
             $query->where('receiver_id', user()->id)
                   ->orWhere('sender_id', user()->id);
         })->latest()->paginate(10);
-        
+
         return view('user.transaction.index', $data);
     }
 }

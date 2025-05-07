@@ -102,6 +102,14 @@
                                         <span class="ml-3">{{ __('Transaction') }}</span>
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a href="{{ route('user.withdraw.list') }}" type="button"
+                                        class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100">
+                                        <i data-lucide="banknote-arrow-down" class="w-5 h-5 text-gray-500"></i>
+                                        <span class="ml-3">{{ __('Withdrawal List') }}</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" type="button"
                                         class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100">

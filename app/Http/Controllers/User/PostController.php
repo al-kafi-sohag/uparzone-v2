@@ -12,16 +12,20 @@ use App\Models\Gender;
 use App\Models\Post;
 use App\Services\PostService;
 use App\Http\Requests\User\PostUploadRequest;
+use App\Models\UserTransaction;
 use Illuminate\Support\Facades\DB;
+use App\Services\UserTransactionService;
 
 class PostController extends Controller
 {
     protected $postService;
+    protected UserTransactionService $userTransactionService;
 
-    public function __construct(PostService $postService)
+    public function __construct(PostService $postService, UserTransactionService $userTransactionService)
     {
         $this->middleware('auth:web');
         $this->postService = $postService;
+        $this->userTransactionService = $userTransactionService;
     }
 
     public function create()
@@ -110,6 +114,14 @@ class PostController extends Controller
                 $post
             );
 
+            //reward calculation
+            $count = Post::where('user_id', user()->id)->count();
+            if ($count > 0) {
+                $reward = 10.0 / (2 ** ($count - 1));
+                $reward = max($reward, 0.03); // Cap at 0.03
+
+                $this->userTransactionService->createTransaction(user()->id, null, $reward, 'Reward for post ' . $count, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT);
+            }
             DB::commit();
 
             return response()->json([

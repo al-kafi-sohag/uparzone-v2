@@ -143,6 +143,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
     Route::controller(UserWithdrawController::class)->group(function () {
         Route::get('withdraws', 'index')->name('withdraws');
         Route::post('withdraw/store', 'store')->name('withdraw.store');
+        Route::get('withdraw/list', 'list')->name('withdraw.list');
     });
 
     Route::controller(UserTransactionController::class)->group(function () {
