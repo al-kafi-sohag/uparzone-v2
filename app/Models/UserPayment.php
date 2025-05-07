@@ -22,6 +22,7 @@ class UserPayment extends Model
         'status',
         'payment_method',
         'payment_note',
+        'details',
     ];
 
     protected $appends = [

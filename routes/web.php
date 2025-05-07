@@ -135,9 +135,13 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
 
     Route::controller(UserPaymentController::class)->group(function () {
         Route::get('payment/init', 'init')->name('payment.init');
-        Route::post('payment/ssl/success', 'success')->name('payment.ssl.success')->withoutMiddleware(VerifyCsrfToken::class);
-        Route::post('payment/ssl/fail', 'fail')->name('payment.ssl.fail')->withoutMiddleware(VerifyCsrfToken::class);
-        Route::post('payment/ssl/cancel', 'cancel')->name('payment.ssl.cancel')->withoutMiddleware(VerifyCsrfToken::class);
-        Route::post('payment/ssl/ipn', 'ipn')->name('payment.ssl.ipn')->withoutMiddleware(VerifyCsrfToken::class);
     });
+});
+
+//SSLCommerz Routes
+Route::controller(UserPaymentController::class)->group(function () {
+    Route::post('payment/ssl/success', 'success')->name('payment.ssl.success')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('payment/ssl/fail', 'fail')->name('payment.ssl.fail')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('payment/ssl/cancel', 'cancel')->name('payment.ssl.cancel')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('payment/ssl/ipn', 'ipn')->name('payment.ssl.ipn')->withoutMiddleware(VerifyCsrfToken::class);
 });

@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:web');
-    }
-
     public function init()
     {
         $user = user();
@@ -87,10 +82,9 @@ class PaymentController extends Controller
             $post_data['product_profile'] = "physical-goods";
 
             # OPTIONAL PARAMETERS
-            $post_data['value_a'] = "ref001";
-            $post_data['value_b'] = "ref002";
-            $post_data['value_c'] = "ref003";
-            $post_data['value_d'] = "ref004";
+            $post_data['user_id'] = $user->id;
+            $post_data['payment_id'] = $userPayment->id;
+            $post_data['user_name'] = $user->name;
 
             $sslc = new SslCommerzNotification();
             # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
@@ -106,5 +100,98 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    public function success(Request $request)
+    {
+        $tran_id = $request->input('tran_id');
+        $amount = $request->input('amount');
+        $currency = $request->input('currency');
+        $payment = UserPayment::where('user_transaction_id', $tran_id)->first();
+        $payment->details = json_encode($request->all());
+        $payment->save();
+
+        $sslc = new SslCommerzNotification();
+
+        if ($payment->status == UserPayment::STATUS_PENDING) {
+            $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
+
+            if ($validation) {
+                $payment->update(['status' => UserPayment::STATUS_COMPLETED]);
+                Log::info("Updated payment $payment");
+                sweetalert()->success('Transaction is successfully Completed');
+            }
+            Log::info("Validation".$validation);
+        } else if ($payment->status == UserPayment::STATUS_COMPLETED) {
+            sweetalert()->success('Transaction is successfully Completed');
+        } else {
+            sweetalert()->error('Transaction failed');
+        }
+        return redirect()->route('user.home');
+    }
+
+    public function fail(Request $request)
+    {
+        $tran_id = $request->input('tran_id');
+        $payment = UserPayment::where('user_transaction_id', $tran_id)->first();
+        $payment->details = json_encode($request->all());
+        $payment->save();
+
+        if ($payment->status == UserPayment::STATUS_PENDING) {
+            $payment->update(['status' => UserPayment::STATUS_FAILED]);
+            sweetalert()->error('Transaction is Falied');
+        } else if ($payment->status == UserPayment::STATUS_COMPLETED || $payment->status == UserPayment::STATUS_FAILED) {
+            sweetalert()->warning('Transaction is already Successful');
+        } else {
+            sweetalert()->error('Transaction is Invalid');
+        }
+
+        return redirect()->route('user.wallet');
+    }
+
+    public function cancel(Request $request)
+    {
+        $tran_id = $request->input('tran_id');
+        $payment = UserPayment::where('user_transaction_id', $tran_id)->first();
+        $payment->details = json_encode($request->all());
+        $payment->save();
+
+        if ($payment->status == UserPayment::STATUS_PENDING) {
+            $payment->update(['status' => UserPayment::STATUS_CANCELLED]);
+            sweetalert()->error('Transaction is Cancel');
+        } else if ($payment->status == UserPayment::STATUS_COMPLETED || $payment->status == UserPayment::STATUS_FAILED) {
+            sweetalert()->warning('Transaction is already Successful');
+        } else {
+            sweetalert()->error('Transaction is Invalid');
+        }
+        return redirect()->route('user.wallet');
+    }
+
+    public function ipn(Request $request)
+    {
+        if ($request->input('tran_id')) {
+
+            $tran_id = $request->input('tran_id');
+            $payment = UserPayment::where('user_transaction_id', $tran_id)->first();
+            $payment->details = json_encode($request->all());
+            $payment->save();
+
+            if ($payment->status == UserPayment::STATUS_PENDING) {
+                $sslc = new SslCommerzNotification();
+                $validation = $sslc->orderValidate($request->all(), $tran_id, $payment->amount, $payment->currency);
+                if ($validation == TRUE) {
+                    $payment->update(['status' => UserPayment::STATUS_COMPLETED]);
+                    sweetalert()->success('Transaction is successfully Completed');
+                }
+            } else if ($payment->status == UserPayment::STATUS_COMPLETED || $payment->status == UserPayment::STATUS_FAILED) {
+                Log::info("Transaction is already Successful Payment ID: ".$payment->id);
+            } else {
+                Log::info("Invalid Transaction Payment ID: ".$payment->id);
+            }
+        } else {
+            Log::info("Invalid Data from IPN");
+        }
+    }
+
+
 
 }
