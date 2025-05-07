@@ -3,7 +3,6 @@ $(document).ready(function () {
     let currentPostId = null;
     const allCommentsData = {};
 
-    // Loading indicator function
     function showLoading() {
         $container.html(`
             <div class="flex justify-center items-center py-10">
@@ -13,19 +12,14 @@ $(document).ready(function () {
         $("#no-comments-message").addClass("hidden");
     }
 
-    // Error handling function
     function handleError(error) {
         console.error('Error:', error);
         $("#comments-popup").addClass("hidden");
         toastify(error.response?.data?.message || 'An error occurred while loading comments', 'error');
     }
 
-    // Update comment count only for the current post
     function updateCommentCount(count) {
-        console.log(count);
-        // Update count in the popup
         $("#comments-popup .popup-comment-count").text(count);
-        // Update count only for the specific post button
         if (currentPostId) {
             $(`.comment-button[data-post-id="${currentPostId}"] .popup-comment-count`).text(count);
         }

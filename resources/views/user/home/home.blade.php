@@ -31,16 +31,17 @@
 <script src="{{ asset('user/js/reaction.js') }}"></script>
 <script src="{{ asset('user/js/comment.js') }}"></script>
 <script>
-    // Variables for pagination
+
+let throttleTimer;
 let currentPage = 1;
-let nextPageUrl = null;
 let isLoading = false;
-const postsContainer = $('.space-y-4'); // Container for posts
+const loadMoreThreshold = 500;
+let hasMorePosts = true;
+let nextPageUrl = null;
+const postsContainer = $('.space-y-4');
 const $window = $(window);
 
-// Initialize FluidPlayer for videos
 function initializeFluidPlayers() {
-    console.log('Initializing FluidPlayers');
     document.querySelectorAll('video[id^="my-video-"]:not([data-fluid-initialized])').forEach(video => {
         fluidPlayer(video.id, {
             layoutControls: {
@@ -148,28 +149,21 @@ function createPostHtml(post) {
 
 function loadMorePosts() {
         if (isLoading || !nextPageUrl) return;
-
         isLoading = true;
         console.log('Loading more posts from:', nextPageUrl);
-
         axios.get(nextPageUrl)
             .then(function(response) {
                 if (response.data.success) {
-                    // Append new posts to container
                     const postsHtml = response.data.data.data.map(function(post) {
                         return createPostHtml(post);
                     }).join('');
 
                     postsContainer.append(postsHtml);
 
-                    // Update pagination info
                     nextPageUrl = response.data.pagination.next_page_url;
                     currentPage++;
 
-                    // Initialize lazy loading for new images
                     lazySizes.loader.checkElems();
-
-                    // Initialize FluidPlayer for new videos
                     initializeFluidPlayers();
 
                     lucide.createIcons();
@@ -183,30 +177,33 @@ function loadMorePosts() {
     }
 
 $(document).ready(function() {
-    console.log(window.ImageUrl);
     initializeFluidPlayers();
     $('video').on('play', function() {
         $('video').not(this).each(function() {
             this.pause();
         });
     });
-    // Get initial pagination data
+
     nextPageUrl = '{{ $posts->nextPageUrl() }}';
-
-    // Scroll event for infinite loading
     let throttleTimer;
-    $window.on('scroll', function() {
-        clearTimeout(throttleTimer);
-        throttleTimer = setTimeout(function() {
-            const contentHeight = postsContainer.outerHeight();
-            const yOffset = window.pageYOffset;
-            const y = yOffset + $window.height();
 
-            if (y >= contentHeight - 100) {
+
+    $(window).on('scroll', function() {
+        console.log('Scrolling...');
+        clearTimeout(throttleTimer);
+        throttleTimer = setTimeout(() => {
+            const scrollTop = $(window).scrollTop();
+            const windowHeight = $(window).height();
+            const containerHeight = postsContainer.outerHeight();
+            const scrollDistanceFromBottom = containerHeight - (scrollTop + windowHeight);
+            console.log('Scroll distance from bottom:', scrollDistanceFromBottom);
+            if (scrollDistanceFromBottom < loadMoreThreshold && !isLoading && hasMorePosts) {
                 loadMorePosts();
             }
         }, 200);
     });
+
+
 });
 </script>
 @endpush
