@@ -9,9 +9,16 @@ use Illuminate\Support\Facades\DB;
 use App\Models\UserTransaction;
 use App\Models\UserPayment;
 use Illuminate\Support\Facades\Log;
+use App\Services\UserTransactionService;
 
 class PaymentController extends Controller
 {
+    public UserTransactionService $userTransactionService;
+
+    public function __construct(UserTransactionService $userTransactionService)
+    {
+        $this->userTransactionService = $userTransactionService;
+    }
     public function init()
     {
         $user = user();
@@ -26,14 +33,7 @@ class PaymentController extends Controller
                 ]);
 
                 //Create User Transaction Entry
-                $userTransaction = UserTransaction::create([
-                    'receiver_id' => null,
-                    'sender_id' => $user->id,
-                    'amount' => config('app.premium_price'),
-                    'note' => 'Premium Payment',
-                    'status' => UserTransaction::STATUS_PENDING,
-                    'type' => UserTransaction::TYPE_DEBIT,
-                ]);
+                $userTransaction = $this->userTransactionService->createTransaction(null, $user->id, config('app.premium_price'), 'Premium Payment', UserTransaction::STATUS_PENDING, UserTransaction::TYPE_DEBIT);
 
                 //Create User Payment Entry
                 $userPayment = UserPayment::create([

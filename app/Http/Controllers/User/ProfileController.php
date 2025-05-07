@@ -9,15 +9,20 @@ use App\Http\Requests\User\VerifyReferenceCodeRequest;
 use App\Models\Gender;
 use App\Models\Mood;
 use App\Models\User;
+use App\Models\UserTransaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use App\Services\UserTransactionService;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    public UserTransactionService $userTransactionService;
+
+    public function __construct(UserTransactionService $userTransactionService)
     {
         $this->middleware('auth:web');
+        $this->userTransactionService = $userTransactionService;
     }
 
     public function completeProfile()
@@ -92,6 +97,9 @@ class ProfileController extends Controller
         $user->update([
             'total_referral' => User::where('referer_id', $userId)->count(),
         ]);
+
+        $this->userTransactionService->createTransaction($user->id, null, 200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT);
+
     }
 
     public function profile()

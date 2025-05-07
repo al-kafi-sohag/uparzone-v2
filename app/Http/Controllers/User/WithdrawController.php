@@ -7,14 +7,21 @@ use App\Http\Requests\User\WithdrawRequest;
 use App\Models\User;
 use App\Models\UserTransaction;
 use App\Models\UserWithdraw;
+use App\Services\UserTransactionService;
+use App\Services\UserWithdrawService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class WithdrawController extends Controller
 {
-    public function __construct()
+    public UserTransactionService $userTransactionService;
+    public UserWithdrawService $userWithdrawService;
+
+    public function __construct(UserTransactionService $userTransactionService, UserWithdrawService $userWithdrawService)
     {
         $this->middleware('auth:web');
+        $this->userTransactionService = $userTransactionService;
+        $this->userWithdrawService = $userWithdrawService;
     }
 
     public function index()
@@ -30,26 +37,15 @@ class WithdrawController extends Controller
 
             $user = User::find(user()->id);
 
-            $userTransaction = UserTransaction::create([
-                'receiver_id' => null,
-                'sender_id' => $user->id,
-                'amount' => $request->amount,
-                'note' => 'Withdrawal request for ' . $request->amount . ' tk',
-                'status' => UserTransaction::STATUS_PENDING,
-                'type' => UserTransaction::TYPE_DEBIT,
-            ]);
+            $total_withdraw = $request->amount;
+            $actual_withdraw = $total_withdraw - $total_withdraw * 0.1;
 
-            $withdraw = UserWithdraw::create([
-                'user_id' => $user->id,
-                'amount' => $request->amount,
-                'gateway' => $request->gateway,
-                'account_number' => $request->account_number,
-                'division' => $request->division,
-                'user_transaction_id' => $userTransaction->id,
-            ]);
+            $userTransaction = $this->userTransactionService->createTransaction(null, $user->id, $total_withdraw, 'Withdrawal request for ' . $request->amount . ' tk', UserTransaction::STATUS_PENDING, UserTransaction::TYPE_DEBIT);
+
+            $this->userWithdrawService->createWithdrawal($user->id, $total_withdraw, $request->gateway, $request->account_number, $request->division, $request->details, $userTransaction->id, UserWithdraw::STATUS_PENDING);
 
             $user->update([
-                'balance' => $user->balance - $request->amount,
+                'balance' => $user->balance - $total_withdraw,
             ]);
 
             DB::commit();
