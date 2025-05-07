@@ -124,5 +124,8 @@ return [
     ],
 
     'heartbeat_interval' => env('HEARTBEAT_INTERVAL', 60),
+    'min_flagging_amount' => env('MIN_FLAGGING_AMOUNT', 200),
+    'premium_price' => env('PREMIUM_PRICE', 1500),
+    'currency' => env('CURRENCY', 'BDT'),
 
 ];

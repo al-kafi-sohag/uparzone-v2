@@ -22,16 +22,16 @@
             <!-- Counter and Chat -->
             <div class="flex items-center space-x-3">
                 <div class="flex items-center">
-                    @if ($balance > 200 && Auth::user()->is_premium == false)
+                    @if ($balance > config('app.min_flagging_amount') && user()->is_premium == false)
                         <i data-lucide="lock" class="mr-1 text-red-500"></i>
-                        <a href="" class="flex-auto items-center ml-2">
+                        <a href="{{ route('user.wallet') }}" class="flex-auto items-center ml-2 mt-1">
                             <p class="flex items-center justify-between gap-1 text-red-500">
                                 <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk
                             </p>
                         </a>
                     @else
                         <i data-lucide="wallet" class="mr-1 text-green-500"></i>
-                        <a href="" class="flex-auto items-center ml-2">
+                        <a href="{{ route('user.wallet') }}" class="flex-auto items-center ml-2 mt-1">
                             <span class="itemsz flex items-center justify-between gap-1">
                                 <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk
                             </span>

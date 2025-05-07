@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use App\Http\Controllers\User\GoogleController as UserGoogleController;
 use App\Http\Controllers\User\OnboardingController as UserOnboardingController;
 use App\Http\Controllers\User\HomeController as UserHomeController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\User\TimeTrackingController as UserTimeTrackingControll
 use App\Http\Controllers\User\PostController as UserPostController;
 use App\Http\Controllers\User\ReactionsController as UserReactionsController;
 use App\Http\Controllers\User\CommentController as UserCommentController;
+use App\Http\Controllers\User\WalletController as UserWalletController;
+use App\Http\Controllers\User\PaymentController as UserPaymentController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -124,5 +127,17 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
     Route::controller(UserCommentController::class)->group(function () {
         Route::post('post/comment', 'store')->name('post.comment');
         Route::post('post/comments', 'getComments')->name('post.comments');
+    });
+
+    Route::controller(UserWalletController::class)->group(function () {
+        Route::get('wallet', 'index')->name('wallet');
+    });
+
+    Route::controller(UserPaymentController::class)->group(function () {
+        Route::get('payment/init', 'init')->name('payment.init');
+        Route::post('payment/ssl/success', 'success')->name('payment.ssl.success')->withoutMiddleware(VerifyCsrfToken::class);
+        Route::post('payment/ssl/fail', 'fail')->name('payment.ssl.fail')->withoutMiddleware(VerifyCsrfToken::class);
+        Route::post('payment/ssl/cancel', 'cancel')->name('payment.ssl.cancel')->withoutMiddleware(VerifyCsrfToken::class);
+        Route::post('payment/ssl/ipn', 'ipn')->name('payment.ssl.ipn')->withoutMiddleware(VerifyCsrfToken::class);
     });
 });

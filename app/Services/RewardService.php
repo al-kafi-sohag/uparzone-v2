@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class RewardService
 {
@@ -13,14 +14,14 @@ class RewardService
         10 => 0.08,
         5 => 0.04,
         0 => 0.02,
-    ];
+    ]; // this rate is per 30 second
 
-    public function calculateReward($user, int $duration): float
+    public function calculateReward($user, float $duration): float
     {
         $referralCount = $user->total_referral;
         $rate = $this->getRewardRate($referralCount);
-
-        return round($rate * $duration, 2);
+        $result = ($rate * $duration)/30;
+        return (float) number_format($result, 4, '.', '');
     }
 
     protected function getRewardRate(int $referralCount): float

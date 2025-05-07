@@ -5,14 +5,12 @@
 <script>
     lucide.createIcons();
 </script>
-<script src="{{ asset('user/js/custom.js') }}"></script>
-<script src="{{ asset('user/js/theme.js') }}"></script>
-<script src="{{ asset('user/js/timer.js') }}"></script>
 
 <script>
     window.active_time = {{ $active_time }};
-    window.heartbeatInterval = {{ (int)config('app.heartbeat_interval', 60) }};
+    window.heartbeatInterval = {{ config('app.heartbeat_interval', 60) }};
     window.balance = {{ $balance }};
+    window.minFlaggingAmount = {{ config('app.min_flagging_amount', 200) }};
     window.AppUrl = {
         heartbeat: '{{ route('user.heartbeat') }}',
         home: '{{ route('user.home') }}',
@@ -29,3 +27,7 @@
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
 </script>
+
+<script src="{{ asset('user/js/custom.js') }}"></script>
+<script src="{{ asset('user/js/theme.js') }}"></script>
+<script src="{{ asset('user/js/timer.js') }}"></script>

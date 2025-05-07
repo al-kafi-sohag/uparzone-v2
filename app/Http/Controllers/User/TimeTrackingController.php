@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TimeTrackingController extends Controller
 {
@@ -24,6 +25,12 @@ class TimeTrackingController extends Controller
         $now = now();
         $duration = $this->calculateDuration($user, $now);
         $rewardAmount = 0;
+
+
+        Log::info("duration: " . $duration);
+        Log::info("shouldTrackActivity: " . $this->shouldTrackActivity($duration));
+        Log::info("rewardAmount: " . $rewardAmount);
+
 
         if ($this->shouldTrackActivity($duration)) {
             $rewardAmount = $this->rewardService->calculateReward($user, $duration);
@@ -54,7 +61,7 @@ class TimeTrackingController extends Controller
 
     protected function shouldTrackActivity(float $duration): bool
     {
-        return $duration > 0 && $duration < config('app.heartbeat_interval') + config('app.heartbeat_interval') * (30/100);
+        return $duration > 0 && $duration < config('app.heartbeat_interval') + config('app.heartbeat_interval') * (50/100);
     }
 
     protected function createTimeTrackingRecord($user, Carbon $now, float $duration, float $rewardAmount): void
