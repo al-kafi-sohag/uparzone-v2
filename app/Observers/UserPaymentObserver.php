@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\UserPayment;
 use App\Jobs\UserPaidPremiumJob;
+use App\Models\UserTransaction;
 
 
 class UserPaymentObserver
@@ -22,7 +23,19 @@ class UserPaymentObserver
     public function updated(UserPayment $userPayment): void
     {
         if ($userPayment->status == UserPayment::STATUS_COMPLETED) {
-            UserPaidPremiumJob::dispatch($userPayment->id)->afterCommit();
+
+            $userPayment = UserPayment::with('user')->find($userPayment->id);
+            $userPayment->user->update([
+                'is_premium' => true,
+                'reference_code' => $userPayment->user->id,
+            ]);
+
+
+            $userTransaction = UserTransaction::find($userPayment->user_id);
+            $userTransaction->update([
+                'status' => UserTransaction::STATUS_COMPLETED,
+            ]);
+
         }
     }
 
