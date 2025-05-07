@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\UserWithdraw;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('division');
 
             $table->json('details')->nullable();
+            $table->string('status')->default(UserWithdraw::STATUS_PENDING);
 
             $table->timestamps();
         });
