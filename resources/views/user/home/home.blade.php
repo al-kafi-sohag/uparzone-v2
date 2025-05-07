@@ -15,14 +15,19 @@
 @endpush
 
 @section('content')
-<main class="overflow-y-auto flex-1 px-4 py-4">
-
+<div class="overflow-y-auto px-4 py-4" id="home-content">
     @include('user.home.create-post')
-
     @include('user.home.posts', ['posts' => $posts])
 
 
-</main>
+<!-- Create Post Button -->
+<a href="{{ $posts->nextPageUrl() }}"
+    class="flex justify-center items-center px-4 py-3 mb-4 w-full font-medium text-gray-800 bg-gray-100 rounded-lg transition-colors hover:bg-gray-200 mt-2">
+    <i data-lucide="plus-circle" class="mr-2 w-5 h-5"></i>
+    {{ __('Load More') }}
+</a>
+
+</div>
 @endsection
 
 @push('scripts')
@@ -183,28 +188,16 @@ $(document).ready(function() {
             this.pause();
         });
     });
-
-    nextPageUrl = '{{ $posts->nextPageUrl() }}';
-    let throttleTimer;
-
-
-    $(window).on('scroll', function() {
-        console.log('Scrolling...');
-        clearTimeout(throttleTimer);
-        throttleTimer = setTimeout(() => {
-            const scrollTop = $(window).scrollTop();
-            const windowHeight = $(window).height();
-            const containerHeight = postsContainer.outerHeight();
-            const scrollDistanceFromBottom = containerHeight - (scrollTop + windowHeight);
-            console.log('Scroll distance from bottom:', scrollDistanceFromBottom);
-            if (scrollDistanceFromBottom < loadMoreThreshold && !isLoading && hasMorePosts) {
-                loadMorePosts();
-            }
-        }, 200);
-    });
-
-
 });
+
+// Scroll event moved inside document.ready
+$(window).on('scroll', function() {
+    console.log('Scrolling...');
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - loadMoreThreshold) {
+        loadMorePosts();
+    }
+});
+
 </script>
 @endpush
 

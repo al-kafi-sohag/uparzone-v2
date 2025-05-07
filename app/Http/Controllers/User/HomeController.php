@@ -30,7 +30,7 @@ class HomeController extends Controller
                      ->where('reactions.user_id', '=', $userId);
             })
             ->select('posts.*', 'reactions.id as user_has_reacted')
-            ->paginate(3);
+            ->paginate(5);
 
         if($request->ajax()) {
             return response()->json([
