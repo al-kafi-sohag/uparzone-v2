@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\UserPayment;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class UserPaidPremiumJob implements ShouldQueue
 {
@@ -23,9 +24,11 @@ class UserPaidPremiumJob implements ShouldQueue
     public function handle(): void
     {
         try {
+            DB::beginTransaction();
             $userPayment = UserPayment::with('user')->find($this->userPaymentId);
             $userPayment->user->update([
                 'is_premium' => true,
+                'reference_code' => $userPayment->user->id,
             ]);
 
 
@@ -34,6 +37,9 @@ class UserPaidPremiumJob implements ShouldQueue
                 'status' => UserTransaction::STATUS_COMPLETED,
             ]);
 
+
+
+            DB::commit();
             Log::info('User paid premium', [
                 'user_id' => $userPayment->user_id,
                 'user_payment_id' => $userPayment->id,
@@ -42,6 +48,7 @@ class UserPaidPremiumJob implements ShouldQueue
 
 
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
         }
     }

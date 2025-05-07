@@ -19,6 +19,11 @@
 
 @section('content')
     <div class="px-4 py-4">
+        @if ($user->is_premium)
+            <div class="mb-2">
+                @include('user.wallet.reference-code')
+            </div>
+        @endif
         <div class="w-full bg-white rounded-lg border border-gray-200 shadow-sm">
             <div class="p-6 pb-2">
                 <div class="flex justify-between items-center">
@@ -54,6 +59,10 @@
                         <form id="withdrawal-form" action="{{ route('user.withdraw.store') }}" method="POST">
                             @csrf
                             <div class="space-y-4">
+                                <div class="m-3">
+                                    @if ($user->reference_code)
+                                    @endif
+                                </div>
                                 <div>
                                     <label for="withdrawAmount" class="block text-sm font-medium">Withdrawal Amount</label>
                                     <input id="withdrawAmount" type="number" placeholder="Minimum 500 tk" name="amount" value="{{ old('amount') }}"

@@ -82,6 +82,13 @@
                         <div class="relative mt-6 flex-1 px-4 sm:px-6">
                             <ul class="space-y-2 font-medium">
                                 <li>
+                                    <a href="{{ route('user.wallet') }}" type="button"
+                                        class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100">
+                                        <i data-lucide="wallet" class="w-5 h-5 text-gray-500"></i>
+                                        <span class="ml-3">{{ __('Wallet') }}</span>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" type="button"
                                         class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100">
                                         <i data-lucide="log-out" class="w-5 h-5 text-gray-500"></i>
