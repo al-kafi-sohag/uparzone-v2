@@ -14,6 +14,7 @@ use App\Http\Controllers\User\ReactionsController as UserReactionsController;
 use App\Http\Controllers\User\CommentController as UserCommentController;
 use App\Http\Controllers\User\WalletController as UserWalletController;
 use App\Http\Controllers\User\PaymentController as UserPaymentController;
+use App\Http\Controllers\User\WithdrawController as UserWithdrawController;
 
 
 use App\Http\Controllers\Admin\AuthenticationController as AdminAuthenticationController;
@@ -135,6 +136,11 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
 
     Route::controller(UserPaymentController::class)->group(function () {
         Route::get('payment/init', 'init')->name('payment.init');
+    });
+
+    Route::controller(UserWithdrawController::class)->group(function () {
+        Route::get('withdraws', 'index')->name('withdraws');
+        Route::post('withdraw/store', 'store')->name('withdraw.store');
     });
 });
 
