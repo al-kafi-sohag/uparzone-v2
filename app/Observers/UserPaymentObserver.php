@@ -16,18 +16,16 @@ class UserPaymentObserver
 
     public function updating(UserPayment $userPayment): void
     {
+        //
+    }
+
+    public function updated(UserPayment $userPayment): void
+    {
         if ($userPayment->status == UserPayment::STATUS_COMPLETED) {
             UserPaidPremiumJob::dispatch($userPayment->id)->afterCommit();
         }
     }
-    public function updated(UserPayment $userPayment): void
-    {
-        //
-    }
 
-    /**
-     * Handle the UserPayment "deleted" event.
-     */
     public function deleted(UserPayment $userPayment): void
     {
         //
