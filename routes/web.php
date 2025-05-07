@@ -110,6 +110,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
         Route::post('complete-profile', 'storeProfileData')->name('cp.store');
         Route::post('set-language', 'setLanguage')->name('cp.language');
         Route::post('verify-reference-code', 'verifyReferenceCode')->name('cp.verify.reference');
+        Route::get('profile', 'profile')->name('profile');
     });
 
     Route::post('heartbeat', [UserTimeTrackingController::class, 'heartbeat'])->name('heartbeat');

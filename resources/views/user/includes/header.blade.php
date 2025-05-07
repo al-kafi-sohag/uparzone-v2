@@ -26,14 +26,14 @@
                         <i data-lucide="lock" class="mr-1 text-red-500"></i>
                         <a href="{{ route('user.wallet') }}" class="flex-auto items-center ml-2 mt-1">
                             <p class="flex items-center justify-between gap-1 text-red-500">
-                                <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk
+                                <span id="balance" class="balance-text">{{ number_format($balance, 4) }}</span> tk
                             </p>
                         </a>
                     @else
                         <i data-lucide="wallet" class="mr-1 text-green-500"></i>
                         <a href="{{ route('user.wallet') }}" class="flex-auto items-center ml-2 mt-1">
                             <span class="itemsz flex items-center justify-between gap-1">
-                                <span id="balance" class="balance-text">{{ number_format($balance, 2) }}</span> tk
+                                <span id="balance" class="balance-text">{{ number_format($balance, 4) }}</span> tk
                             </span>
                         </a>
                     @endif

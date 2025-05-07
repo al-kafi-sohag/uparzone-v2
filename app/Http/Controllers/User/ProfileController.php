@@ -93,4 +93,23 @@ class ProfileController extends Controller
             'total_referral' => User::where('referer_id', $userId)->count(),
         ]);
     }
+
+    public function profile()
+    {
+        $userId = Auth::user()->id;
+        $data['user'] = User::with(['mood',
+        'posts',
+        'posts.user',
+        'posts.media',
+        'posts.postReactions' => function ($join) use ($userId) {
+            $join->on('posts.id', '=', 'reactions.post_id')
+                 ->where('reactions.user_id', '=', $userId);
+        },
+        'referer'])
+        ->where('id', $userId)
+        ->latest()
+        ->get();
+
+        return view('user.profile.profile', $data);
+    }
 }

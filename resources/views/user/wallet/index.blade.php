@@ -19,11 +19,10 @@
 
 @section('content')
     <div class="px-4 py-4">
-        @if ($user->is_premium)
-            <div class="mb-2">
-                @include('user.wallet.reference-code')
-            </div>
-        @endif
+        <div class="mb-2">
+            @include('user.wallet.reference-code')
+        </div>
+
         <div class="w-full bg-white rounded-lg border border-gray-200 shadow-sm">
             <div class="p-6 pb-2">
                 <div class="flex justify-between items-center">

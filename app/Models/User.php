@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
@@ -125,6 +126,11 @@ class User extends Authenticatable
     public function referer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'referer_id');
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'user_id');
     }
 
 }

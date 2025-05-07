@@ -17,9 +17,6 @@ class UserPaymentObserver
     public function updating(UserPayment $userPayment): void
     {
         if ($userPayment->status == UserPayment::STATUS_COMPLETED) {
-            $userPayment->user->update([
-                'balance' => $userPayment->user->balance + $userPayment->amount,
-            ]);
             UserPaidPremiumJob::dispatch($userPayment->id);
         }
     }

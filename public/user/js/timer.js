@@ -18,7 +18,6 @@ $(document).ready(function () {
 
     setInterval(function () {
         active_time++;
-        window.active_time = active_time;
         $('#timer').html(formatTime(active_time));
     }, 1000);
 });
@@ -26,7 +25,7 @@ $(document).ready(function () {
 function formatTime(seconds) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
+    const remainingSeconds = Math.floor(seconds % 60);
 
     // Format time as HH:MM:SS
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;

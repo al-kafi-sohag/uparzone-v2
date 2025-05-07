@@ -21,7 +21,7 @@
 
             <!-- Profile -->
             <div class="flex flex-1 justify-center" style="width: 120px;">
-                <a href="" class="flex flex-col items-center text-gray-700 no-underline">
+                <a href="{{ route('user.profile') }}" class="flex flex-col items-center text-gray-700 no-underline">
                     <div class="overflow-hidden relative mb-1 w-8 h-8 bg-gray-200 rounded-full">
                         <img src="{{ profile_img(user()->profile_img) }}" alt="Profile"
                             class="object-cover absolute inset-0 w-full h-full" width="32" height="32">
@@ -81,6 +81,13 @@
                         </div>
                         <div class="relative mt-6 flex-1 px-4 sm:px-6">
                             <ul class="space-y-2 font-medium">
+                                <li>
+                                    <a href="{{ route('user.profile') }}" type="button"
+                                        class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100">
+                                        <i data-lucide="user" class="w-5 h-5 text-gray-500"></i>
+                                        <span class="ml-3">{{ __('Profile') }}</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{{ route('user.wallet') }}" type="button"
                                         class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100">
