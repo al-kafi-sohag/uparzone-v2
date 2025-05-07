@@ -50,8 +50,8 @@
                     </div>
 
                     @if ($user->is_premium)
-                        <!-- Withdrawal Form (Hidden by default)-->
-                        <div id="withdrawal-form" class="space-y-4 hidden">
+                        <!-- Withdrawal Form -->
+                        <div id="withdrawal-form" class="space-y-4">
                             <div>
                                 <label for="withdrawAmount" class="block text-sm font-medium">Withdrawal Amount</label>
                                 <input id="withdrawAmount" type="number" placeholder="Minimum 500 tk"
