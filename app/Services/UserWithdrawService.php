@@ -30,29 +30,30 @@ class UserWithdrawService
             'status' => $status,
         ]);
 
-        $this->withdrawBonus();
+        $this->withdrawBonus($userWithdraw);
 
         return $userWithdraw;
     }
 
-    public function withdrawBonus()
+    public function withdrawBonus($userWithdraw)
     {
-        $total_amount = $this->userWithdraw->amount;
+        $user = user();
+        $total_amount = $userWithdraw->amount;
         $total_bonus = $total_amount * 0.1;
         $actual_withdraw = $total_amount - $total_bonus;
 
-        if($this->userWithdraw->user->referer_id){
-            $receiceable_amount = $total_bonus*.5;
-            $this->userTransactionService->createTransaction($this->userWithdraw->user->referer_id, $this->userWithdraw->user->id, $receiceable_amount, 'Withdrawal bonus for ' . $this->userWithdraw->user->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT);
+        if($user->referer_id){
+            $receieveable_amount = $total_bonus*.5;
+            $this->userTransactionService->createTransaction($user->referer_id, $user->id, $receieveable_amount, 'Withdrawal bonus from User:' . $user->id, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT);
         }
 
-        $count = User::where('referer_id', $this->userWithdraw->user->id)->count();
+        $count = User::where('referer_id', $user->id)->count();
         if($count > 0){
-            $receiceable_amount = ($total_bonus*.5)/$count;
+            $receieveable_amount = ($total_bonus*.5)/$count;
 
-            $reffered_by = User::where('referer_id', $this->userWithdraw->user->id)->get();
+            $reffered_by = User::where('referer_id', $user->id)->get();
             foreach ($reffered_by as $reffered_user) {
-                $this->userTransactionService->createTransaction($reffered_user->id, $this->userWithdraw->user->id, $receiceable_amount, 'Withdrawal bonus for ' . $this->userWithdraw->user->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT);
+                $this->userTransactionService->createTransaction($reffered_user->id, $user->id, $receieveable_amount, 'Withdrawal bonus from User:' . $user->id, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT);
             }
         }
     }

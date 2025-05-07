@@ -26,12 +26,6 @@ class TimeTrackingController extends Controller
         $duration = $this->calculateDuration($user, $now);
         $rewardAmount = 0;
 
-
-        Log::info("duration: " . $duration);
-        Log::info("shouldTrackActivity: " . $this->shouldTrackActivity($duration));
-        Log::info("rewardAmount: " . $rewardAmount);
-
-
         if ($this->shouldTrackActivity($duration)) {
             $rewardAmount = $this->rewardService->calculateReward($user, $duration);
             $this->createTimeTrackingRecord($user, $now, $duration, $rewardAmount);
