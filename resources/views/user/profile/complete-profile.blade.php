@@ -588,12 +588,7 @@
         showLoading();
         hideError();
 
-        axios.post('{{ route("user.cp.language") }}', { language: formState.language }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
+        axios.post('{{ route("user.cp.language") }}', { language: formState.language })
             .then(function(response) {
                 hideLoading();
                 formState.currentStep = 2;
@@ -677,12 +672,7 @@
             referrerName: "John Doe",
         };
 
-        axios.post('{{ route("user.cp.verify.reference") }}', { reference_code: formState.referenceCode }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
+        axios.post('{{ route("user.cp.verify.reference") }}', { reference_code: formState.referenceCode })
             .then(function(response) {
                 hideLoading();
                 formState.currentStep = 5;

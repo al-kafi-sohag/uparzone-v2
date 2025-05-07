@@ -24,3 +24,8 @@
         logo: '{{ asset('frontend/img/logo.svg') }}'
     }
 </script>
+
+<script>
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+</script>

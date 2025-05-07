@@ -270,9 +270,6 @@
                 if (tempId) {
                     try {
                         await axios.delete(`{{ route('user.post.remove.media') }}`, {
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
                             data: {
                                 temp_id: tempId
                             }
@@ -359,8 +356,7 @@
                     const response = await axios.post('{{ route("user.post.upload.media") }}', formData, {
                         signal,
                         headers: {
-                            'Content-Type': 'multipart/form-data',
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            'Content-Type': 'multipart/form-data'
                         },
                         onUploadProgress: (progressEvent) => {
                             const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -453,8 +449,7 @@
 
                     const response = await axios.post('{{ route("user.post.store") }}', formData, {
                         headers: {
-                            'Content-Type': 'multipart/form-data',
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            'Content-Type': 'multipart/form-data'
                         }
                     });
 
