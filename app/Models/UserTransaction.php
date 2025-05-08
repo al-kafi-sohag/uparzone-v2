@@ -24,6 +24,7 @@ class UserTransaction extends Model
         'note',
         'status',
         'type',
+        'key',
     ];
 
     protected $appends = [
