@@ -40,14 +40,14 @@ class UserPaymentObserver
 
             $referrer = User::where('id', $userPayment->user->referer_id)->first();
             if ($referrer) {
-                $userTransaction = UserTransaction::where('key', 'referral-'.$userPayment->user->id)->first();
-                if ($userTransaction) {
-                    $userTransaction->update([
+                $referrerUserTransaction = UserTransaction::where('key', 'referral-'.$userPayment->user->id)->first();
+                if ($referrerUserTransaction) {
+                    $referrerUserTransaction->update([
                         'status' => UserTransaction::STATUS_COMPLETED,
                     ]);
 
                     $userBalanceService = new UserBalanceService();
-                    $userBalanceService->setUser($referrer->id)->addBalance($userTransaction->amount);
+                    $userBalanceService->setUser($referrer->id)->addBalance($referrerUserTransaction->amount);
                 }
             }
 
