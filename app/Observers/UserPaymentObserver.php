@@ -4,7 +4,10 @@ namespace App\Observers;
 
 use App\Models\UserPayment;
 use App\Jobs\UserPaidPremiumJob;
+use App\Models\User;
 use App\Models\UserTransaction;
+use App\Services\UserBalanceService;
+use App\Services\UserTransactionService;
 
 
 class UserPaymentObserver
@@ -26,8 +29,7 @@ class UserPaymentObserver
 
             $userPayment = UserPayment::with('user')->find($userPayment->id);
             $userPayment->user->update([
-                'is_premium' => true,
-                'reference_code' => $userPayment->user->id,
+                'is_premium' => true
             ]);
 
 
@@ -35,6 +37,19 @@ class UserPaymentObserver
             $userTransaction->update([
                 'status' => UserTransaction::STATUS_COMPLETED,
             ]);
+
+            $referrer = User::where('id', $userPayment->user->referer_id)->first();
+            if ($referrer) {
+                $userTransaction = UserTransaction::where('key', 'referral-'.$userPayment->user->id)->first();
+                if ($userTransaction) {
+                    $userTransaction->update([
+                        'status' => UserTransaction::STATUS_COMPLETED,
+                    ]);
+
+                    $userBalanceService = new UserBalanceService();
+                    $userBalanceService->setUser($referrer->id)->addBalance($userTransaction->amount);
+                }
+            }
 
         }
     }
