@@ -44,6 +44,7 @@ class UserPaymentObserver
                 if ($referrerUserTransaction) {
                     $referrerUserTransaction->update([
                         'status' => UserTransaction::STATUS_COMPLETED,
+                        'key' => 'referral',
                     ]);
 
                     $userBalanceService = new UserBalanceService();
