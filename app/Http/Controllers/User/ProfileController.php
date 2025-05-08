@@ -14,15 +14,18 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UserTransactionService;
+use App\Services\UserBalanceService;
 
 class ProfileController extends Controller
 {
     public UserTransactionService $userTransactionService;
+    public UserBalanceService $userBalanceService;
 
-    public function __construct(UserTransactionService $userTransactionService)
+    public function __construct(UserTransactionService $userTransactionService,UserBalanceService $userBalanceService)
     {
         $this->middleware('auth:web');
         $this->userTransactionService = $userTransactionService;
+        $this->userBalanceService = $userBalanceService;
     }
 
     public function completeProfile()
@@ -99,6 +102,7 @@ class ProfileController extends Controller
         ]);
 
         $this->userTransactionService->createTransaction($user->id, null, 200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT);
+        $this->userBalanceService->setUser($user->id)->addBalance(200);
 
     }
 
