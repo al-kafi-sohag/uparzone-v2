@@ -40,11 +40,11 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Run Laravel setup commands
-RUN php artisan migrate --force \
-    php artisan optimize:clear \
-    php artisan config:cache \
-    php artisan route:cache \
-    php artisan view:cache \
+RUN php artisan migrate --force && \
+    php artisan optimize:clear && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
     php artisan queue:restart
 
 # Build frontend (only if applicable)
