@@ -30,6 +30,12 @@ WORKDIR /var/www
 # Copy Laravel project files
 COPY . .
 
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-scripts 
+
+# Build frontend (only if applicable)
+RUN npm install && npm run build
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
 
