@@ -30,9 +30,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install svgo
 RUN npm install -g svgo
 
-# Create non-root user and group
-RUN groupadd -g 1001 appgroup && \
-    useradd -u 1001 -g appgroup -s /bin/bash -m appuser
+# # Create non-root user and group
+# RUN groupadd -g 1001 appgroup && \
+#     useradd -u 1001 -g appgroup -s /bin/bash -m appuser
 
 # Set working directory
 WORKDIR /var/www
