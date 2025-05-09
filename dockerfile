@@ -39,11 +39,20 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
+# Run Laravel setup commands
+RUN php artisan migrate --force \
+    php artisan optimize:clear \
+    php artisan config:cache \
+    php artisan route:cache \
+    php artisan view:cache \
+    php artisan queue:restart
+
 # Build frontend (only if applicable)
 RUN npm install && npm run build
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Copy NGINX config
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
