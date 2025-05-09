@@ -36,11 +36,11 @@ RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # # # Copy crontab file
-# # COPY ./docker/laravel.cron /etc/cron.d/laravel
+COPY ./docker/laravel.cron /etc/cron.d/laravel
 
 # # Give execution rights to the cron job
-# RUN chmod 0644 /etc/cron.d/laravel && \
-#     crontab /etc/cron.d/laravel
+RUN chmod 0644 /etc/cron.d/laravel && \
+    crontab /etc/cron.d/laravel
 
 # Start PHP-FPM, Supervisor, and Cron in the same container
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
