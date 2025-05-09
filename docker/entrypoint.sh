@@ -86,6 +86,9 @@ fi
 if [ ! -z "$CACHE_STORE" ]; then
     sed -i "s|^CACHE_STORE=.*|CACHE_STORE=$CACHE_STORE|" /var/www/.env
 fi
+if [ ! -z "$CACHE_PREFIX" ]; then
+    sed -i "s|^CACHE_PREFIX=.*|CACHE_PREFIX=$CACHE_PREFIX|" /var/www/.env
+fi
 
 # Mail settings
 if [ ! -z "$MAIL_MAILER" ]; then
