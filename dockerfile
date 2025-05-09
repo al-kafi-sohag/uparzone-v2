@@ -65,7 +65,7 @@ RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose HTTP port
-EXPOSE 80
+EXPOSE 80 443
 
 # Make entrypoint script executable
 COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
