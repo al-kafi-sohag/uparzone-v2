@@ -36,14 +36,11 @@ RUN npm install -g svgo
 # Set working directory
 WORKDIR /var/www
 
-# Copy composer files first for better layer caching
-COPY composer.json composer.lock ./
+# Copy all files
+COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader
-
-# Copy the rest of the Laravel project files
-COPY . .
 
 # Generate optimized autoloader
 RUN composer dump-autoload --optimize
