@@ -6,12 +6,18 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="app-url" content="{{ config('app.url') }}">
+    <meta name="app-name" content="{{ config('app.name') }}">
+    <meta name="locale" content="{{ app()->getLocale() }}">
+
 
     <title>
         @yield('title', 'UPARZONE') -
         {{ config('app.name', 'UPARZONE') }} -
         {{ __('A social earning network system') }}
     </title>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('frontend/img/logo.ico') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
