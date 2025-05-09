@@ -19,12 +19,12 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: alihussnain901
-          password: (Dockerhub201)
+          username: kilobyte11331
+          password: .rM4B5it$Z7Wj$X
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: alihussnain901/uparzone:latest
+          tags: kilobyte11331/uparzone:latest
