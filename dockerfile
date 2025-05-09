@@ -29,10 +29,13 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libwebp-dev \
     libfreetype6-dev \
+    libzip-dev \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql \
     && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
     && docker-php-ext-install gd exif \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-    
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
