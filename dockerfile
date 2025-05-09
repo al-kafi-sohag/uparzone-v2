@@ -1,6 +1,15 @@
 # Use official PHP 8.3 FPM image as base
 FROM php:8.3-fpm
 
+# Add ARG for CapRover git commit SHA
+ARG CAPROVER_GIT_COMMIT_SHA=${CAPROVER_GIT_COMMIT_SHA}
+ENV CAPROVER_GIT_COMMIT_SHA=${CAPROVER_GIT_COMMIT_SHA}
+
+# Set production environment
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     nginx \
@@ -33,23 +42,22 @@ RUN npm install -g svgo
 # Set working directory
 WORKDIR /var/www
 
-# Copy Laravel project files
-COPY . .
+# Copy composer files first for better layer caching
+COPY composer.json composer.lock ./
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader
 
-# Run Laravel setup commands
-RUN php artisan migrate --force && \
-    php artisan optimize:clear && \
-    php artisan config:cache && \
-    php artisan view:cache && \
-    php artisan queue:restart
+# Copy the rest of the Laravel project files
+COPY . .
 
-# Build frontend (only if applicable)
+# Generate optimized autoloader
+RUN composer dump-autoload --optimize
+
+# Build frontend assets (only if applicable)
 RUN npm install && npm run build
 
-# Set permissions
+# Set proper permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
@@ -64,5 +72,10 @@ COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Expose HTTP port
 EXPOSE 80
 
-# Start all services
+# Make entrypoint script executable
+COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Use entrypoint script to handle environment variables and startup
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
