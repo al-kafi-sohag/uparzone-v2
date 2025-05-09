@@ -55,7 +55,7 @@ class TimeTrackingController extends Controller
 
     protected function shouldTrackActivity(float $duration): bool
     {
-        return $duration > 0 && $duration < config('app.heartbeat_interval') + config('app.heartbeat_interval') * (50/100);
+        return $duration > 0 && $duration < config('app.heartbeat_interval')*3;
     }
 
     protected function createTimeTrackingRecord($user, Carbon $now, float $duration, float $rewardAmount): void
