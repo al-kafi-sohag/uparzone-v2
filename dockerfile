@@ -1,8 +1,9 @@
-# Use the official PHP 8.3 FPM image as base
+# Use official PHP 8.3 FPM image as base
 FROM php:8.3-fpm
 
-# Install system dependencies and PHP extensions
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
+    nginx \
     cron \
     supervisor \
     git \
@@ -17,30 +18,31 @@ RUN apt-get update && apt-get install -y \
     curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install svgo globally via npm
-RUN npm install -g svgo
-
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Install svgo
+RUN npm install -g svgo
 
 # Set working directory
 WORKDIR /var/www
 
-# Copy Laravel project files (assumes Dockerfile is in root of Laravel project)
+# Copy Laravel project files
 COPY . .
 
-# Set permissions (adjust as needed)
+# Set permissions
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
 
-# Copy supervisor configuration
+# Copy NGINX config
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/default.conf /etc/nginx/sites-available/default
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Copy Supervisor config
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# # # Copy crontab file
-COPY ./docker/laravel.cron /etc/cron.d/laravel
+# Expose HTTP port
+EXPOSE 80
 
-# # Give execution rights to the cron job
-RUN chmod 0644 /etc/cron.d/laravel && \
-    crontab /etc/cron.d/laravel
-
-# Start PHP-FPM, Supervisor, and Cron in the same container
+# Start all services
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
