@@ -15,8 +15,8 @@ class MigrateV1Users extends Command
 
     public function handle()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('users')->truncate(); // Optional: Only if starting fresh
+        DB::connection('v2')->statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::connection('v2')->table('users')->truncate(); // Optional: Only if starting fresh
 
         $v1Users = DB::connection('v1')->table('users')->get();
 
@@ -79,11 +79,11 @@ class MigrateV1Users extends Command
                 $v2User['mood_id'] = $mood->id;
             }
 
-            DB::table('users')->insert($v2User);
+            DB::connection('v2')->table('users')->insert($v2User);
             $this->info("Migrated user {$v1User->id}");
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::connection('v2')->statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->info('Users migrated successfully.');
     }
 }
