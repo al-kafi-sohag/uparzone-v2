@@ -16,8 +16,14 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     curl \
+    libjpeg-dev \
+    libpng-dev \
+    libwebp-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
+    && docker-php-ext-install gd exif \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
+    
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -31,7 +37,7 @@ WORKDIR /var/www
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-scripts 
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Build frontend (only if applicable)
 RUN npm install && npm run build
