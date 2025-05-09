@@ -107,6 +107,7 @@ class ProfileController extends Controller
 
     public function profile()
     {
+        return redirect()->route('user.migrating');
         $userId = Auth::user()->id;
         $data['user'] = User::with(['mood',
         'posts',
@@ -122,5 +123,10 @@ class ProfileController extends Controller
         ->get();
 
         return view('user.profile.profile', $data);
+    }
+
+    public function migrating()
+    {
+        return view('user.migrating');
     }
 }
