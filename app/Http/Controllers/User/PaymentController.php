@@ -168,6 +168,7 @@ class PaymentController extends Controller
 
     public function ipn(Request $request)
     {
+        Log::info("IPN: ".json_encode($request->all()));
         if ($request->input('tran_id')) {
 
             $tran_id = $request->input('tran_id');
