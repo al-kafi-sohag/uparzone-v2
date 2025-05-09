@@ -82,6 +82,26 @@ return [
             ]) : [],
         ],
 
+        'v2' => [
+            'driver' => 'mysql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_V2_HOST', '127.0.0.1'),
+            'port' => env('DB_V2_PORT', '3306'),
+            'database' => env('DB_V2_DATABASE', 'uparzone_migration'),
+            'username' => env('DB_V2_USERNAME', 'uparzone_migration'),
+            'password' => env('DB_V2_PASSWORD', '9Gev&A~]6asG'),
+            'unix_socket' => env('DB_V2_SOCKET', ''),
+            'charset' => env('DB_V2_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_V2_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => env('DB_V2_ENGINE', 'InnoDB'),
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
