@@ -22,6 +22,9 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libzip-dev \
     libpq-dev \
+    imagemagick \
+    libmagickwand-dev \
+    php-imagick \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql \
     && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
     && docker-php-ext-install gd exif \
