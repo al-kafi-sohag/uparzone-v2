@@ -1,15 +1,6 @@
 # Use official PHP 8.3 FPM image as base
 FROM php:8.3-fpm
 
-# Add ARG for CapRover git commit SHA
-ARG CAPROVER_GIT_COMMIT_SHA=${CAPROVER_GIT_COMMIT_SHA}
-ENV CAPROVER_GIT_COMMIT_SHA=${CAPROVER_GIT_COMMIT_SHA}
-
-# Set production environment
-ENV APP_ENV=production
-ENV APP_DEBUG=false
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     nginx \
