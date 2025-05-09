@@ -95,7 +95,7 @@ if [ ! -L /var/www/public/storage ]; then
 fi
 
 # Migrate database
-php artisan migrate --force
+# php artisan migrate --force
 
 # Cache configuration for better performance
 echo "Optimizing Laravel"
