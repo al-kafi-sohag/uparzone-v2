@@ -26,7 +26,7 @@ use App\Http\Controllers\Admin\PostCategoryController as AdminPostCategoryContro
 use App\Http\Controllers\Admin\ReligionController as AdminReligionController;
 
 Route::get('/', function () {
-    return view('comming-soon');
+    return redirect()->route('user.onboarding');
 });
 
 //User Before
