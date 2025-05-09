@@ -30,10 +30,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install svgo
 RUN npm install -g svgo
 
-# Create non-root user and group
-RUN groupadd -g 1001 appgroup && \
-    useradd -u 1001 -g appgroup -s /bin/bash -m appuser
-
 # Set working directory
 WORKDIR /var/www
 
@@ -53,13 +49,6 @@ RUN php artisan migrate --force && \
 # Build frontend (only if applicable)
 RUN npm install && npm run build
 
-# Set permissions for non-root user
-RUN chown -R appuser:appgroup /var/www \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache \
-    && mkdir -p /var/lib/nginx/body \
-    && chown -R appuser:appgroup /var/lib/nginx \
-    && chmod -R 775 /var/lib/nginx
-
 # Copy NGINX config
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/default.conf /etc/nginx/sites-available/default
@@ -70,9 +59,6 @@ COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose HTTP port
 EXPOSE 80
-
-# Switch to non-root user
-USER appuser
 
 # Start all services
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
