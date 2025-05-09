@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::automaticallyEagerLoadRelationships();
         Model::preventLazyLoading(true);
+        URL::forceScheme('https');
     }
 }
