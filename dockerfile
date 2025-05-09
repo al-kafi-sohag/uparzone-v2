@@ -30,7 +30,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install svgo
 RUN npm install -g svgo
 
-# # Create non-root user and group
+# Create non-root user and group
 RUN groupadd -g 1001 appgroup && \
     useradd -u 1001 -g appgroup -s /bin/bash -m appuser
 
@@ -57,7 +57,8 @@ RUN npm install && npm run build
 RUN chown -R appuser:appgroup /var/www \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache \
     && mkdir -p /var/lib/nginx/body \
-    && chown -R appuser:appgroup /var/lib/nginx
+    && chown -R appuser:appgroup /var/lib/nginx \
+    && chmod -R 775 /var/lib/nginx
 
 # Copy NGINX config
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
