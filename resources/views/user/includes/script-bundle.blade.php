@@ -18,11 +18,11 @@
         comments: '{{ route('user.post.comments') }}',
     }
     window.ImageUrl = {
-        logo: '{{ asset('frontend/img/logo.svg') }}'
+        logo: '{{ secure_asset('frontend/img/logo.svg') }}'
     }
 </script>
 
 
-<script src="{{ asset('user/js/custom.js') }}"></script>
-<script src="{{ asset('user/js/theme.js') }}"></script>
-<script src="{{ asset('user/js/timer.js') }}"></script>
+<script src="{{ secure_asset('user/js/custom.js') }}"></script>
+<script src="{{ secure_asset('user/js/theme.js') }}"></script>
+<script src="{{ secure_asset('user/js/timer.js') }}"></script>
