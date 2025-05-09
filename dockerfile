@@ -43,7 +43,6 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 RUN php artisan migrate --force && \
     php artisan optimize:clear && \
     php artisan config:cache && \
-    php artisan route:cache && \
     php artisan view:cache && \
     php artisan queue:restart
 
