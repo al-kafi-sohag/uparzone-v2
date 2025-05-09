@@ -96,7 +96,7 @@ fi
 
 # Cache configuration for better performance
 echo "Optimizing Laravel"
-php artisan optimize
+php artisan optimize:clear
 
 # Start supervisord
 echo "Starting supervisord"
