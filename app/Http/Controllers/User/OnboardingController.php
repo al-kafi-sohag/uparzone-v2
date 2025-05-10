@@ -9,6 +9,7 @@ class OnboardingController extends Controller
 {
     public function index()
     {
+        return redirect()->route('user.maintenance');
         if (user()) {
             return redirect()->route('user.home');
         }

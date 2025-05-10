@@ -43,7 +43,7 @@
                 </div>
 
                 <!-- Updates Button -->
-                <a href="{{ route('user.onboarding') }}"
+                <a href="{{ route('user.maintenance') }}"
                     class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
                     <span>Check Status Updates</span>
                     <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
