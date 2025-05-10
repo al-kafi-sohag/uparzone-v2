@@ -26,7 +26,7 @@ function str_limit($string, $limit = 10, $end = '...')
 }
 
 function profile_img ($img = null){
-    return $img ? asset($img) : asset('user/img/default-user.jpg');
+    return $img ? asset($img) : asset('user/img/avatar.jpg');
 }
 
 
