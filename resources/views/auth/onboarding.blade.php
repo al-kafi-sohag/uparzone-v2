@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome to UPARZONE')
+@section('title', 'Uparzone Technology Home')
 
 @section('content')
     <!-- Logo and Welcome Message -->
