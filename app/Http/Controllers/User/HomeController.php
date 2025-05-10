@@ -18,6 +18,7 @@ class HomeController extends Controller
 
     public function home(Request $request)
     {
+        return redirect()->route('user.maintenance');
         // Get the current user ID
         $userId = user()->id;
 
