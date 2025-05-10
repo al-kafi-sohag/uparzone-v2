@@ -67,15 +67,11 @@ return [
             'region' => env('WAS_DEFAULT_REGION'),
             'bucket' => env('WAS_BUCKET'),
             'endpoint' => env('WAS_ENDPOINT', 'https://s3.ap-southeast-1.wasabisys.com'),
-            'url' => env('WAS_URL', 'https://uparzone.s3.ap-southeast-1.wasabisys.com'),
+            'url' => env('BUNNY_PULLZONE_URL', 'https://uparzone.s3.ap-southeast-1.wasabisys.com'),
             'use_path_style_endpoint' => true,
             'throw' => false,
             'visibility' => 'public',
-            'options' => [
-                'http' => [
-                    'verify' => false // Disable SSL verification LOCALLY ONLY
-                ]
-            ]
+
         ],
 
         'bunny' => [
