@@ -10,13 +10,13 @@ use App\Models\Mood;
 
 class MigrateV1Users extends Command
 {
-    protected $signature = 'migrate:v1-users';
-    protected $description = 'Migrate users from v1 to v2';
+    protected $signature = 'migrate:users';
+    protected $description = 'Migrate users from main to this ';
 
     public function handle()
     {
-        DB::connection('v2')->statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::connection('v2')->table('users')->truncate(); // Optional: Only if starting fresh
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('users')->truncate(); // Optional: Only if starting fresh
 
         $v1Users = DB::connection('v1')->table('users')->get();
 
@@ -79,11 +79,11 @@ class MigrateV1Users extends Command
                 $v2User['mood_id'] = $mood->id;
             }
 
-            DB::connection('v2')->table('users')->insert($v2User);
+            DB::table('users')->insert($v2User);
             $this->info("Migrated user {$v1User->id}");
         }
 
-        DB::connection('v2')->statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->info('Users migrated successfully.');
     }
 }
