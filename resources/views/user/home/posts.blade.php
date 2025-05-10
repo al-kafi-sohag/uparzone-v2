@@ -28,8 +28,7 @@
             <div class="relative w-full bg-gray-100 {{ $media ? starts_with($media->mime_type, 'image/') ? 'h-96' : 'h-64' : 'h-64' }}">
                 @if($media)
                     @if(starts_with($media->mime_type, 'image/'))
-                        <img src="{{ $media->getFullUrl('thumb') }}"
-                             data-src="{{ $media->getFullUrl('original') }}"
+                        <img src="{{ $media->getFullUrl() }}"
                              alt="Post image"
                              class="lazyload object-cover absolute inset-0 w-full h-full">
 

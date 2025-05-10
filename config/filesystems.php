@@ -75,13 +75,11 @@ return [
         ],
 
         'bunny' => [
-            'driver' => 's3',
-            'key' => env('WAS_ACCESS_KEY_ID'),
-            'secret' => env('WAS_SECRET_ACCESS_KEY'),
-            'region' => env('WAS_DEFAULT_REGION'),
-            'bucket' => env('WAS_BUCKET'),
-            'endpoint' => env('BUNNY_PULLZONE_URL'),
-            'use_path_style_endpoint' => true,
+            'driver' => 'ftp',
+            'host' => 'sg.storage.bunnycdn.com', // FTP host for your Bunny Storage zone
+            'username' => 'uparzone-test',
+            'password' => '342a1553-12b0-4dec-a391e7efb700-b320-40b2',
+            // Optional: 'root' => '/path/to/folder',
         ],
 
     ],
