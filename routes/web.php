@@ -26,12 +26,13 @@ use App\Http\Controllers\Admin\PostCategoryController as AdminPostCategoryContro
 use App\Http\Controllers\Admin\ReligionController as AdminReligionController;
 
 Route::get('/', function () {
-    return redirect()->route('user.onboarding');
+    return redirect()->route('user.maintenance');
 });
 
 //User Before
 Auth::routes();
 Route::get('onboarding', [UserOnboardingController::class, 'index'])->name('user.onboarding');
+Route::get('maintenance', [UserOnboardingController::class, 'maintenance'])->name('user.maintenance');
 Route::controller(UserGoogleController::class)->group(function(){
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');

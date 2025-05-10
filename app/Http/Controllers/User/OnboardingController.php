@@ -14,4 +14,9 @@ class OnboardingController extends Controller
         }
         return view('auth.onboarding');
     }
+
+    public function maintenance()
+    {
+        return view('auth.maintenance');
+    }
 }
