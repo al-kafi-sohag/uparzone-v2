@@ -60,6 +60,34 @@ return [
             'report' => false,
         ],
 
+        'Wasabi' => [
+            'driver' => 's3',
+            'key' => env('WAS_ACCESS_KEY_ID'),
+            'secret' => env('WAS_SECRET_ACCESS_KEY'),
+            'region' => env('WAS_DEFAULT_REGION'),
+            'bucket' => env('WAS_BUCKET'),
+            'endpoint' => env('WAS_ENDPOINT', 'https://s3.ap-southeast-1.wasabisys.com'),
+            'url' => env('WAS_URL', 'https://uparzone.s3.ap-southeast-1.wasabisys.com'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
+            'visibility' => 'public',
+            'options' => [
+                'http' => [
+                    'verify' => false // Disable SSL verification LOCALLY ONLY
+                ]
+            ]
+        ],
+
+        'bunny' => [
+            'driver' => 's3',
+            'key' => env('WAS_ACCESS_KEY_ID'),
+            'secret' => env('WAS_SECRET_ACCESS_KEY'),
+            'region' => env('WAS_DEFAULT_REGION'),
+            'bucket' => env('WAS_BUCKET'),
+            'endpoint' => env('BUNNY_PULLZONE_URL'),
+            'use_path_style_endpoint' => true,
+        ],
+
     ],
 
     /*

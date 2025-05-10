@@ -13,3 +13,7 @@ function toastify(message, type) {
         }).showToast();
     }
 }
+
+function profile_img(img = null) {
+    return img ? asset(img) : asset('user/img/avatar.jpg');
+}

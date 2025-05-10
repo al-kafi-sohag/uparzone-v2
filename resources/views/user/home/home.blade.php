@@ -104,7 +104,7 @@ function createPostHtml(post) {
                 <!-- Post Header -->
                 <div class="flex items-center p-3">
                     <div class="overflow-hidden relative w-8 h-8 bg-gray-200 rounded-full">
-                        <img src="" alt="${post.user.name}"
+                        <img src="${post.user ? profile_img(post.user.profile_img) : profile_img()}" alt="${post.user.name}"
                             class="object-cover absolute inset-0 w-full h-full">
                     </div>
                     <div class="ml-2">
