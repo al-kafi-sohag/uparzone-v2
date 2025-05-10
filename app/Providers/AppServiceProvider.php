@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::automaticallyEagerLoadRelationships();
         Model::preventLazyLoading(true);
-        URL::forceScheme('https');
+        // URL::forceScheme('https');s
     }
 }

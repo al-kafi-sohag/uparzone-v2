@@ -17,7 +17,7 @@
         {{ __('A social earning network system') }}
     </title>
 
-    <link rel="icon" type="image/x-icon" href="{{ secure_asset('frontend/img/logo.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('frontend/img/logo.ico') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
