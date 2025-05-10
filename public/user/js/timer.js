@@ -8,7 +8,7 @@ $(document).ready(function () {
         balanceLoading();
         axios.post(AppUrl.heartbeat)
             .then(function (response) {
-                $('#balance').html(parseFloat(response.data.data.balance).toFixed(4));
+                $('#balance').html(parseFloat(response.data.data.balance).toFixed(2));
             })
             .catch(function (error) {
                 console.log(error);
