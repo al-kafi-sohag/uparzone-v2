@@ -36,14 +36,14 @@
                     <p class="text-sm text-gray-600 mb-2">Need urgent assistance?</p>
                     <div class="flex items-center justify-center text-blue-600">
                         <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
-                        <a href="mailto:support@example.com" class="hover:underline">
+                        {{-- <a href="mailto:support@example.com" class="hover:underline">
                             support@example.com
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
 
                 <!-- Updates Button -->
-                <a href="https://status.example.com"
+                <a href="{{ route('user.onboarding') }}"
                     class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
                     <span>Check Status Updates</span>
                     <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
@@ -55,7 +55,7 @@
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
             <p class="text-center text-sm text-gray-500">
                 &copy;
-                <script>document.write(new Date().getFullYear())</script> Your Company. All rights reserved.
+                <script>document.write(new Date().getFullYear())</script> {{ config('app.name') }}. All rights reserved.
             </p>
         </div>
     </div>
