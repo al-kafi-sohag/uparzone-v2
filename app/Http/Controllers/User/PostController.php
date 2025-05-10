@@ -16,6 +16,7 @@ use App\Models\UserTransaction;
 use Illuminate\Support\Facades\DB;
 use App\Services\UserTransactionService;
 use App\Services\UserBalanceService;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -57,6 +58,7 @@ class PostController extends Controller
 
             return response()->json($result);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to upload file',
@@ -81,6 +83,7 @@ class PostController extends Controller
 
             return response()->json($result);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to remove file',
@@ -137,7 +140,7 @@ class PostController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create post',
