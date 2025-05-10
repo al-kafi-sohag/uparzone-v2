@@ -133,4 +133,9 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'user_id');
     }
 
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(User::class, 'referer_id');
+    }
+
 }
