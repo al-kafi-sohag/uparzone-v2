@@ -22,7 +22,6 @@ class GoogleController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
-            Log::info("GoogleController: " . json_encode($user));
             $finduser = User::where('google_id', $user->id)->first();
 
             if($finduser){

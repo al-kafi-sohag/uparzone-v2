@@ -59,7 +59,8 @@ class User extends Authenticatable
         'religion_privacy',
         'status',
         'last_active_at',
-        'total_referral'
+        'total_referral',
+        'premium_referral_count',
     ];
 
     /**

@@ -49,6 +49,10 @@ class UserPaymentObserver
 
                     $userBalanceService = new UserBalanceService();
                     $userBalanceService->setUser($referrer->id)->addBalance($referrerUserTransaction->amount);
+                    $referrer->update([
+                        'total_referral' => $referrer->referrals()->count(),
+                        'premium_referral_count' => $referrer->premiumReferrals()->count(),
+                    ]);
                 }
             }
 
