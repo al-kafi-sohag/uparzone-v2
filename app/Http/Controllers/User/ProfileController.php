@@ -119,10 +119,6 @@ class ProfileController extends Controller
         'posts',
         'posts.user',
         'posts.media',
-        'posts.postReactions' => function ($join) use ($userId) {
-            $join->on('posts.id', '=', 'reactions.post_id')
-                 ->where('reactions.user_id', '=', $userId);
-        },
         'referer',
         'referrals'])
         ->where('id', $userId)
