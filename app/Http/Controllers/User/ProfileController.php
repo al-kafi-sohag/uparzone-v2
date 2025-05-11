@@ -101,7 +101,7 @@ class ProfileController extends Controller
             'total_referral' => User::where('referer_id', $userId)->count(),
         ]);
 
-        $this->userTransactionService->createTransaction($user->id, user()->id, ($user->total_referral * 100), 200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
+        $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
 
     }
 
