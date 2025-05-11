@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UserTransactionService;
 use App\Services\UserBalanceService;
+use App\Http\Requests\User\UpdateReferenceCodeRequest;
 
 class ProfileController extends Controller
 {
@@ -99,15 +100,20 @@ class ProfileController extends Controller
         $user = User::where('id', $userId)->first();
         $user->update([
             'total_referral' => User::where('referer_id', $userId)->count(),
+            'premium_referral_count' => User::where('referer_id', $userId)->where('is_premium', true)->count(),
         ]);
 
-        $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
+        if(user()->is_premium){
+            $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
+        }else{
+            $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
+        }
 
     }
 
     public function profile()
     {
-        return redirect()->route('user.migrating');
+        // return redirect()->route('user.migrating');
         $userId = Auth::user()->id;
         $data['user'] = User::with(['mood',
         'posts',
@@ -117,12 +123,32 @@ class ProfileController extends Controller
             $join->on('posts.id', '=', 'reactions.post_id')
                  ->where('reactions.user_id', '=', $userId);
         },
-        'referer'])
+        'referer',
+        'referrals'])
         ->where('id', $userId)
         ->latest()
-        ->get();
+        ->first();
+
+        // Get user transactions
+        $data['referralTransactions'] = UserTransaction::where(function($query) use ($userId) {
+            $query->where('receiver_id', $userId)
+                  ->orWhere('sender_id', $userId)
+                  ->orWhere('key', 'like', 'referral-%');
+        })->latest()->paginate(5);
 
         return view('user.profile.profile', $data);
+    }
+
+    public function updateReferenceCode(updateReferenceCodeRequest $request)
+    {
+        $user = User::where('reference_code', $request->reference_code)->first();
+
+        User::where('id', Auth::user()->id)->update(['referer_id' => $user->id]);
+
+        $this->calculateTotalReferral($user->id);
+
+        sweetalert()->success('Reference code updated successfully');
+        return redirect()->route('user.profile');
     }
 
     public function migrating()

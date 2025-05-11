@@ -114,6 +114,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth:web']], function () {
         Route::post('verify-reference-code', 'verifyReferenceCode')->name('cp.verify.reference');
         Route::get('profile', 'profile')->name('profile');
         Route::get('migrating', 'migrating')->name('migrating');
+        Route::post('update-reference-code', 'updateReferenceCode')->name('cp.update.reference');
     });
 
     Route::post('heartbeat', [UserTimeTrackingController::class, 'heartbeat'])->name('heartbeat');

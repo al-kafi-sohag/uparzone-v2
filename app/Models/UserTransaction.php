@@ -31,6 +31,7 @@ class UserTransaction extends Model
         'receiver',
         'sender',
         'statusText',
+        'statusBadge',
         'typeText',
     ];
 
@@ -52,5 +53,10 @@ class UserTransaction extends Model
     public function getTypeTextAttribute()
     {
         return $this->type == self::TYPE_CREDIT ? 'Credit' : 'Debit';
+    }
+
+    public function getStatusBadgeAttribute()
+    {
+        return $this->status == self::STATUS_PENDING ? 'text-yellow-800 bg-yellow-100' : 'text-green-800 bg-green-100';
     }
 }
