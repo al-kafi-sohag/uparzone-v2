@@ -14,14 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 2;
+
+
     protected $fillable = [
         'name',
         'email',
@@ -74,11 +72,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $appends = [
+        'statusText',
+        'statusBadge',
+        'isPremiumText',
+        'isPremiumBadge'
+    ];
     protected function casts(): array
     {
         return [
@@ -112,6 +111,31 @@ class User extends Authenticatable
             'gender' => 'string',
 
         ];
+    }
+
+    public function getStatusBadgeAttribute()
+    {
+        return match($this->status) {
+            User::STATUS_ACTIVE => 'bg-green-100 text-green-800',
+            User::STATUS_INACTIVE => 'bg-red-100 text-red-800',
+            default => 'bg-gray-100 text-gray-800',
+        };
+    }
+    public function getStatusTextAttribute()
+    {
+        return match($this->status) {
+            User::STATUS_ACTIVE => 'Active',
+            User::STATUS_INACTIVE => 'Inactive',
+            default => 'Unknown',
+        };
+    }
+    public function getIsPremiumTextAttribute()
+    {
+        return $this->is_premium ? 'Premium' : 'Free';
+    }
+    public function getIsPremiumBadgeAttribute()
+    {
+        return $this->is_premium ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
     }
     public function mood(): BelongsTo
     {

@@ -129,13 +129,6 @@ class ProfileController extends Controller
         ->latest()
         ->first();
 
-        // Get user transactions
-        $data['referralTransactions'] = UserTransaction::where(function($query) use ($userId) {
-            $query->where('receiver_id', $userId)
-                  ->orWhere('sender_id', $userId)
-                  ->orWhere('key', 'like', 'referral-%');
-        })->latest()->paginate(5);
-
         return view('user.profile.profile', $data);
     }
 

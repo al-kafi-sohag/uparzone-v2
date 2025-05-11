@@ -277,24 +277,24 @@
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
-                                        @forelse ($referralTransactions as $referralTransaction)
+                                        @forelse ($user->referrals as $referral)
                                             <tr class="hover:bg-gray-50">
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900"> {{ optional($referralTransaction->sender->first())->name ?? 'System' }}</div>
+                                                    <div class="text-sm text-gray-900"> {{ $referral->name }}</div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="inline-flex px-2 text-xs font-semibold leading-5 {{ $referralTransaction->statusBadge }} rounded-full">
-                                                        {{ $referralTransaction->statusText }}
+                                                    <span class="inline-flex px-2 text-xs font-semibold leading-5 {{ $referral->isPremiumBadge }} rounded-full">
+                                                        {{ $referral->isPremiumText }}
                                                     </span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm font-medium text-green-600">
-                                                        {{ number_format($referralTransaction->amount, 2) }}
+                                                        {{ number_format(200, 2) }} tk
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">{{ $referralTransaction->created_at->format('d M, Y') }}</div>
-                                                    <div class="text-xs text-gray-500">{{ $referralTransaction->created_at->format('h:i A') }}</div>
+                                                    <div class="text-sm text-gray-900">{{ $referral->created_at->format('d M, Y') }}</div>
+                                                    <div class="text-xs text-gray-500">{{ $referral->created_at->format('h:i A') }}</div>
                                                 </td>
                                             </tr>
                                         @empty
