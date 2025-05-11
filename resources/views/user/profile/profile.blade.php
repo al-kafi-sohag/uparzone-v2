@@ -264,6 +264,10 @@
                             <p>{{ __('Premium Referral') }}</p>
                             <p>{{ $user->premium_referral_count }}</p>
                         </div>
+                        <div class="flex items-center justify-between">
+                            <p>{{ __('Premium Referral Earning') }}</p>
+                            <p>{{ number_format((int)$user->premium_referral_count * 200, 2) }} tk</p>
+                        </div>
 
                         <div>
                             <div class="overflow-x-auto mt-4">
