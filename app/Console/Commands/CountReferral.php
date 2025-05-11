@@ -29,10 +29,12 @@ class CountReferral extends Command
         $users = User::all();
         foreach ($users as $user) {
             $user->total_referral = $user->referrals()->count();
+            $user->premium_referral_count = $user->premiumReferrals()->count();
             $user->save();
 
             $this->info("Referral count updated for user {$user->id}");
             $this->info("Total referral count updated for user {$user->total_referral}");
+            $this->info("Premium referral count updated for user {$user->premium_referral_count}");
         }
     }
 }

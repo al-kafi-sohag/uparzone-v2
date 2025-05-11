@@ -138,4 +138,8 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'referer_id');
     }
 
+    public function premiumReferrals(): HasMany
+    {
+        return $this->hasMany(User::class, 'referer_id')->where('is_premium', true);
+    }
 }
