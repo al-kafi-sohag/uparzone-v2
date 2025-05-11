@@ -39,7 +39,7 @@ class GoogleController extends Controller
             }
         } catch (Exception $e) {
             Log::error("GoogleController: " . $e->getMessage());
-            return redirect()->back()->with('error', 'Something went wrong');
+            return redirect()->route('user.onboarding')->with('error', 'Something went wrong');
         }
     }
 }
