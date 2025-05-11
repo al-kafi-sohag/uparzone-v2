@@ -125,6 +125,9 @@ class ProfileController extends Controller
         ->latest()
         ->first();
 
+        $data['referrals'] = User::where('referer_id', $userId)->latest()->paginate(10);
+
+
         return view('user.profile.profile', $data);
     }
 

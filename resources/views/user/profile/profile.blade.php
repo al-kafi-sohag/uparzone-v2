@@ -277,7 +277,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
-                                        @forelse ($user->referrals as $referral)
+                                        @forelse ($referrals as $referral)
                                             <tr class="hover:bg-gray-50">
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm text-gray-900"> {{ $referral->name }}</div>
@@ -306,6 +306,9 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+                                <div class="px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+                                    {{ $referrals->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>
