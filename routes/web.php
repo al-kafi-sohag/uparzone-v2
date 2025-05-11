@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\GenderController as AdminGenderController;
 use App\Http\Controllers\Admin\MoodController as AdminMoodController;
 use App\Http\Controllers\Admin\PostCategoryController as AdminPostCategoryController;
 use App\Http\Controllers\Admin\ReligionController as AdminReligionController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 Route::get('/', function () {
     return redirect()->route('user.onboarding');
@@ -94,6 +95,15 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
                 Route::get('edit/{id}', 'edit')->name('edit');
                 Route::put('update/{id}', 'update')->name('update');
                 Route::delete('delete/{id}', 'delete')->name('delete');
+            });
+        });
+
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::controller(AdminUserController::class)->group(function () {
+                Route::get('list', 'list')->name('list');
+                Route::get('get-users', 'getUsers')->name('getUsers');
+                Route::get('profile/{id}', 'profile')->name('profile');
+                Route::get('loginas/{id}', 'loginAs')->name('loginas');
             });
         });
     });

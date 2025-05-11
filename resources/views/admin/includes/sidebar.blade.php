@@ -54,6 +54,14 @@
                 Religion
             </a>
         </div>
+
+        <div class="gap-2 d-flex flex-column">
+            <a href="{{ route('admin.user.list') }}"
+                class="nav-link {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i>
+                User
+            </a>
+        </div>
     </nav>
 </div>
 
