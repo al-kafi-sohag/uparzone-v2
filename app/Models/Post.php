@@ -68,31 +68,14 @@ class Post extends Model implements HasMedia
 
     public function getMediaThumbUrlAttribute()
     {
-        return optional($this->getFirstMedia('post_media'))->getFullUrl('thumb');
+        return optional($this->getFirstMedia('post_media'))->getFullUrl();
     }
 
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('post_media')
-            ->singleFile()
-            ->registerMediaConversions(function (Media $media) {
-                if (str_contains($media->mime_type, 'image')) {
-                    $this->addMediaConversion('original')
-                        ->format('webp')
-                        ->quality(80)
-                        ->optimize()
-                        ->performOnCollections('post_media');
-
-                    // Create a thumbnail in WebP format
-                    $this->addMediaConversion('thumb')
-                        ->format('webp')
-                        ->quality(10)
-                        ->blur(1)
-                        ->pixelate(5)
-                        ->optimize();
-                }
-            });
+        ->singleFile();
     }
 
     public function user()
