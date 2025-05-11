@@ -18,7 +18,7 @@ class RewardService
 
     public function calculateReward($user, float $duration): float
     {
-        $referralCount = $user->total_referral;
+        $referralCount = $user->premium_referral_count;
         $rate = $this->getRewardRate($referralCount);
         $result = ($rate * $duration)/30;
         return (float) number_format($result, 4, '.', '');
