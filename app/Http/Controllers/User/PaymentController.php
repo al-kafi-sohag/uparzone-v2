@@ -82,6 +82,7 @@ class PaymentController extends Controller
             $post_data['product_profile'] = "physical-goods";
 
             # OPTIONAL PARAMETERS
+            $post_data['val_id'] = $userPayment->id;
             $post_data['user_id'] = $user->id;
             $post_data['payment_id'] = $userPayment->id;
             $post_data['user_name'] = $user->name;
@@ -180,11 +181,12 @@ class PaymentController extends Controller
                 $sslc = new SslCommerzNotification();
                 $validation = $sslc->orderValidate($request->all(), $tran_id, $payment->amount, $payment->currency);
                 if ($validation == TRUE) {
+                    Log::info("Payment validated successfully via IPN Payment ID: ".$payment->id);
                     $payment->update(['status' => UserPayment::STATUS_COMPLETED]);
                     sweetalert()->success('Transaction is successfully Completed');
                 }
-            } else if ($payment->status == UserPayment::STATUS_COMPLETED || $payment->status == UserPayment::STATUS_FAILED) {
-                Log::info("Transaction is already Successful Payment ID: ".$payment->id);
+            } else if ($payment->status == UserPayment::STATUS_COMPLETED || $payment->status == UserPayment::STATUS_FAILED || $payment->status == UserPayment::STATUS_CANCELLED) {
+                Log::info("Transaction is already Processed Payment ID: ".$payment->id);
             } else {
                 Log::info("Invalid Transaction Payment ID: ".$payment->id);
             }
