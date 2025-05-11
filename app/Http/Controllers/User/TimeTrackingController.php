@@ -76,6 +76,6 @@ class TimeTrackingController extends Controller
                 'active_time' => $user->active_time + $duration,
                 'balance' => $user->balance + $rewardAmount,
             ]);
-        });
+        }, 3);
     }
 }
