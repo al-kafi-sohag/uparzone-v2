@@ -10,7 +10,7 @@
             <table id="referrals-table" class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>{{ __('ID') }}  </th>
                         <th>{{ __('Name') }}</th>
                         <th>{{ __('Email') }}</th>
                         <th>{{ __('Status') }}</th>

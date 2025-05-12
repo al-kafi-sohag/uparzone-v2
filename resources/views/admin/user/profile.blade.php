@@ -214,7 +214,7 @@
                 pageLength: 10,
                 lengthMenu: [10, 25, 50, 100],
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
                     { data: 'email', name: 'email' },
                     { data: 'status', name: 'status', orderable: false, searchable: false },
@@ -232,7 +232,7 @@
                 pageLength: 10,
                 lengthMenu: [10, 25, 50, 100],
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'id', name: 'id' },
                     { data: 'amount', name: 'amount' },
                     { data: 'type', name: 'type', orderable: false, searchable: false },
                     { data: 'status', name: 'status', orderable: false, searchable: false },

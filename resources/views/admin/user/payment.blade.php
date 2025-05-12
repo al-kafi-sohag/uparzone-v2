@@ -7,7 +7,7 @@
             <table id="payments-table" class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>{{ __('ID') }}</th>
                         <th>{{ __('Name') }}</th>
                         <th>{{ __('Transaction ID') }}</th>
                         <th>{{ __('Amount') }}</th>
@@ -21,8 +21,8 @@
                 <tbody>
                     @foreach ($payments as $payment)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $user->name }}</td>
+                            <td>{{ $payment->id }}</td>
+                            <td>{{ $payment->user->name }}</td>
                             <td>{{ $payment->user_transaction_id }}</td>
                             <td>{{ $payment->amount }}</td>
                             <td>

@@ -7,7 +7,7 @@
             <table id="transactions-table" class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>{{ __('ID') }}</th>
                         <th>{{ __('Amount') }}</th>
                         <th>{{ __('Type') }}</th>
                         <th>{{ __('Status') }}</th>
