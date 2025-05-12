@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Observers\UserPaymentObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Log;
 
 #[ObservedBy([UserPaymentObserver::class])]
 class UserPayment extends Model
@@ -39,6 +40,7 @@ class UserPayment extends Model
 
     public function getStatusTextAttribute()
     {
+        Log::debug('Payment Method Value:', ['value' => $this->status]);
         return match ($this->status) {
             self::STATUS_PENDING => 'Pending',
             self::STATUS_COMPLETED => 'Completed',
@@ -61,6 +63,7 @@ class UserPayment extends Model
 
     public function getPaymentMethodTextAttribute()
     {
+        Log::debug('Payment Method Value:', ['value' => $this->payment_method]);
         return match ($this->payment_method) {
             self::PAYMENT_METHOD_SSLCOMMERZ => 'SSLCommerz',
             self::PAYMENT_METHOD_MANUAL => 'Manual',

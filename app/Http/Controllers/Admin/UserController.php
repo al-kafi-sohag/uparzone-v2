@@ -65,7 +65,7 @@ class UserController extends Controller
         if (!$data['user']) {
             return redirect()->route('admin.user.list')->with('error', 'User not found');
         }
-        $data['payments'] = UserPayment::with('user', 'userTransaction')
+        $data['payments'] = UserPayment::with('user')
             ->where('user_id', $id)
             ->latest()->get();
         return view('admin.user.profile', $data);
