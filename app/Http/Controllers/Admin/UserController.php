@@ -71,11 +71,10 @@ class UserController extends Controller
     public function getReferrals($id)
     {
         $user = User::find($id);
-
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-        $referrals = $user->referrals();
+        $referrals = User::where('referer_id', $id)->latest()->get();
         return datatables()->of($referrals)
             ->addIndexColumn()
             ->addColumn('status', function ($referral) {
