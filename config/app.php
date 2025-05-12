@@ -127,5 +127,6 @@ return [
     'min_flagging_amount' => env('MIN_FLAGGING_AMOUNT', 200),
     'premium_price' => env('PREMIUM_PRICE', 1500),
     'currency' => env('CURRENCY', 'BDT'),
+    'referral_amount' => env('REFERRAL_AMOUNT', 200),
 
 ];

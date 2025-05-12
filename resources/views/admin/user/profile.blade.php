@@ -2,6 +2,14 @@
 
 @section('title', 'User Profile')
 
+@push('styles')
+<style>
+    .select2.select2-container{
+        width: 100% !important;
+    }
+</style>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -113,6 +121,101 @@
                     </div>
                 </div>
             </div>
+
+            @include('admin.user.referral')
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(function () {
+            // Initialize DataTable for referrals
+            const referralsTable = $('#referrals-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route("admin.user.getReferrals", $user->id) }}',
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'name', name: 'name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'status', name: 'status', orderable: false, searchable: false },
+                    { data: 'premium', name: 'premium', orderable: false, searchable: false },
+                    { data: 'created_at', name: 'created_at', orderable: true },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ]
+            });
+
+            // Initialize Select2 for user search
+            $('#referral_id').select2({
+                placeholder: 'Search for a user...',
+                allowClear: true,
+                dropdownParent: $('#addReferralModal'),
+                ajax: {
+                    url: '{{ route("admin.user.ajax.user.list") }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            search: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 2
+            });
+
+            // Handle form submission
+            $('#referralForm').on('submit', function(e) {
+                e.preventDefault();
+
+                const formData = $(this).serialize();
+                $('#submitReferral').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
+
+                // Hide any previous messages
+                $('#referral-success-message, #referral-error-message').addClass('d-none').html('');
+
+                $.ajax({
+                    url: '{{ route("admin.user.addReferral") }}',
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#referral-success-message').removeClass('d-none').html(response.message);
+                            $('#referral_id').val(null).trigger('change');
+
+                            // Reload the DataTable to show the new referral
+                            referralsTable.ajax.reload();
+
+                            // Update the referral count in the UI if needed
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            $('#referral-error-message').removeClass('d-none').html(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'An error occurred while processing your request.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        $('#referral-error-message').removeClass('d-none').html(errorMessage);
+                    },
+                    complete: function() {
+                        $('#submitReferral').prop('disabled', false).html('Add Referral');
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

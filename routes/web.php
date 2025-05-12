@@ -101,9 +101,12 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::prefix('user')->name('user.')->group(function () {
             Route::controller(AdminUserController::class)->group(function () {
                 Route::get('list', 'list')->name('list');
+                Route::get('ajax/user-list/{user_id?}', 'ajaxUserList')->name('ajax.user.list');
                 Route::get('get-users', 'getUsers')->name('getUsers');
                 Route::get('profile/{id}', 'profile')->name('profile');
+                Route::get('get-referrals/{id}', 'getReferrals')->name('getReferrals');
                 Route::get('loginas/{id}', 'loginAs')->name('loginas');
+                Route::post('add-referral', 'addReferral')->name('addReferral');
             });
         });
     });
