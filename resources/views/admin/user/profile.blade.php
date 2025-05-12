@@ -121,7 +121,8 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="col-md-12">
             @include('admin.user.referral')
         </div>
     </div>
