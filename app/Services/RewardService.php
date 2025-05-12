@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Log;
 class RewardService
 {
     private const REWARD_TIERS = [
-        50 => 0.64,
-        30 => 0.32,
-        20 => 0.16,
-        10 => 0.08,
-        5 => 0.04,
+        49 => 0.64,
+        29 => 0.32,
+        19 => 0.16,
+        9 => 0.08,
+        4 => 0.04,
         0 => 0.02,
     ]; // this rate is per 30 second
 
