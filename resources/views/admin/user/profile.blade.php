@@ -58,65 +58,78 @@
         </div>
 
         <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Profile Details</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <strong>Age:</strong> {{ $user->age ?? 'Not provided' }}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">User Balance & Referral</h5>
+                            <div>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBalanceModal">
+                                    <i class="fas fa-plus"></i> Update Balance
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Gender:</strong> {{ $user->gender ?? 'Not provided' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Profession:</strong> {{ $user->profession ?? 'Not provided' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Mood:</strong> {{ $user->mood->name ?? 'Not set' }} {{ $user->mood->emoji ?? '' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Religion:</strong> {{ $user->religion->name ?? 'Not set' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Address:</strong> {{ $user->address ?? 'Not provided' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>City:</strong> {{ $user->city ?? 'Not provided' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>State:</strong> {{ $user->state ?? 'Not provided' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Country:</strong> {{ $user->country ?? 'Not provided' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Zip Code:</strong> {{ $user->zip_code ?? 'Not provided' }}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <strong>Balance:</strong> {{ $user->balance ?? '0.00' }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Reference Code:</strong> {{ $user->reference_code ?? 'None' }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Total Referrals:</strong> {{ $user->total_referral ?? '0' }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Referred By:</strong>
+                                    @if($user->referer)
+                                        <a href="{{ route('admin.user.profile', $user->referer->id) }}">{{ $user->referer->name }}</a>
+                                    @else
+                                        None
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Referral Information</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <strong>Reference Code:</strong> {{ $user->reference_code ?? 'None' }}
+                <div class="col-md-12 mt-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Profile Details</h5>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Total Referrals:</strong> {{ $user->total_referral ?? '0' }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <strong>Referred By:</strong>
-                            @if($user->referer)
-                                <a href="{{ route('admin.user.profile', $user->referer->id) }}">{{ $user->referer->name }}</a>
-                            @else
-                                None
-                            @endif
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <strong>Age:</strong> {{ $user->age ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Gender:</strong> {{ $user->gender ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Profession:</strong> {{ $user->profession ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Mood:</strong> {{ $user->mood->name ?? 'Not set' }} {{ $user->mood->emoji ?? '' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Religion:</strong> {{ $user->religion->name ?? 'Not set' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Address:</strong> {{ $user->address ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>City:</strong> {{ $user->city ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>State:</strong> {{ $user->state ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Country:</strong> {{ $user->country ?? 'Not provided' }}
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <strong>Zip Code:</strong> {{ $user->zip_code ?? 'Not provided' }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,6 +142,43 @@
             @include('admin.user.transaction')
         </div>
     </div>
+    <div class="modal fade" id="addBalanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Balance</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="balanceForm" action="{{ route('admin.user.updateBalance') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group mt-3 p-2">
+                        <label for="amount">Amount</label>
+                        <input type="number" name="amount" id="amount" class="form-control" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group mt-3 p-2">
+                        <label for="type">Type</label>
+                        <select name="type" id="type" class="form-control">
+                            <option value="credit">Credit</option>
+                            <option value="debit">Debit</option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-3 p-2">
+                        <label for="note">Note</label>
+                        <textarea name="note" id="note" class="form-control">Manual payment by admin</textarea>
+                    </div>
+                    <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submitBalance">Update Balance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('scripts')
     <script>
@@ -150,7 +200,7 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });
-            
+
             // Initialize DataTable for transactions
             $('#transactions-table').DataTable({
                 processing: true,

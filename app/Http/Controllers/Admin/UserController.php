@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UserBalanceService;
 use App\Services\UserTransactionService;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Admin\UserBalanceUpdateRequest;
 
 class UserController extends Controller
 {
@@ -32,7 +32,6 @@ class UserController extends Controller
     public function getUsers()
     {
         $users = User::query();
-
         return datatables()->of($users)
             ->addIndexColumn()
             ->addColumn('status', function ($user) {
@@ -61,11 +60,9 @@ class UserController extends Controller
     public function profile($id)
     {
         $user = User::find($id);
-
         if (!$user) {
             return redirect()->route('admin.user.list')->with('error', 'User not found');
         }
-
         return view('admin.user.profile', compact('user'));
     }
 
@@ -98,7 +95,6 @@ class UserController extends Controller
     public function ajaxUserList(Request $request)
     {
         $search = $request->search;
-
         if ($search == '') {
             $users = User::select('id', 'name', 'email')
                 ->orderby('name', 'asc')
@@ -112,7 +108,6 @@ class UserController extends Controller
                 ->limit(10)
                 ->get();
         }
-
         $response = [];
         foreach ($users as $user) {
             $response[] = [
@@ -120,7 +115,6 @@ class UserController extends Controller
                 'text' => $user->name . ' (' . $user->email . ')'
             ];
         }
-
         return response()->json($response);
     }
 
@@ -133,7 +127,6 @@ class UserController extends Controller
 
         $user = User::find($request->referral_id);
 
-        // Check if user already has a referer
         if ($user->referer_id) {
             return response()->json([
                 'status' => 'error',
@@ -141,16 +134,12 @@ class UserController extends Controller
             ]);
         }
 
-        // Update user's referer_id
         $user->referer_id = $request->user_id;
         $user->save();
 
-        // Update referrer's total_referral count
         $referrer = User::find($request->user_id);
         $referrer->total_referral = $referrer->referrals()->count();
 
-
-        // Update premium referral count if applicable
         if ($user->is_premium) {
             $referrer->premium_referral_count = $referrer->premiumReferrals()->count();
             $this->userBalanceService->setUser($referrer->id)->addBalance(config('app.referral_amount'));
@@ -209,19 +198,27 @@ class UserController extends Controller
 
     public function loginAs($id)
     {
-        // Use first() to ensure we get a single model instance
         $user = User::where('id', $id)->first();
-
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');
         }
-
-        // Store admin session to be able to return back
         session(['admin_id' => Auth::guard('admin')->id()]);
-
-        // Login as the selected user
         Auth::guard('web')->login($user);
 
         return redirect()->route('user.home')->with('success', 'You are now logged in as ' . $user->name);
+    }
+
+    public function updateBalance(UserBalanceUpdateRequest $request)
+    {
+        if ($request->type == 'credit') {
+            $this->userBalanceService->setUser($request->user_id)->addBalance($request->amount);
+            $this->userTransactionService->createTransaction(null, $request->user_id, $request->amount, $request->note, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT);
+        } else {
+            $this->userBalanceService->setUser($request->user_id)->removeBalance($request->amount);
+            $this->userTransactionService->createTransaction(null, $request->user_id, $request->amount, $request->note, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_DEBIT);
+        }
+
+        sweetAlert()->success('Balance updated successfully');
+        return redirect()->back();
     }
 }
