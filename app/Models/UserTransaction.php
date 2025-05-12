@@ -28,22 +28,10 @@ class UserTransaction extends Model
     ];
 
     protected $appends = [
-        'receiver',
-        'sender',
         'statusText',
         'statusBadge',
         'typeText',
     ];
-
-    public function getReceiverAttribute()
-    {
-        return $this->belongsTo(User::class, 'receiver_id');
-    }
-
-    public function getSenderAttribute()
-    {
-        return $this->belongsTo(User::class, 'sender_id');
-    }
 
     public function getStatusTextAttribute()
     {
@@ -58,5 +46,15 @@ class UserTransaction extends Model
     public function getStatusBadgeAttribute()
     {
         return $this->status == self::STATUS_PENDING ? 'text-yellow-800 bg-yellow-100' : 'text-green-800 bg-green-100';
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id');
     }
 }

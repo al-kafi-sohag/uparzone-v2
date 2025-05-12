@@ -51,13 +51,13 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($transaction->type == \App\Models\UserTransaction::TYPE_CREDIT)
                                         @if($transaction->sender_id)
-                                            <div class="text-sm text-gray-900">From: {{ optional($transaction->sender->first())->name ?? 'System' }}</div>
+                                            <div class="text-sm text-gray-900">From: {{ optional($transaction->sender)->name ?? 'System' }}</div>
                                         @else
                                             <div class="text-sm text-gray-900">From: System</div>
                                         @endif
                                     @else
                                         @if($transaction->receiver_id)
-                                            <div class="text-sm text-gray-900">To: {{ optional($transaction->receiver->first())->name ?? 'System' }}</div>
+                                            <div class="text-sm text-gray-900">To: {{ optional($transaction->receiver)->name ?? 'System' }}</div>
                                         @else
                                             <div class="text-sm text-gray-900">To: System</div>
                                         @endif

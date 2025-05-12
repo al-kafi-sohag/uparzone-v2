@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UserBalanceService;
 use App\Services\UserTransactionService;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -163,6 +164,47 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'Referral added successfully'
         ]);
+    }
+
+    public function getTransactions($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $transactions = UserTransaction::with('sender', 'receiver')
+            ->where('receiver_id', $id)
+            ->orWhere('sender_id', $id)
+            ->latest()->get();
+
+        return datatables()->of($transactions)
+            ->addIndexColumn()
+            ->addColumn('amount', function ($transaction) {
+                $prefix = $transaction->type == UserTransaction::TYPE_CREDIT ? '+' : '-';
+                return $prefix . ' ' . number_format($transaction->amount, 2) . ' ' . config('app.currency');
+            })
+            ->addColumn('type', function ($transaction) {
+                $badgeClass = $transaction->type == UserTransaction::TYPE_CREDIT ? 'bg-success' : 'bg-danger';
+                return '<span class="badge ' . $badgeClass . '">' . $transaction->typeText . '</span>';
+            })
+            ->addColumn('status', function ($transaction) {
+                $badgeClass = $transaction->status == UserTransaction::STATUS_COMPLETED ? 'bg-success' : 'bg-warning';
+                return '<span class="badge ' . $badgeClass . '">' . $transaction->statusText . '</span>';
+            })
+            ->addColumn('sender', function ($transaction) {
+                return $transaction->sender ? $transaction->sender->name : 'System';
+            })
+            ->addColumn('receiver', function ($transaction) {
+                return $transaction->receiver ? $transaction->receiver->name : 'System';
+            })
+            ->addColumn('created_at', function ($transaction) {
+                return '<div>' . $transaction->created_at->format('d M, Y') . '</div>' .
+                       '<small class="text-muted">' . $transaction->created_at->format('h:i A') . '</small>';
+            })
+            ->rawColumns(['type', 'status', 'created_at'])
+            ->make(true);
     }
 
     public function loginAs($id)

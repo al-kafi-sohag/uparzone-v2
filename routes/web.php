@@ -105,6 +105,7 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
                 Route::get('get-users', 'getUsers')->name('getUsers');
                 Route::get('profile/{id}', 'profile')->name('profile');
                 Route::get('get-referrals/{id}', 'getReferrals')->name('getReferrals');
+                Route::get('get-transactions/{id}', 'getTransactions')->name('getTransactions');
                 Route::get('loginas/{id}', 'loginAs')->name('loginas');
                 Route::post('add-referral', 'addReferral')->name('addReferral');
             });

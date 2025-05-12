@@ -14,7 +14,11 @@ class TransactionController extends Controller
     }
     public function index()
     {
-        $data['transactions'] = UserTransaction::where(function($query) {
+        $data['transactions'] = UserTransaction::with([
+            'sender:id,name',
+            'receiver:id,name',
+        ])
+        ->where(function($query) {
             $query->where('receiver_id', user()->id)
                   ->orWhere('sender_id', user()->id);
         })->latest()->paginate(10);

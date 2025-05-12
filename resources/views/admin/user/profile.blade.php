@@ -125,6 +125,9 @@
         <div class="col-md-12">
             @include('admin.user.referral')
         </div>
+        <div class="col-md-12 mt-4">
+            @include('admin.user.transaction')
+        </div>
     </div>
 @endsection
 @push('scripts')
@@ -145,6 +148,25 @@
                     { data: 'premium', name: 'premium', orderable: false, searchable: false },
                     { data: 'created_at', name: 'created_at', orderable: true },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
+                ]
+            });
+            
+            // Initialize DataTable for transactions
+            $('#transactions-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route("admin.user.getTransactions", $user->id) }}',
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'amount', name: 'amount' },
+                    { data: 'type', name: 'type', orderable: false, searchable: false },
+                    { data: 'status', name: 'status', orderable: false, searchable: false },
+                    { data: 'sender', name: 'sender' },
+                    { data: 'receiver', name: 'receiver' },
+                    { data: 'note', name: 'note' },
+                    { data: 'created_at', name: 'created_at', orderable: true }
                 ]
             });
 
