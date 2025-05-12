@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\UserBalanceService;
 use App\Services\UserTransactionService;
 use App\Http\Requests\Admin\UserBalanceUpdateRequest;
+use App\Http\Requests\Admin\UserPremiumUpgradeRequest;
+use App\Models\UserPayment;
 
 class UserController extends Controller
 {
@@ -59,11 +61,14 @@ class UserController extends Controller
 
     public function profile($id)
     {
-        $user = User::find($id);
-        if (!$user) {
+        $data['user'] = User::find($id);
+        if (!$data['user']) {
             return redirect()->route('admin.user.list')->with('error', 'User not found');
         }
-        return view('admin.user.profile', compact('user'));
+        $data['payments'] = UserPayment::with('user', 'userTransaction')
+            ->where('user_id', $id)
+            ->latest()->get();
+        return view('admin.user.profile', $data);
     }
 
     public function getReferrals($id)
@@ -219,6 +224,32 @@ class UserController extends Controller
         }
 
         sweetAlert()->success('Balance updated successfully');
+        return redirect()->back();
+    }
+
+    public function updatePremium(UserPremiumUpgradeRequest $request)
+    {
+        $user = User::find($request->user_id);
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+        $user->is_premium = $request->is_premium;
+        $user->save();
+
+        if ($request->is_premium) {
+            $userTransaction = $this->userTransactionService->createTransaction(null, $user->id, config('app.premium_price'), 'Premium Payment', UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_DEBIT);
+            UserPayment::create([
+                'user_id' => $user->id,
+                'user_transaction_id' => $userTransaction->id,
+                'amount' => config('app.premium_price'),
+                'currency' => config('app.currency'),
+                'status' => UserPayment::STATUS_COMPLETED,
+                'payment_method' => UserPayment::PAYMENT_METHOD_MANUAL,
+                'payment_note' => 'Premium Payment made by admin',
+            ]);
+        }
+
+        sweetAlert()->success('Premium status updated successfully');
         return redirect()->back();
     }
 }

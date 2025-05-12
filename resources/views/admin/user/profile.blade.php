@@ -26,8 +26,23 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">User Information</h5>
+                    @if ($user->is_premium)
+                    <form action="{{ route('admin.user.updatePremium') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <input type="hidden" name="is_premium" value="0">
+                        <button type="submit" class="btn btn-danger btn-sm downgrade-premium">Downgrade to Free</button>
+                    </form>
+                    @else
+                        <form action="{{ route('admin.user.updatePremium') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            <input type="hidden" name="is_premium" value="1">
+                            <button type="submit" class="btn btn-success btn-sm upgrade-premium">Upgrade to Premium</button>
+                        </form>
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="text-center mb-4">
@@ -42,10 +57,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <strong>Phone:</strong> {{ $user->phone ?? 'Not provided' }}
+                        <strong>Membership:</strong>
+                        @if ($user->is_premium)
+                            <span class="badge badge-success">Premium</span>
+                        @else
+                            <span class="badge badge-danger bg-danger">Free</span>
+                        @endif
                     </div>
                     <div class="mb-3">
-                        <strong>Balance:</strong> {{ $user->balance ?? '0.00' }}
+                        <strong>Phone:</strong> {{ $user->phone ?? 'Not provided' }}
                     </div>
                     <div class="mb-3">
                         <strong>Joined:</strong> {{ $user->created_at->format('d M Y') }}
@@ -135,11 +155,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 mt-4">
             @include('admin.user.referral')
         </div>
         <div class="col-md-12 mt-4">
             @include('admin.user.transaction')
+        </div>
+        <div class="col-md-12 mt-4">
+            @include('admin.user.payment')
         </div>
     </div>
     <div class="modal fade" id="addBalanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -288,6 +311,19 @@
                         $('#submitReferral').prop('disabled', false).html('Add Referral');
                     }
                 });
+            });
+
+            // Handle update premium form submission
+            $('.upgrade-premium').on('click', function(e) {
+                e.preventDefault();
+                alert('Are you sure you want to update the premium status?');
+                $(this).closest('form').submit();
+            });
+
+            $('.downgrade-premium').on('click', function(e) {
+                e.preventDefault();
+                alert('Are you sure you want to update the premium status?');
+                $(this).closest('form').submit();
             });
         });
     </script>

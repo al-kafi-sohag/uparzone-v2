@@ -109,6 +109,8 @@ Route::group([ 'prefix' => 'admin', 'as' => 'admin.'], function () {
                 Route::get('get-transactions/{id}', 'getTransactions')->name('getTransactions');
                 Route::get('loginas/{id}', 'loginAs')->name('loginas');
                 Route::post('add-referral', 'addReferral')->name('addReferral');
+                Route::post('update-premium', 'updatePremium')->name('updatePremium');
+
             });
         });
     });
