@@ -24,10 +24,10 @@ class FixTransaction extends Command
 
             $sender = Str::after($transaction->key, '-');
             $this->error("Found Sender: " . $sender);
-            // $transaction->update([
-            //     'key' => 'referral',
-            //     'sender_id' => $sender,
-            // ]);
+            $transaction->update([
+                'key' => 'referral',
+                'sender_id' => $sender,
+            ]);
             $this->info("Transaction: " . $transaction->id . " updated");
         }
     }
