@@ -221,7 +221,7 @@
             <div class="bg-white rounded-lg shadow-sm p-4">
                 <h2 class="text-md font-semibold mb-4 flex items-center">
                     <i data-lucide="user" class="h-5 w-5 mr-2 text-purple-600"></i>
-                    Referal Settings
+                    Connection Settings
                 </h2>
 
                 <div class="space-y-3">
@@ -233,7 +233,7 @@
                     @else
                     <form action="{{ route('user.cp.update.reference') }}" method="POST">
                         @csrf
-                        <p>{{ __('Add Your Referrer') }}</p>
+                        <p>{{ __('Add Your Connection') }}</p>
                         <div class="flex items-center justify-between">
                             <input type="text" name="reference_code" value=""
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
@@ -250,7 +250,7 @@
             <div class="bg-white rounded-lg shadow-sm p-4">
                 <h2 class="text-md font-semibold mb-4 flex items-center">
                     <i data-lucide="list" class="h-5 w-5 mr-2 text-purple-600"></i>
-                    Referal History
+                    Connection History
                 </h2>
 
                 <div class="space-y-3">
