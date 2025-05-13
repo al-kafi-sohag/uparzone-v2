@@ -42,6 +42,7 @@ class FixReferral extends Command
                 if($referral->is_premium){
                     $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral');
                     $this->info("Referral Transaction created");
+                    $this->info("Previous Balance: ". $referral->balance);
                     $userBalanceService = new UserBalanceService();
                     $userBalanceService->setUser($referral->referer_id)->addBalance(config('app.referral_amount'));
                     $earnings = UserWithdraw::where('user_id', $referral->referer_id)->get();
@@ -50,6 +51,7 @@ class FixReferral extends Command
                         $userBalanceService->setUser($earning->user_id)->removeBalance($earning->amount);
                     }
                     $this->info("Referral Balance added");
+                    $this->info("New Balance: ". $referral->balance);
                 }else{
                     $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
                 }
