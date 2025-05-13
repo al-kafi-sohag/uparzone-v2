@@ -15,7 +15,7 @@ class FixTransaction extends Command
 
     public function handle()
     {
-        $transactions = UserTransaction::where('key', 'like', 'referral%')->get();
+        $transactions = UserTransaction::where('key', 'like', 'referral-%')->get();
         foreach($transactions as $transaction){
             $this->info("Transaction: " . $transaction->id);
             if($transaction->sender_id){
