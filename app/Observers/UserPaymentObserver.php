@@ -40,7 +40,7 @@ class UserPaymentObserver
 
             $referrer = User::where('id', $userPayment->user->referer_id)->first();
             if ($referrer) {
-                $referrerUserTransaction = UserTransaction::where('key', 'referral-'.$userPayment->user->id)->first();
+                $referrerUserTransaction = UserTransaction::where('key', 'referral')->where('receiver_id', $referrer->id)->where('sender_id', $userPayment->user->id)->first();
                 if ($referrerUserTransaction) {
                     $referrerUserTransaction->update([
                         'status' => UserTransaction::STATUS_COMPLETED,
