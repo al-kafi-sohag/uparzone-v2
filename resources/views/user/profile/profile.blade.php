@@ -257,15 +257,15 @@
                     @if ($user->is_premium)
                     <div>
                         <div class="flex items-center justify-between">
-                            <p>{{ __('Total Referral') }}</p>
+                            <p>{{ __('Total Connection') }}</p>
                             <p>{{ $user->total_referral }}</p>
                         </div>
                         <div class="flex items-center justify-between">
-                            <p>{{ __('Premium Referral') }}</p>
+                            <p>{{ __('Premium Connection') }}</p>
                             <p>{{ $user->premium_referral_count }}</p>
                         </div>
                         <div class="flex items-center justify-between">
-                            <p>{{ __('Premium Referral Earning') }}</p>
+                            <p>{{ __('Premium Connection Earning') }}</p>
                             <p>{{ number_format((int)$user->premium_referral_count * 200, 2) }} tk</p>
                         </div>
 
