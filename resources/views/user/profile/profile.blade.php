@@ -227,7 +227,7 @@
                 <div class="space-y-3">
                     @if ($user->referer)
                     <div class="flex items-center justify-between">
-                        <p>{{ __('Referrer Name') }}</p>
+                        <p>{{ __('Connector Name') }}</p>
                         <p>{{ $user->referer->name }}</p>
                     </div>
                     @else
