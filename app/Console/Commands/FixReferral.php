@@ -23,7 +23,7 @@ class FixReferral extends Command
         foreach($referrals as $referral){
             $this->info("\n\nChecking Referral:" . $referral->id);
             $userTransaction = UserTransaction::where('receiver_id', $id)
-                ->orWhere('sender_id', $referral->id)
+                ->Where('sender_id', $referral->id)
                 ->where('type', 'like', 'referral%')
                 ->get();
 
