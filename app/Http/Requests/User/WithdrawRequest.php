@@ -49,5 +49,10 @@ class WithdrawRequest extends FormRequest
         ];
     }
 
-    
+    public function redirectTo()
+    {
+        return route('user.home');
+    }
+
+
 }
