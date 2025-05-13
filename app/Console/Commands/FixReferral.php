@@ -14,25 +14,24 @@ class FixReferral extends Command
     public function handle()
     {
         $id = $this->option('id');
-        $this->info('Start Checking Referral');
+        $this->info("\n\n\nStart Checking Referral");
         if($id){
             $referrals = User::where('referer_id', $id)->get();
         }else{
             $referrals = User::latest()->get();
         }
         foreach($referrals as $referral){
-                $this->info('Found Referral:' . $referral->id);
-                $this->info('Checking Referral Transactions');
-                $userTransaction = UserTransaction::where('receiver_id', $id)
+            $this->info("\n\nChecking Referral:" . $referral->id);
+            $userTransaction = UserTransaction::where('receiver_id', $id)
                 ->orWhere('sender_id', $referral->id)
                 ->where('type', 'like', 'referral%')
                 ->get();
 
-                if($userTransaction->count() > 0){
-                    $this->info('Referral Transaction found');
-                }else{
-                    $this->error('Referral Transaction not found');
-                }
+            if($userTransaction->count() > 0){
+                $this->info("\nReferral Transaction found");
+            }else{
+                $this->error("\nReferral Transaction not found");
+            }
         }
     }
 }
