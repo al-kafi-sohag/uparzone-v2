@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\UserTransaction;
+use App\Services\UserTransactionService;
+use App\Services\UserBalanceService;
 
 class FixReferral extends Command
 {
@@ -35,6 +37,16 @@ class FixReferral extends Command
                 }
             }else{
                 $this->error("Referral Transaction not found");
+                $userTransactionService = new UserTransactionService();
+                if($referral->is_premium){
+                    $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral');
+                    $this->info("Referral Transaction created");
+                    $userBalanceService = new UserBalanceService();
+                    $userBalanceService->setUser($referral->referer_id)->addBalance(config('app.referral_amount'));
+                    $this->info("Referral Balance added");
+                }else{
+                    $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
+                }
             }
         }
     }
