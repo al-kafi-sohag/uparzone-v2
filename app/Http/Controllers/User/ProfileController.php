@@ -104,9 +104,9 @@ class ProfileController extends Controller
         ]);
 
         if(user()->is_premium){
-            $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
+            $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral');
         }else{
-            $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-'.user()->id);
+            $this->userTransactionService->createTransaction($user->id, user()->id,  200, 'Referral Reward for user ' . user()->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
         }
 
     }
