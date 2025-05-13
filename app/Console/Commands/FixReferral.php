@@ -24,7 +24,7 @@ class FixReferral extends Command
             $this->info("\n\nChecking Referral:" . $referral->id);
             $userTransaction = UserTransaction::where('receiver_id', $id)
                 ->Where('sender_id', $referral->id)
-                ->where('type', 'like', 'referral%')
+                ->where('type', 'referral')
                 ->get();
 
             if($userTransaction->count() > 0){
