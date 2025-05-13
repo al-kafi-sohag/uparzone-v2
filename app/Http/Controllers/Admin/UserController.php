@@ -178,7 +178,7 @@ class UserController extends Controller
         return datatables()->of($transactions)
             ->addIndexColumn()
             ->addColumn('amount', function ($transaction) {
-                $prefix = $transaction->type == UserTransaction::TYPE_CREDIT ? '+' : '-';
+                $prefix = '';
                 return $prefix . ' ' . number_format($transaction->amount, 2) . ' ' . config('app.currency');
             })
             ->addColumn('type', function ($transaction) {
