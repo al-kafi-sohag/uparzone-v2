@@ -139,7 +139,7 @@
                                     <ul class="text-sm space-y-2 text-left w-full">
                                         <li class="flex items-center">
                                             <i data-lucide="check" class="h-4 w-4 mr-2 text-green-500"></i>
-                                            <span>{{ __('Personal referral code') }}</span>
+                                            <span>{{ __('Personal connection code') }}</span>
                                         </li>
                                         <li class="flex items-center">
                                             <i data-lucide="check" class="h-4 w-4 mr-2 text-green-500"></i>

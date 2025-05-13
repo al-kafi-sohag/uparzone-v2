@@ -4,7 +4,7 @@
         <div class="flex justify-center items-center">
             <h3 class="font-medium flex items-center">
                 <i data-lucide="users" class="h-4 w-4 text-indigo-500 mr-2"></i>
-                Your Referral Code
+                Your Connection Code
             </h3>
         </div>
 
