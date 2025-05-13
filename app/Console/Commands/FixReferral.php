@@ -29,7 +29,10 @@ class FixReferral extends Command
 
             if($userTransaction->count() > 0){
                 $this->info("Referral Transaction found");
-                $this->info("Referral Transaction: " . $userTransaction->first()->id);
+                $this->info("Referral Transaction: " . $userTransaction->count()." found");
+                foreach($userTransaction as $transaction){
+                    $this->info("Transaction: " . $transaction->id);
+                }
             }else{
                 $this->error("Referral Transaction not found");
             }
