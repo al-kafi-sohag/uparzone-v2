@@ -35,6 +35,13 @@ class FixReferral extends Command
                 $this->info("Referral Transaction: " . $userTransaction->count()." found");
                 foreach($userTransaction as $transaction){
                     $this->info("Transaction: " . $transaction->id);
+                    if($transaction->status == UserTransaction::STATUS_PENDING && $transaction->sender()->is_premium){
+                        $this->info("Transaction is pending and sender is premium");
+                        $transaction->update([
+                            'status' => UserTransaction::STATUS_COMPLETED
+                        ]);
+                        $this->info("Transaction updated");
+                    }
                 }
             }else{
                 $this->error("Referral Transaction not found");
@@ -44,14 +51,14 @@ class FixReferral extends Command
                     $this->info("Referral Transaction created");
                     $this->info("Previous Balance: ". $referral->balance);
                     $userBalanceService = new UserBalanceService();
-                    $userBalanceService->setUser($referral->referer_id)->addBalance(config('app.referral_amount'));
+                    // $userBalanceService->setUser($referral->referer_id)->addBalance(config('app.referral_amount'));
                     $earnings = UserWithdraw::where('user_id', $referral->referer_id)->get();
-                    foreach($earnings as $earning){
-                        $this->info("Earning: " . $earning->id);
-                        $userBalanceService->setUser($earning->user_id)->removeBalance($earning->amount);
-                    }
-                    $this->info("Referral Balance added");
-                    $this->info("New Balance: ". $referral->balance);
+                    // foreach($earnings as $earning){
+                    //     $this->info("Earning: " . $earning->id);
+                    //     $userBalanceService->setUser($earning->user_id)->removeBalance($earning->amount);
+                    // }
+                    // $this->info("Referral Balance added");
+                    // $this->info("New Balance: ". $referral->balance);
                 }else{
                     $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
                 }

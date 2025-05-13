@@ -164,6 +164,9 @@
         <div class="col-md-12 mt-4">
             @include('admin.user.payment')
         </div>
+        <div class="col-md-12 mt-4">
+            @include('admin.user.withdraw')
+        </div>
     </div>
     <div class="modal fade" id="addBalanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">

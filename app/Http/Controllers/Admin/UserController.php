@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserTransaction;
+use App\Models\UserWithdraw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\UserBalanceService;
@@ -66,6 +67,12 @@ class UserController extends Controller
             return redirect()->route('admin.user.list')->with('error', 'User not found');
         }
         $data['payments'] = UserPayment::with([
+            'user:id,name',
+        ])
+            ->where('user_id', $id)
+            ->latest()->get();
+
+        $data['withdraws'] = UserWithdraw::with([
             'user:id,name',
         ])
             ->where('user_id', $id)
