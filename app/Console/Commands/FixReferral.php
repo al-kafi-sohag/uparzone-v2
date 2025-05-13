@@ -23,26 +23,26 @@ class FixReferral extends Command
         $id = $this->option('id');
         $this->info('Start Checking Referral');
         if($id){
-            $users = User::where('id', $id)->get();
+            $referrals = User::where('referer_id', $id)->get();
         }else{
-            $users = User::latest()->get();
+            $referrals = User::latest()->get();
         }
-        foreach($users as $user){
-            if($user->referer_id){
-                $referer = User::findOrFail($user->referer_id);
-                $this->info('Found Referral:' . $referer->id);
+        foreach($referrals as $referral){
+                $this->info('Found Referral:' . $referral->id);
                 $this->info('Checking Referral Transactions');
-                $userTransaction = UserTransaction::where('receiver_id', $user->id)
-                ->orWhere('sender_id', $referer->id)
+                $userTransaction = UserTransaction::where('receiver_id', $id)
+                ->orWhere('sender_id', $referral->id)
                 ->where('type', 'like', '%referral%')
                 ->get();
-                if($userTransaction->count() > 0){
-                    $this->info('Found Referal Transaction:' . $userTransaction->count());
-                }else{
-                    // $this->userTransactionService->createTransaction($referer->id, $user->id, config('app.referral_amount'), 'Referral Reward for user ' . $user->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-' . $user->id);
-                    $this->error('Found No Referal Transaction for user ' . $user->id);
+
+                foreach($userTransaction as $transaction){
+                    $this->info('Found Referal Transaction:' . $transaction->id);
+                    if($transaction->receiver_id == $id){
+                        $this->info('Referral Transaction found');
+                    }else{
+                        $this->error('Referral Transaction not found');
+                    }
                 }
-            }
         }
     }
 }
