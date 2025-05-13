@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\UserTransaction;
+use App\Models\UserWithdraw;
 use App\Services\UserTransactionService;
 use App\Services\UserBalanceService;
 
@@ -43,6 +44,11 @@ class FixReferral extends Command
                     $this->info("Referral Transaction created");
                     $userBalanceService = new UserBalanceService();
                     $userBalanceService->setUser($referral->referer_id)->addBalance(config('app.referral_amount'));
+                    $earnings = UserWithdraw::where('user_id', $referral->referer_id)->get();
+                    foreach($earnings as $earning){
+                        $this->info("Earning: " . $earning->id);
+                        $userBalanceService->setUser($earning->user_id)->removeBalance($earning->amount);
+                    }
                     $this->info("Referral Balance added");
                 }else{
                     $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
