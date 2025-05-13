@@ -47,7 +47,7 @@ class UserWithdrawService
 
         if($user->referer_id){
             $receieveable_amount = $total_bonus*.5;
-            $this->userTransactionService->createTransaction($user->referer_id, $user->id, $receieveable_amount, 'Withdrawal bonus from User:' . $user->id, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT);
+            $this->userTransactionService->createTransaction($user->referer_id, $user->id, $receieveable_amount, 'Q-bit bonus from User:' . $user->id, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT);
             $this->userBalanceService->setUser($user->referer_id)->addBalance($receieveable_amount);
         }
 
@@ -57,7 +57,7 @@ class UserWithdrawService
 
             $reffered_by = User::where('referer_id', $user->id)->get();
             foreach ($reffered_by as $reffered_user) {
-                $this->userTransactionService->createTransaction($reffered_user->id, $user->id, $receieveable_amount, 'Withdrawal bonus from User:' . $user->id, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT);
+                $this->userTransactionService->createTransaction($reffered_user->id, $user->id, $receieveable_amount, 'Q-bit bonus from User:' . $user->id, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT);
                 $this->userBalanceService->setUser($reffered_user->id)->addBalance($receieveable_amount);
             }
         }
