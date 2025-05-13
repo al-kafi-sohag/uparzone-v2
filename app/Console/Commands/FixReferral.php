@@ -38,7 +38,8 @@ class FixReferral extends Command
                     if($transaction->status == UserTransaction::STATUS_PENDING && $transaction->sender->is_premium){
                         $this->info("Transaction is pending and sender is premium");
                         $transaction->update([
-                            'status' => UserTransaction::STATUS_COMPLETED
+                            'status' => UserTransaction::STATUS_COMPLETED,
+                            'note' => 'Auto Completed by System (V1 -> V2)'
                         ]);
                         $this->info("Transaction updated");
                     }
@@ -47,7 +48,7 @@ class FixReferral extends Command
                 $this->error("Referral Transaction not found");
                 $userTransactionService = new UserTransactionService();
                 if($referral->is_premium){
-                    $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral');
+                    $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name . ' (Auto Completed by System (V1 -> V2))', UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral');
                     $this->info("Referral Transaction created");
                     $this->info("Previous Balance: ". $referral->balance);
                     $userBalanceService = new UserBalanceService();
@@ -60,7 +61,7 @@ class FixReferral extends Command
                     // $this->info("Referral Balance added");
                     // $this->info("New Balance: ". $referral->balance);
                 }else{
-                    $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
+                    $userTransactionService->createTransaction($referral->referer_id, $referral->id, config('app.referral_amount'), 'Referral Reward for user ' . $referral->name . ' (Auto Completed by System (V1 -> V2))', UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral');
                 }
             }
         }
