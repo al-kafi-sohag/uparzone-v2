@@ -28,9 +28,10 @@ class FixReferral extends Command
                 ->get();
 
             if($userTransaction->count() > 0){
-                $this->info("\nReferral Transaction found");
+                $this->info("Referral Transaction found");
+                $this->info("Referral Transaction: " . $userTransaction->first()->id);
             }else{
-                $this->error("\nReferral Transaction not found");
+                $this->error("Referral Transaction not found");
             }
         }
     }
