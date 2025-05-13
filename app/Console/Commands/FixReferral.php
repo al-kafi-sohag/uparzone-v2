@@ -24,7 +24,7 @@ class FixReferral extends Command
         }
         foreach($referrals as $referral){
             $this->info("\n\nChecking Referral:" . $referral->id);
-            $userTransaction = UserTransaction::where('receiver_id', $id)
+            $userTransaction = UserTransaction::where('receiver_id', $referral->referer_id)
                 ->Where('sender_id', $referral->id)
                 ->where('key', 'referral')
                 ->get();
