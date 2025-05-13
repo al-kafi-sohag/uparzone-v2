@@ -190,10 +190,10 @@ class UserController extends Controller
                 return '<span class="badge ' . $badgeClass . '">' . $transaction->statusText . '</span>';
             })
             ->addColumn('sender', function ($transaction) {
-                return '<a href="' . route('admin.user.profile', $transaction->sender_id) . '">' . ($transaction->sender ? $transaction->sender->name . ' (' . $transaction->sender->id . ')' : 'System') . '</a>';
+                return '<a href="' . '/admin/user/profile/' . $transaction->sender_id . '">' . ($transaction->sender ? $transaction->sender->name . ' (' . $transaction->sender->id . ')' : 'System') . '</a>';
             })
             ->addColumn('receiver', function ($transaction) {
-                return '<a href="' . route('admin.user.profile', $transaction->receiver_id) . '">' . ($transaction->receiver ? $transaction->receiver->name . ' (' . $transaction->receiver->id . ')' : 'System') . '</a>';
+                return '<a href="' . '/admin/user/profile/' . $transaction->receiver_id . '">' . ($transaction->receiver ? $transaction->receiver->name . ' (' . $transaction->receiver->id . ')' : 'System') . '</a>';
             })
             ->addColumn('created_at', function ($transaction) {
                 return '<div>' . $transaction->created_at->format('d M, Y') . '</div>' .
