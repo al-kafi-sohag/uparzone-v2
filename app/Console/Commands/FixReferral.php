@@ -25,16 +25,13 @@ class FixReferral extends Command
                 $this->info('Checking Referral Transactions');
                 $userTransaction = UserTransaction::where('receiver_id', $id)
                 ->orWhere('sender_id', $referral->id)
-                ->where('type', 'like', '%referral%')
+                ->where('type', 'like', 'referral%')
                 ->get();
 
-                foreach($userTransaction as $transaction){
-                    $this->info('Found Referal Transaction:' . $transaction->id);
-                    if($transaction->receiver_id == $id){
-                        $this->info('Referral Transaction found');
-                    }else{
-                        $this->error('Referral Transaction not found');
-                    }
+                if($userTransaction->count() > 0){
+                    $this->info('Referral Transaction found');
+                }else{
+                    $this->error('Referral Transaction not found');
                 }
         }
     }
