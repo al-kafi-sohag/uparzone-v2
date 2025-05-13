@@ -318,7 +318,7 @@
                     </div>
                     @else
                     <div class="flex items-center justify-between">
-                        <p>{{ __('Total Referral') }}</p>
+                        <p>{{ __('Total Connection') }}</p>
                         <p>{{ __('Please upgrade to premium') }}</p>
                     </div>
                     @endif
