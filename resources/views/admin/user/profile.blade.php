@@ -214,7 +214,7 @@
                 pageLength: 10,
                 lengthMenu: [10, 25, 50, 100],
                 columns: [
-                    { data: 'id', name: 'id' },
+                    { data: 'id', name: 'id', orderable: true },
                     { data: 'name', name: 'name' },
                     { data: 'email', name: 'email' },
                     { data: 'status', name: 'status', orderable: false, searchable: false },

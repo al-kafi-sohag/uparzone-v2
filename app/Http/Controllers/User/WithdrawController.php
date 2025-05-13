@@ -51,12 +51,12 @@ class WithdrawController extends Controller
             DB::commit();
 
             sweetalert()->success('Withdrawal request submitted successfully! Please wait for the approval.');
-            return redirect()->route('user.wallet');
+            return redirect()->route('user.home');
         } catch (\Exception $e) {
             DB::rollBack();
             sweetalert()->error('Withdrawal request failed! Please try again.');
             Log::error($e->getMessage());
-            return redirect()->route('user.wallet');
+            return redirect()->route('user.home');
         }
     }
 

@@ -17,7 +17,8 @@ class UserObserver
 
     public function creating(User $user): void
     {
-        $user->reference_code = Str::upper(Str::random(4)).$user->id;
+        $randomString = Str::upper(Str::random(6));
+        $user->reference_code = $randomString.date('d');
         // $user->reference_code = $user->id;
     }
 
