@@ -5,18 +5,11 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\UserTransaction;
-use App\Services\UserTransactionService;
 
 class FixReferral extends Command
 {
     protected $signature = 'fix:referral {--id= : User ID}';
     protected $description = '';
-    public UserTransactionService $userTransactionService;
-
-    public function __construct(UserTransactionService $userTransactionService)
-    {
-        $this->userTransactionService = $userTransactionService;
-    }
 
     public function handle()
     {
