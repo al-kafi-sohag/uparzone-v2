@@ -35,7 +35,7 @@ class FixReferral extends Command
                 $this->info("Referral Transaction: " . $userTransaction->count()." found");
                 foreach($userTransaction as $transaction){
                     $this->info("Transaction: " . $transaction->id);
-                    if($transaction->status == UserTransaction::STATUS_PENDING && $transaction->sender()->is_premium){
+                    if($transaction->status == UserTransaction::STATUS_PENDING && $transaction->sender->is_premium){
                         $this->info("Transaction is pending and sender is premium");
                         $transaction->update([
                             'status' => UserTransaction::STATUS_COMPLETED
