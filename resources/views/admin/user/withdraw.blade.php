@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($withdrawals as $withdrawal)
+                    @foreach ($withdraws as $withdrawal)
                         <tr>
                             <td>{{ $withdrawal->id }}</td>
                             <td>{{ $withdrawal->user->name }}</td>
