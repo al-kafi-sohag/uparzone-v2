@@ -20,7 +20,7 @@ class FixReferral extends Command
         if($id){
             $referrals = User::where('referer_id', $id)->get();
         }else{
-            $referrals = User::latest()->get();
+            $referrals = User::where('referer_id', '!=', null)->latest()->get();
         }
         foreach($referrals as $referral){
             $this->info("\n\nChecking Referral:" . $referral->id);

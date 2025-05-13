@@ -110,7 +110,7 @@
                                 <p id="error-message" class="text-sm text-red-500 hidden"></p>
 
                                 <button id="withdraw-button" type="submit"
-                                    class="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-md">
+                                    class="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-md d-flex justify-center align-items-center">
                                     Submit Withdrawal Request
                                 </button>
 

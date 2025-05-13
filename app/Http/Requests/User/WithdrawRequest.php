@@ -7,9 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class WithdrawRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    protected $redirectRoute = 'user.home';
     public function authorize(): bool
     {
         return true;
@@ -48,11 +46,4 @@ class WithdrawRequest extends FormRequest
             'division.in' => 'Division must be dhaka, chittagong, khulna, rajshahi, barisal, rangpur, or mymensingh',
         ];
     }
-
-    public function redirectTo()
-    {
-        return route('user.home');
-    }
-
-
 }
