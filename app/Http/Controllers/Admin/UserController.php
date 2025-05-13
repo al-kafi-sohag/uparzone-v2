@@ -190,10 +190,10 @@ class UserController extends Controller
                 return '<span class="badge ' . $badgeClass . '">' . $transaction->statusText . '</span>';
             })
             ->addColumn('sender', function ($transaction) {
-                return $transaction->sender ? $transaction->sender->name : 'System';
+                return $transaction->sender ? $transaction->sender->name . ' (' . $transaction->sender->id . ')' : 'System';
             })
             ->addColumn('receiver', function ($transaction) {
-                return $transaction->receiver ? $transaction->receiver->name : 'System';
+                return $transaction->receiver ? $transaction->receiver->name . ' (' . $transaction->receiver->id . ')' : 'System';
             })
             ->addColumn('created_at', function ($transaction) {
                 return '<div>' . $transaction->created_at->format('d M, Y') . '</div>' .
