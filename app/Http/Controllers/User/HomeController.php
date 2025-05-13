@@ -26,6 +26,7 @@ class HomeController extends Controller
         $data['posts'] = Post::with(['user', 'media', 'postReactions'])
             ->active()
             // ->latest()
+            ->orderBy('id', 'desc')
             ->leftJoin('reactions', function ($join) use ($userId) {
                 $join->on('posts.id', '=', 'reactions.post_id')
                      ->where('reactions.user_id', '=', $userId);
