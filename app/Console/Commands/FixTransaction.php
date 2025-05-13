@@ -22,7 +22,7 @@ class FixTransaction extends Command
                 continue;
             }
 
-            $sender = Str::before($transaction->key, '-');
+            $sender = Str::after($transaction->key, '-');
             $this->error("Found Sender: " . $sender);
             // $transaction->update([
             //     'key' => 'referral',
