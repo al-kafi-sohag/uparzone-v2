@@ -57,7 +57,7 @@
                         <!-- Withdrawal Form -->
                         <form id="withdrawal-form" action="{{ route('user.withdraw.store') }}" method="POST">
                             @csrf
-                            <div class="space-y-4">
+                            <div id="withdrawal-form-container" class="space-y-4">
                                 <div class="m-3">
                                     @if ($user->reference_code)
                                     @endif
