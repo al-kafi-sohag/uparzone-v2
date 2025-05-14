@@ -25,14 +25,15 @@ class TimeTrackingController extends Controller
         $now = now();
         $duration = $this->calculateDuration($user, $now);
         $rewardAmount = 0;
-
-        if ($this->shouldTrackActivity($duration)) {
+        $shouldTrack = $this->shouldTrackActivity($duration);
+    
+        if ($shouldTrack) {
             $rewardAmount = $this->rewardService->calculateReward($user, $duration);
             $this->createTimeTrackingRecord($user, $now, $duration, $rewardAmount);
         }
-
-        $this->updateUser($user, $now, $duration, $rewardAmount);
-
+    
+        $this->updateUser($user, $now, $duration, $rewardAmount, $shouldTrack);
+    
         return response()->json([
             'status' => 'success',
             'message' => 'Heartbeat received',
@@ -68,14 +69,19 @@ class TimeTrackingController extends Controller
         ]);
     }
 
-    protected function updateUser($user, Carbon $now, float $duration, float $rewardAmount): void
+    protected function updateUser($user, Carbon $now, float $duration, float $rewardAmount, bool $add): void
     {
-        DB::transaction(function () use ($user, $now, $duration, $rewardAmount) {
-            $user->update([
+        DB::transaction(function () use ($user, $now, $duration, $rewardAmount, $add) {
+            $updates = [
                 'last_active_at' => $now,
-                'active_time' => $user->active_time + $duration,
-                'balance' => $user->balance + $rewardAmount,
-            ]);
+            ];
+
+            if ($add) {
+                $updates['active_time'] = $user->active_time + $duration;
+                $updates['balance'] = $user->balance + $rewardAmount;
+            }
+
+            $user->update($updates);
         }, 3);
     }
 }
