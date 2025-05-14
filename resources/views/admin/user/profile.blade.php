@@ -101,6 +101,10 @@
                                     <strong>Total Referrals:</strong> {{ $user->total_referral ?? '0' }}
                                 </div>
                                 <div class="col-md-6 mb-3">
+                                    <strong>Premium Referrals:</strong> {{ $user->premium_referral_count ?? '0' }}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
                                     <strong>Referred By:</strong>
                                     @if($user->referer)
                                         <a href="{{ route('admin.user.profile', $user->referer->id) }}">{{ $user->referer->name }}</a>
