@@ -15,7 +15,38 @@ class UserPaymentObserver
 
     public function created(UserPayment $userPayment): void
     {
-        //
+        if ($userPayment->status == UserPayment::STATUS_COMPLETED) {
+
+            $userPayment = UserPayment::with('user')->find($userPayment->id);
+            $userPayment->user->update([
+                'is_premium' => true
+            ]);
+
+
+            $userTransaction = UserTransaction::find($userPayment->user_transaction_id);
+            $userTransaction->update([
+                'status' => UserTransaction::STATUS_COMPLETED,
+            ]);
+
+            $referrer = User::where('id', $userPayment->user->referer_id)->first();
+            if ($referrer) {
+                $referrerUserTransaction = UserTransaction::where('key', 'referral')->where('receiver_id', $referrer->id)->where('sender_id', $userPayment->user->id)->first();
+                if ($referrerUserTransaction) {
+                    $referrerUserTransaction->update([
+                        'status' => UserTransaction::STATUS_COMPLETED,
+                        'key' => 'referral-completed',
+                    ]);
+
+                    $userBalanceService = new UserBalanceService();
+                    $userBalanceService->setUser($referrer->id)->addBalance($referrerUserTransaction->amount);
+                    $referrer->update([
+                        'total_referral' => $referrer->referrals()->count(),
+                        'premium_referral_count' => $referrer->premiumReferrals()->count(),
+                    ]);
+                }
+            }
+
+        }
     }
 
     public function updating(UserPayment $userPayment): void
