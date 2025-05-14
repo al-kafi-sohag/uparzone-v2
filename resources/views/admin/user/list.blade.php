@@ -40,7 +40,7 @@
             pageLength: 25,
             lengthMenu: [25, 50, 100],
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'id', name: 'id'},
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
                 { data: 'status', name: 'status', orderable: false, searchable: false },
