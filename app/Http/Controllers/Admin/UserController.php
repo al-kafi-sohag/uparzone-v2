@@ -157,11 +157,11 @@ class UserController extends Controller
         if ($user->is_premium) {
             $referrer->premium_referral_count = $referrer->premiumReferrals()->count();
             $this->userBalanceService->setUser($referrer->id)->addBalance(config('app.referral_amount'));
-            $this->userTransactionService->createTransaction($referrer->id, $user->id, config('app.referral_amount'), 'Referral Reward for user ' . $user->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral-' . $user->id);
+            $this->userTransactionService->createTransaction($referrer->id, $user->id, config('app.referral_amount'), 'Referral Reward for user ' . $user->name, UserTransaction::STATUS_COMPLETED, UserTransaction::TYPE_CREDIT, 'referral' . $user->id);
         }
 
         $referrer->save();
-        $this->userTransactionService->createTransaction($referrer->id, $user->id, config('app.referral_amount'), 'Referral Reward for user ' . $user->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral-' . $user->id);
+        $this->userTransactionService->createTransaction($referrer->id, $user->id, config('app.referral_amount'), 'Referral Reward for user ' . $user->name, UserTransaction::STATUS_PENDING, UserTransaction::TYPE_CREDIT, 'referral' . $user->id);
 
         return response()->json([
             'status' => 'success',
